@@ -7,6 +7,7 @@ import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
+import AppContextText from '../context/AppContextText';
 
 // UTILS:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
@@ -30,6 +31,11 @@ import {
 	u_planoDeleteById,
 	u_planoGraficaH,
 } from '../utils/UtilsPlano';
+import {
+	u_textGraficaH,
+	u_textDeleteById,
+	u_getText,
+} from '../utils/UtilsText';
 
 const PaintBorrador = (id_canvas) => {
 	// useContext:
@@ -39,6 +45,7 @@ const PaintBorrador = (id_canvas) => {
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { statePlano } = useContext(AppContextPlano);
+	const { stateText } = useContext(AppContextText);
 
 	// LOGICA:
 	const paint = () => {
@@ -47,6 +54,7 @@ const PaintBorrador = (id_canvas) => {
 		u_lapizGraficaH(context, stateLapiz.historiaLapiz);
 		u_lineaGraficaH(context, stateLinea.historiaLinea);
 		u_planoGraficaH(context, statePlano.historiaPlano);
+		u_textGraficaH(context, stateText.historiaText);
 	};
 	let canvas = '';
 	let context = '';
@@ -108,6 +116,16 @@ const PaintBorrador = (id_canvas) => {
 		}
 		return res;
 	};
+	const textDelete = () => {
+		let res = false;
+		let array = stateText.historiaText;
+		let text = u_getText(array, mouse.pos.x, mouse.pos.y);
+		if (text) {
+			u_textDeleteById(array, text.id);
+			res = true;
+		}
+		return res;
+	};
 	const mouseDownBorrador = (e) => {
 		console.log('click borrador');
 		capturaPosPosprev(e);
@@ -130,6 +148,12 @@ const PaintBorrador = (id_canvas) => {
 					res = planoDelete();
 					if (res) {
 						paint();
+					} else {
+						// TEXTO
+						res = textDelete();
+						if (res) {
+							paint();
+						}
 					}
 				}
 			}

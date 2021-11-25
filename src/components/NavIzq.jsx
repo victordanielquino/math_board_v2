@@ -8,6 +8,7 @@ import AppContextLinea from '../context/AppContextLinea';
 import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextCuadricula from '../context/AppContextCanvas';
 import AppContextPlano from '../context/AppContextPlano';
+import AppContextText from '../context/AppContextText';
 
 import Keyboard from '../containers/Keyboard';
 
@@ -40,6 +41,7 @@ const NavIzq = () => {
 	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 	const { updateLineaActive } = useContext(AppContextLinea);
 	const { updatePlanoActive } = useContext(AppContextPlano);
+	const { updateTextActive } = useContext(AppContextText);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -50,7 +52,7 @@ const NavIzq = () => {
 		[borradorIcon, 'borradorIcon'],
 		// [funcionIcon, 'funcionIcon'],
 		// [sumatoriaIcon, 'sumatoriaIcon'],
-		// [textIcon, 'textIcon'],
+		[textIcon, 'textIcon'],
 		[lineaIcon, 'lineaIcon'],
 		[cuadradoIcon, 'cuadradoIcon'],
 		// [calculadoraIcon, 'calculadoraIcon'],
@@ -75,6 +77,7 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				updateTextActive(false);
 				break;
 			case 'lapizIcon':
 				updateMoverActive(false);
@@ -84,6 +87,7 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				updateTextActive(false);
 				break;
 			case 'borradorIcon':
 				updateMoverActive(false);
@@ -93,6 +97,7 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				updateTextActive(false);
 				break;
 			case 'lineaIcon':
 				updateMoverActive(false);
@@ -102,6 +107,7 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				updateTextActive(false);
 				break;
 			case 'cuadradoIcon':
 				updateMoverActive(false);
@@ -111,6 +117,7 @@ const NavIzq = () => {
 				updateCuadradoActive(true);
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				updateTextActive(false);
 				break;
 			case 'planoIcon':
 				updateMoverActive(false);
@@ -120,6 +127,7 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(true);
 				updateCuadriculaActive(true);
+				updateTextActive(false);
 				break;
 			case 'cuadriculaIcon':
 				updateMoverActive(false);
@@ -129,6 +137,17 @@ const NavIzq = () => {
 				updateCuadradoActive(false);
 				updatePlanoActive(false);
 				updateCuadriculaActive(true);
+				updateTextActive(false);
+				break;
+			case 'textIcon':
+				updateMoverActive(false);
+				updateLapizActive(false);
+				updateBorradorActive(false);
+				updateLineaActive(false);
+				updateCuadradoActive(false);
+				updatePlanoActive(false);
+				updateCuadriculaActive(false);
+				updateTextActive(true);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');

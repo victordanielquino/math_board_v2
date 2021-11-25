@@ -6,6 +6,7 @@ import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
+import AppContextText from '../context/AppContextText';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
@@ -19,6 +20,7 @@ import {
 	uPlano_graficaCuadradoHistoria,
 	u_planoGraficaH,
 } from '../utils/UtilsPlano';
+import { u_textGraficaH } from '../utils/UtilsText';
 
 const PaintPlano = (id_canvas) => {
 	// useContext:
@@ -27,6 +29,7 @@ const PaintPlano = (id_canvas) => {
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano, add_plano_en_historiaId } = useContext(AppContextPlano);
+	const { stateText } = useContext(AppContextText);
 
 	// LOGICA:
 	let canvas = '';
@@ -53,6 +56,7 @@ const PaintPlano = (id_canvas) => {
 		);
 		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_textGraficaH(context, stateText.historiaText);
 	};
 	let mouse = {
 		click: false,

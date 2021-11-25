@@ -7,6 +7,7 @@ import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
+import AppContextText from '../context/AppContextText';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
@@ -36,6 +37,7 @@ import {
 	u_lapizSegmentado,
 	u_moverLapiz,
 } from '../utils/UtilsMoverLapiz';
+import { u_textGraficaH, u_getText, u_textMover } from '../utils/UtilsText';
 
 const PaintMover = (id_canvas) => {
 	// useContext
@@ -45,6 +47,7 @@ const PaintMover = (id_canvas) => {
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
+	const { stateText } = useContext(AppContextText);
 
 	// LOGICA:
 	const paint = () => {
@@ -56,6 +59,7 @@ const PaintMover = (id_canvas) => {
 		);
 		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_textGraficaH(context, stateText.historiaText);
 	};
 	let canvas = '';
 	let context = '';
@@ -63,6 +67,7 @@ const PaintMover = (id_canvas) => {
 	let lineaSelect = {};
 	let lapizSelect = {};
 	let planoSelect = {};
+	let textSelect = {};
 
 	const mouse = {
 		pos: { x: 0, y: 0 },
@@ -86,6 +91,9 @@ const PaintMover = (id_canvas) => {
 		plano_seleccionar_pts: false,
 		plano_pto_mover: false,
 		plano_pto: '',
+		// TEXTO
+		texo_active: true,
+		texto_mover: false,
 	};
 	const canvasMoverDatos = {
 		top: 0,
@@ -291,6 +299,21 @@ const PaintMover = (id_canvas) => {
 							mouse.plano_mover = true;
 							mouse.plano_pto_mover = false;
 							u_planoSegmentado(context, planoSelect);
+						} else {
+							// TEXTO
+							console.log('busca texto');
+							textSelect = u_getText(
+								stateText.historiaText,
+								mouse.pos.x,
+								mouse.pos.y
+							);
+							if (textSelect) {
+								console.log('selection texto');
+								// hizo click sobre un plano
+								mouse.texto_mover = true;
+								//mouse.plano_pto_mover = false;
+								//u_planoSegmentado(context, planoSelect);
+							}
 						}
 					}
 				}
@@ -353,6 +376,13 @@ const PaintMover = (id_canvas) => {
 										planoSelect = u_updateZisePlano(planoSelect, mouse);
 										paint();
 										u_planoSegmentado(context, planoSelect);
+									} else {
+										// TEXTO
+										if (mouse.texto_mover) {
+											captura_Pos_Posprev(e);
+											textSelect = u_textMover(textSelect, mouse);
+											paint();
+										}
 									}
 								}
 							}
@@ -391,6 +421,7 @@ const PaintMover = (id_canvas) => {
 		mouse.plano_mover = false;
 		mouse.plano_pto_mover = false;
 		mouse.plano_pto = '';
+		mouse.texto_mover = false;
 	};
 	const update_canvasMoverDatos = () => {
 		canvasMoverDatos.top = canvas.getBoundingClientRect().top;

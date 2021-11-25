@@ -84,6 +84,12 @@ const useInitialState = () => {
 					active: 'cuadriculaIcon',
 				});
 				break;
+			case 'textIcon':
+				setState({
+					...state,
+					active: 'textIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;

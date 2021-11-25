@@ -10,6 +10,7 @@ import AppContextMover from '../context/AppContextMover';
 import AppContextCanvas from '../context/AppContextCanvas';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextPlano from '../context/AppContextPlano';
+import AppContextText from '../context/AppContextText';
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -20,6 +21,7 @@ import useCuadrado from '../hooks/useCuadrado';
 import useCanvas from '../hooks/useCanvas';
 import useLinea from '../hooks/useLinea';
 import usePlano from '../hooks/usePlano';
+import useText from '../hooks/useText';
 
 import Layout from '../containers/Layout';
 import Home from '../pages/Home';
@@ -34,6 +36,7 @@ const App = () => {
 	const initialStateCanvas = useCanvas();
 	const initialStateLinea = useLinea();
 	const initialStatePlano = usePlano();
+	const initialStateText = useText();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -44,13 +47,15 @@ const App = () => {
 							<AppContextCuadrado.Provider value={initialStateCuadrado}>
 								<AppContextLinea.Provider value={initialStateLinea}>
 									<AppContextPlano.Provider value={initialStatePlano}>
-										<BrowserRouter>
-											<Layout>
-												{/* <Routes>
+										<AppContextText.Provider value={initialStateText}>
+											<BrowserRouter>
+												<Layout>
+													{/* <Routes>
 										<Route exact path="/" element={<Home />} />
 									</Routes> */}
-											</Layout>
-										</BrowserRouter>
+												</Layout>
+											</BrowserRouter>
+										</AppContextText.Provider>
 									</AppContextPlano.Provider>
 								</AppContextLinea.Provider>
 							</AppContextCuadrado.Provider>

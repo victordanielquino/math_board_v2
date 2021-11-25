@@ -8,7 +8,7 @@ import { u_textGrafica } from '../utils/UtilsText';
 
 const MenuText = () => {
 	// useContext:
-	const { s_textUpdateColor, stateText, s_textUpdateTamano, s_textAddH } =
+	const { s_textUpdateColor, stateText, s_textUpdateTamano, s_textAddHId } =
 		useContext(AppContextText);
 
 	// LOGICA
@@ -75,7 +75,7 @@ const MenuText = () => {
 		textoNew.tamano = tamano;
 		graficaTexto2();
 		//u_textGrafica(context, textoNew);
-		s_textAddH(textoNew);
+		s_textAddHId(textoNew, stateText.id + 1);
 	};
 	const handleSize = (op) => {
 		let tamano = parseInt(document.getElementById('t_inputTamano').value);

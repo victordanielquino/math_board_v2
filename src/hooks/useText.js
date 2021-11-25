@@ -26,6 +26,13 @@ const useText = () => {
 			historiaText: [...stateText.historiaText, valor],
 		});
 	};
+	const s_textAddHId = (valor, id) => {
+		setStateText({
+			...stateText,
+			id: id,
+			historiaText: [...stateText.historiaText, valor],
+		});
+	};
 	const s_textUpdateColor = (color) => {
 		setStateText({
 			...stateText,
@@ -51,6 +58,7 @@ const useText = () => {
 		s_textUpdateColor,
 		s_textUpdateTamano,
 		s_textUpdateText,
+		s_textAddHId,
 	};
 };
 

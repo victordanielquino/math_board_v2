@@ -1,0 +1,5 @@
+# archivos de node.js
+node_modules
+
+# archivos generados por mac:
+*.DS_Store

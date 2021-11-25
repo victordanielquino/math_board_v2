@@ -1,0 +1,52 @@
+@import 'vars';
+.keySvg {
+	// background-color: var(--greiTipo1_1);
+	//background-image: url('../assets/icons/shift-fill.svg');
+	background-repeat: no-repeat;
+	background-size: 70%;
+	background-position: center;
+
+	background-color: var(--greiTipo0_3);
+	margin: 2px;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px solid var(--greiTipo0_4);
+	font-size: var(--lg);
+	width: 30px;
+	height: 30px;
+	//border: none;
+}
+.shift-fill {
+	background-image: url('../assets/icons/shift-fill.svg');
+}
+.backspace {
+	background-image: url('../assets/icons/backspace.svg');
+}
+.caret-right {
+	background-image: url('../assets/icons/caret-right.svg');
+}
+.caret-left {
+	background-image: url('../assets/icons/caret-left.svg');
+}
+.INI {
+	width: 45px;
+	text-align: center;
+}
+.FIN {
+	width: 45px;
+	text-align: center;
+}
+.DEL {
+	width: 45px;
+	text-align: center;
+	background-color: var(--greiTipo0_3);
+}
+
+.keySvg:hover {
+	background-color: var(--greiTipo0_5);
+	border: 1px solid var(--greiTipo0_6);
+}
+.keySvg:active {
+	background-color: var(--greiTipo0_1);
+	border: 1px solid var(--greiTipo0_2);
+}

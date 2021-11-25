@@ -1,0 +1,24 @@
+@import 'vars';
+.key {
+	// background-color: var(--greiTipo1_1);
+	background-color: var(--greiTipo0_1);
+	margin: 2px;
+	border-radius: 5px;
+	cursor: pointer;
+	border: 1px solid var(--greiTipo0_2);
+	font-size: var(--lg);
+	width: 30px;
+	height: 30px;
+	//border: none;
+}
+.key:hover {
+	background-color: var(--greiTipo0_3);
+	border: 1px solid var(--greiTipo0_4);
+}
+.key:active {
+	background-color: var(--greiTipo0_5);
+	border: 1px solid var(--greiTipo0_6);
+}
+.espacio {
+	width: 122px;
+}

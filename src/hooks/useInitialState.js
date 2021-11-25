@@ -17,8 +17,8 @@ const initialState = {
 		'ZXCVBNM,'.split(''),
 	],
 	active: '',
-	color: 'black',
-	colorFondo: 'green',
+	color: 'red',
+	colorFondo: 'yellow',
 	grosor: 1,
 };
 const useInitialState = () => {

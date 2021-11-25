@@ -13,6 +13,7 @@ import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
 import {
 	utilsCuadrado_graficaCuadrado,
 	utilsCuadrado_graficaCuadradoHistoria,
+	u_cuadradoValidaPosicion,
 } from '../utils/UtilsCuadrado';
 import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
 import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
@@ -22,8 +23,7 @@ import { u_textGraficaH } from '../utils/UtilsText';
 const PaintCuadrado = (id_canvas) => {
 	// useContext:
 	const { stateCanvas } = useContext(AppContextCanvas);
-	const { stateCuadrado, add_cuadrado_en_historia } =
-		useContext(AppContextCuadrado);
+	const { stateCuadrado, s_cuadradoAddH } = useContext(AppContextCuadrado);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
@@ -32,7 +32,7 @@ const PaintCuadrado = (id_canvas) => {
 	// LOGICA:
 	let canvas = '';
 	let context = '';
-	const cuadrado = {
+	let cuadrado = {
 		id: stateCuadrado.id,
 		visible: true,
 		bordeEstado: stateCuadrado.bordeEstado,
@@ -97,10 +97,12 @@ const PaintCuadrado = (id_canvas) => {
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		u_textGraficaH(context, stateText.historiaText);
 	};
+	// 1
 	const mouseDownCuadrado = (e) => {
 		mouse.click = true;
 		captura_Pos_Posprev(e);
 	};
+	// 2
 	const mouseMoveCuadrado = (e) => {
 		if (mouse.click) {
 			if (!mouse.move) {
@@ -112,23 +114,11 @@ const PaintCuadrado = (id_canvas) => {
 			utilsCuadrado_graficaCuadrado(context, cuadrado);
 		}
 	};
-	const mouseUpCuadrado = (e) => {
-		//captura_Pos_Posprev(e);
+	// 3
+	const mouseUpCuadrado = () => {
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-			cuadrado.id = stateCuadrado.historiaCuadrado.length;
-			if (cuadrado.x_ini > cuadrado.x_fin) {
-				let aux = cuadrado.x_ini;
-				cuadrado.x_ini = cuadrado.x_fin;
-				cuadrado.x_fin = aux;
-			}
-			if (cuadrado.y_ini > cuadrado.y_fin) {
-				let aux = cuadrado.y_ini;
-				cuadrado.y_ini = cuadrado.y_fin;
-				cuadrado.y_fin = aux;
-			}
-			paint();
-			add_cuadrado_en_historia(cuadrado);
-			utilsCuadrado_graficaCuadrado(context, cuadrado);
+			cuadrado = u_cuadradoValidaPosicion(cuadrado);
+			s_cuadradoAddH(cuadrado);
 		}
 		mouseReinicia();
 	};
@@ -144,10 +134,8 @@ const PaintCuadrado = (id_canvas) => {
 	useEffect(() => {
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
-
 		if (stateCuadrado.active) {
 			update_canvasCuadradoDatos();
-
 			canvas.addEventListener('mousedown', mouseDownCuadrado);
 			canvas.addEventListener('mousemove', mouseMoveCuadrado);
 			canvas.addEventListener('mouseup', mouseUpCuadrado);
@@ -159,10 +147,9 @@ const PaintCuadrado = (id_canvas) => {
 		};
 	}, [stateCuadrado]);
 	useEffect(() => {
-		// console.log(stateCuadrado);
-	}, [add_cuadrado_en_historia]);
-
-	// return console.log('soy el paintCuadrado');
+		console.log('se agrego un nuevo elemento...');
+		paint();
+	}, [stateCuadrado.historiaCuadrado]);
 };
 
 export default PaintCuadrado;

@@ -73,7 +73,20 @@ const u_cuadradoDeleteById = (array, cuadradoId) => {
 	});
 	return arrayNew;
 };
-
+// CUADRADO: REPOSICIONA SI EL CUADRADO SE VOLTEA
+const u_cuadradoValidaPosicion = (cuadrado) => {
+	if (cuadrado.x_ini > cuadrado.x_fin) {
+		let aux = cuadrado.x_ini;
+		cuadrado.x_ini = cuadrado.x_fin;
+		cuadrado.x_fin = aux;
+	}
+	if (cuadrado.y_ini > cuadrado.y_fin) {
+		let aux = cuadrado.y_ini;
+		cuadrado.y_ini = cuadrado.y_fin;
+		cuadrado.y_fin = aux;
+	}
+	return cuadrado;
+};
 export {
 	utilsCuadrado_graficaCuadrado,
 	utilsCuadrado_graficaCuadradoHistoria,
@@ -83,4 +96,5 @@ export {
 	u_cuadradoGet,
 	u_cuadradoDeleteById,
 	u_cuadradoGraficaH,
+	u_cuadradoValidaPosicion,
 };

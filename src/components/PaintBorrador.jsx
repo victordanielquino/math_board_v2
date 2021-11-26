@@ -50,10 +50,10 @@ const PaintBorrador = (id_canvas) => {
 	// LOGICA:
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-		u_lapizGraficaH(context, stateLapiz.historiaLapiz);
-		u_lineaGraficaH(context, stateLinea.historiaLinea);
 		u_planoGraficaH(context, statePlano.historiaPlano);
+		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz);
 		u_textGraficaH(context, stateText.historiaText);
 	};
 	let canvas = '';
@@ -129,28 +129,28 @@ const PaintBorrador = (id_canvas) => {
 	const mouseDownBorrador = (e) => {
 		console.log('click borrador');
 		capturaPosPosprev(e);
-		// LAPIZ:
-		let res = lapizDelete();
+		// TEXTO
+		let res = textDelete();
 		if (res) {
 			paint();
 		} else {
-			// LINEA:
-			res = lineaDelete();
+			// LAPIZ:
+			res = lapizDelete();
 			if (res) {
 				paint();
 			} else {
-				// CUADRADO
-				res = cuadradoDelete();
+				// LINEA:
+				res = lineaDelete();
 				if (res) {
 					paint();
 				} else {
-					// plano
-					res = planoDelete();
+					// CUADRADO
+					res = cuadradoDelete();
 					if (res) {
 						paint();
 					} else {
-						// TEXTO
-						res = textDelete();
+						// plano
+						res = planoDelete();
 						if (res) {
 							paint();
 						}

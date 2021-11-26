@@ -45,6 +45,61 @@ const u_lapizDeleteById = (array, lapiz_id) => {
 const u_lapizGraficaH = (context, array) => {
 	array.forEach((element) => utilsLapiz_graficaLapiz(context, element));
 };
+// LAPIZ: GRAFICA LINEA
+const u_lapizGraficaLinea = (context, linea, lapiz) => {
+	context.strokeStyle = linea.color;
+	context.lineWidth = linea.grosor;
+	context.setLineDash([0, 0]);
+	context.beginPath();
+	context.moveTo(linea.x_ini, linea.y_ini);
+	context.lineTo(linea.x_fin, linea.y_fin);
+	context.stroke();
+	context.closePath();
+	// busca cotas minimas X:
+	linea.x_ini < lapiz.x_min ? (lapiz.x_min = linea.x_ini) : '';
+	linea.x_fin < lapiz.x_min ? (lapiz.x_min = linea.x_fin) : '';
+	// busca cotas maximas X:
+	linea.x_ini > lapiz.x_may ? (lapiz.x_may = linea.x_ini) : '';
+	linea.x_fin > lapiz.x_may ? (lapiz.x_may = linea.x_fin) : '';
+	// busca cotas minimas Y:
+	linea.y_ini < lapiz.y_min ? (lapiz.y_min = linea.y_ini) : '';
+	linea.y_fin < lapiz.y_min ? (lapiz.y_min = linea.y_fin) : '';
+	// busca cotas maximas Y:
+	linea.y_ini > lapiz.y_may ? (lapiz.y_may = linea.y_ini) : '';
+	linea.y_fin > lapiz.y_may ? (lapiz.y_may = linea.y_fin) : '';
+	return linea;
+};
+// LAPIZ: SEGMENTADO:
+const u_lapizSegmentado = (context, lapiz) => {
+	context.strokeStyle = 'red'; // borde Color
+	context.lineWidth = 1; // borde grosor de linea
+	context.setLineDash([10, 4]); // lineas segmentadas
+
+	context.beginPath();
+	context.moveTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
+	context.lineTo(lapiz.x_may + 20, lapiz.y_min - 20); // (x_fin, y_ini)
+	context.lineTo(lapiz.x_may + 20, lapiz.y_may + 20); // (x_fin, y_fin)
+	context.lineTo(lapiz.x_min - 20, lapiz.y_may + 20); // (x_ini, y_fin)
+	context.lineTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
+	context.stroke();
+	context.closePath();
+};
+// MUEVE LAPIZ SELECT:
+const u_lapizMover = (lapiz, mouse) => {
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	lapiz.historiaLinea.forEach((linea) => {
+		linea[0] = linea[0] + recorrido_x;
+		linea[1] = linea[1] + recorrido_y;
+		linea[2] = linea[2] + recorrido_x;
+		linea[3] = linea[3] + recorrido_y;
+	});
+	lapiz.x_min = lapiz.x_min + recorrido_x;
+	lapiz.x_may = lapiz.x_may + recorrido_x;
+	lapiz.y_min = lapiz.y_min + recorrido_y;
+	lapiz.y_may = lapiz.y_may + recorrido_y;
+	return lapiz;
+};
 
 export {
 	utilsLapiz_graficaLapiz,
@@ -52,4 +107,7 @@ export {
 	u_lapizGet,
 	u_lapizDeleteById,
 	u_lapizGraficaH,
+	u_lapizGraficaLinea,
+	u_lapizSegmentado,
+	u_lapizMover,
 };

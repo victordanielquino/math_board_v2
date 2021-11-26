@@ -3,9 +3,12 @@ import React, { useEffect, useContext } from 'react';
 // useContext:
 import AppContextLapiz from '../context/AppContextLapiz';
 
+// UTILS:
+import { u_lapizGraficaLinea } from '../utils/UtilsLapiz';
+
 const PaintLapiz = (id_canvas) => {
 	// useContext:
-	const { stateLapiz, add_historiaLapizId } = useContext(AppContextLapiz);
+	const { stateLapiz, s_lapizAddHId } = useContext(AppContextLapiz);
 
 	// LOGICA:
 	let canvas = '';
@@ -21,7 +24,7 @@ const PaintLapiz = (id_canvas) => {
 		y_min: 2000,
 		y_may: 0,
 	};
-	const lapizLinea = {
+	let linea = {
 		grosor: stateLapiz.grosor,
 		color: stateLapiz.color,
 		x_ini: 0,
@@ -35,84 +38,54 @@ const PaintLapiz = (id_canvas) => {
 		pos: { x: 0, y: 0 },
 		pos_prev: { x: 0, y: 0 },
 	};
-	const canvasLapizDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
+
 	const captura_Pos_Posprev = (e) => {
 		const x = e.clientX;
 		const y = e.clientY;
-
 		const x_real = x - canvasLapizDatos.left;
 		const y_real = y - canvasLapizDatos.top;
-
 		mouse.pos_prev.x = mouse.pos.x;
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
-
-		lapizLinea.x_ini = mouse.pos_prev.x;
-		lapizLinea.y_ini = mouse.pos_prev.y;
-		lapizLinea.x_fin = mouse.pos.x;
-		lapizLinea.y_fin = mouse.pos.y;
+		linea.x_ini = mouse.pos_prev.x;
+		linea.y_ini = mouse.pos_prev.y;
+		linea.x_fin = mouse.pos.x;
+		linea.y_fin = mouse.pos.y;
 	};
-
-	const graficaLinea = (linea) => {
-		context.strokeStyle = linea.color;
-		context.lineWidth = linea.grosor;
-		context.setLineDash([0, 0]);
-		context.beginPath();
-		context.moveTo(linea.x_ini, linea.y_ini);
-		context.lineTo(linea.x_fin, linea.y_fin);
-		context.stroke();
-		context.closePath();
-		// busca cotas minimas X:
-		linea.x_ini < lapizNew.x_min ? (lapizNew.x_min = linea.x_ini) : '';
-		linea.x_fin < lapizNew.x_min ? (lapizNew.x_min = linea.x_fin) : '';
-		// busca cotas maximas X:
-		linea.x_ini > lapizNew.x_may ? (lapizNew.x_may = linea.x_ini) : '';
-		linea.x_fin > lapizNew.x_may ? (lapizNew.x_may = linea.x_fin) : '';
-		// busca cotas minimas Y:
-		linea.y_ini < lapizNew.y_min ? (lapizNew.y_min = linea.y_ini) : '';
-		linea.y_fin < lapizNew.y_min ? (lapizNew.y_min = linea.y_fin) : '';
-		// busca cotas maximas Y:
-		linea.y_ini > lapizNew.y_may ? (lapizNew.y_may = linea.y_ini) : '';
-		linea.y_fin > lapizNew.y_may ? (lapizNew.y_may = linea.y_fin) : '';
-	};
+	// 1
 	const mouseDownLapiz = (e) => {
 		stateLapiz.grosor > 0
 			? (mouse.click = true)
 			: console.log('el grosor es 0.');
 		captura_Pos_Posprev(e);
 	};
+	// 2
 	const mouseMoveLapiz = (e) => {
 		if (mouse.click) {
 			captura_Pos_Posprev(e);
-			graficaLinea(lapizLinea);
+			//graficaLinea(linea);
+			linea = u_lapizGraficaLinea(context, linea, lapizNew);
 			lapizNew.historiaLinea.push([
-				lapizLinea.x_ini,
-				lapizLinea.y_ini,
-				lapizLinea.x_fin,
-				lapizLinea.y_fin,
+				linea.x_ini,
+				linea.y_ini,
+				linea.x_fin,
+				linea.y_fin,
 			]);
 		}
 	};
+	// 3
 	const mouseUpLapiz = (e) => {
-		if (mouse.click) {
-			captura_Pos_Posprev(e);
-			graficaLinea(lapizLinea);
-			lapizNew.historiaLinea.push([
-				lapizLinea.x_ini,
-				lapizLinea.y_ini,
-				lapizLinea.x_fin,
-				lapizLinea.y_fin,
-			]);
-			//lapizNew.id = stateLapiz.id;
-			add_historiaLapizId(lapizNew, stateLapiz.id + 1);
+		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
+			s_lapizAddHId(lapizNew, stateLapiz.id + 1);
 		}
 		mouse.click = false;
+	};
+	const canvasLapizDatos = {
+		top: 0,
+		left: 0,
+		width: 0,
+		height: 0,
 	};
 	const update_canvasLapizDatos = () => {
 		canvasLapizDatos.top = canvas.getBoundingClientRect().top;
@@ -140,7 +113,6 @@ const PaintLapiz = (id_canvas) => {
 			canvas.removeEventListener('mouseup', mouseUpLapiz);
 		};
 	}, [stateLapiz]);
-
 	// return console.log('hola soy lapiz');
 };
 

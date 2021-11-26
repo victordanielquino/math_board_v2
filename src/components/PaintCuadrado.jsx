@@ -11,13 +11,13 @@ import AppContextText from '../context/AppContextText';
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
 import {
-	utilsCuadrado_graficaCuadrado,
-	utilsCuadrado_graficaCuadradoHistoria,
+	u_cuadradoGrafica,
+	u_cuadradoGraficaH,
 	u_cuadradoValidaPosicion,
 } from '../utils/UtilsCuadrado';
-import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
-import { uPlano_graficaCuadradoHistoriaConEjes } from '../utils/UtilsPlano';
+import { u_lineaGraficaH } from '../utils/UtilsLinea';
+import { u_lapizGraficaH } from '../utils/UtilsLapiz';
+import { u_planoGraficaH } from '../utils/UtilsPlano';
 import { u_textGraficaH } from '../utils/UtilsText';
 
 const PaintCuadrado = (id_canvas) => {
@@ -30,6 +30,14 @@ const PaintCuadrado = (id_canvas) => {
 	const { stateText } = useContext(AppContextText);
 
 	// LOGICA:
+	const paint = () => {
+		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+		u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
+		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_textGraficaH(context, stateText.historiaText);
+	};
 	let canvas = '';
 	let context = '';
 	let cuadrado = {
@@ -48,14 +56,12 @@ const PaintCuadrado = (id_canvas) => {
 	const mouse = {
 		click: false,
 		move: false,
-		primerClick: false,
 		pos: { x: 0, y: 0 },
 		pos_prev: { x: 0, y: 0 },
 	};
 	const mouseReinicia = () => {
 		mouse.click = false;
 		mouse.move = false;
-		mouse.primerClick = false;
 		mouse.pos.x = 0;
 		mouse.pos_prev.x = 0;
 		mouse.pos.y = 0;
@@ -77,41 +83,23 @@ const PaintCuadrado = (id_canvas) => {
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
-
-		if (mouse.primerClick) {
-			cuadrado.x_ini = mouse.pos_prev.x;
-			cuadrado.y_ini = mouse.pos_prev.y;
-			mouse.primerClick = false;
-		}
-		cuadrado.x_fin = mouse.pos.x;
-		cuadrado.y_fin = mouse.pos.y;
-	};
-	const paint = () => {
-		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		uPlano_graficaCuadradoHistoriaConEjes(context, statePlano.historiaPlano); // plano cartesiano
-		utilsCuadrado_graficaCuadradoHistoria(
-			context,
-			stateCuadrado.historiaCuadrado
-		);
-		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-		u_textGraficaH(context, stateText.historiaText);
 	};
 	// 1
 	const mouseDownCuadrado = (e) => {
 		mouse.click = true;
 		captura_Pos_Posprev(e);
+		cuadrado.x_ini = mouse.pos.x;
+		cuadrado.y_ini = mouse.pos.y;
 	};
 	// 2
 	const mouseMoveCuadrado = (e) => {
 		if (mouse.click) {
-			if (!mouse.move) {
-				mouse.primerClick = true;
-				mouse.move = true;
-			}
+			mouse.move = true;
 			captura_Pos_Posprev(e);
+			cuadrado.x_fin = mouse.pos.x;
+			cuadrado.y_fin = mouse.pos.y;
 			paint();
-			utilsCuadrado_graficaCuadrado(context, cuadrado);
+			u_cuadradoGrafica(context, cuadrado);
 		}
 	};
 	// 3
@@ -147,7 +135,7 @@ const PaintCuadrado = (id_canvas) => {
 		};
 	}, [stateCuadrado]);
 	useEffect(() => {
-		console.log('se agrego un nuevo elemento...');
+		console.log('se agrego un cuadrado...');
 		paint();
 	}, [stateCuadrado.historiaCuadrado]);
 };

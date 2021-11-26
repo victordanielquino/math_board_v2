@@ -10,16 +10,10 @@ import AppContextText from '../context/AppContextText';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
-import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
-
-import {
-	uPlano_graficaCuadrado,
-	uPlano_graficaCuadradoConEjes,
-	uPlano_graficaCuadradoHistoria,
-	u_planoGraficaH,
-} from '../utils/UtilsPlano';
+import { u_cuadradoGraficaH } from '../utils/UtilsCuadrado';
+import { u_lineaGraficaH } from '../utils/UtilsLinea';
+import { u_lapizGraficaH } from '../utils/UtilsLapiz';
+import { u_planoGraficaH } from '../utils/UtilsPlano';
 import { u_textGraficaH } from '../utils/UtilsText';
 
 const PaintPlano = (id_canvas) => {
@@ -28,36 +22,20 @@ const PaintPlano = (id_canvas) => {
 	const { stateCuadrado } = useContext(AppContextCuadrado);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
-	const { statePlano, add_plano_en_historiaId } = useContext(AppContextPlano);
+	const { statePlano, s_planoAddHId } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
 
 	// LOGICA:
-	let canvas = '';
-	let context = '';
-	const canvasPlanoDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
-	const update_canvasPlanoDatos = () => {
-		canvasPlanoDatos.top = canvas.getBoundingClientRect().top;
-		canvasPlanoDatos.left = canvas.getBoundingClientRect().left;
-		canvasPlanoDatos.width = canvas.getBoundingClientRect().width;
-		canvasPlanoDatos.height = canvas.getBoundingClientRect().height;
-	};
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		// uPlano_graficaCuadradoHistoria(context, statePlano.historiaPlano);
 		u_planoGraficaH(context, statePlano.historiaPlano);
-		utilsCuadrado_graficaCuadradoHistoria(
-			context,
-			stateCuadrado.historiaCuadrado
-		);
-		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		u_textGraficaH(context, stateText.historiaText);
 	};
+	let canvas = '';
+	let context = '';
 	let mouse = {
 		click: false,
 		move: false,
@@ -101,53 +79,37 @@ const PaintPlano = (id_canvas) => {
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
-
-		if (mouse.primerClick) {
-			plano.x_ini = mouse.pos_prev.x;
-			plano.y_ini = mouse.pos_prev.y;
-			mouse.primerClick = false;
-		}
-		plano.x_fin = mouse.pos.x;
-		plano.y_fin = mouse.pos.y;
 	};
 	// 1:
 	const mouseDownPlano = (e) => {
 		mouse.click = true;
 		captura_Pos_Posprev(e);
-		console.log('click');
 	};
 	// 2:
-	const mouseMovePlano = (e) => {
-		// if (mouse.click) {
-		// 	if (!mouse.move) {
-		// 		mouse.primerClick = true;
-		// 		mouse.move = true;
-		// 	}
-		// 	captura_Pos_Posprev(e);
-		// 	paint();
-		// 	uPlano_graficaCuadrado(context, plano);
-		// }
-	};
+	const mouseMovePlano = (e) => {};
 	// 3:
 	let mouseUpPlano = (e) => {
 		captura_Pos_Posprev(e);
-		console.log('solto click');
-		console.log(mouse);
-		if (mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-			console.log('solto click');
-			console.log(mouse);
+		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			plano.x_ini = mouse.pos.x - 150;
 			plano.y_ini = mouse.pos.y - 150;
 			plano.x_fin = mouse.pos.x + 150;
 			plano.y_fin = mouse.pos.y + 150;
-			paint();
-			//uPlano_graficaCuadrado(context, plano);
-			//paint();
-			//paint();
-			uPlano_graficaCuadradoConEjes(context, plano);
-			add_plano_en_historiaId(plano, statePlano.id + 1);
+			s_planoAddHId(plano, statePlano.id + 1);
 		}
 		mouseReinicia();
+	};
+	const canvasPlanoDatos = {
+		top: 0,
+		left: 0,
+		width: 0,
+		height: 0,
+	};
+	const update_canvasPlanoDatos = () => {
+		canvasPlanoDatos.top = canvas.getBoundingClientRect().top;
+		canvasPlanoDatos.left = canvas.getBoundingClientRect().left;
+		canvasPlanoDatos.width = canvas.getBoundingClientRect().width;
+		canvasPlanoDatos.height = canvas.getBoundingClientRect().height;
 	};
 	// LOGICA END.
 
@@ -168,8 +130,8 @@ const PaintPlano = (id_canvas) => {
 		};
 	}, [statePlano]);
 	useEffect(() => {
-		//console.log('hola');
-	}, []);
+		paint();
+	}, [statePlano.historiaPlano]);
 };
 
 export default PaintPlano;

@@ -43,6 +43,13 @@ const useLapiz = () => {
 			historiaLapiz: [...stateLapiz.historiaLapiz, lapiz],
 		});
 	};
+	const s_lapizAddHId = (lapiz, id) => {
+		setStateLapiz({
+			...stateLapiz,
+			id: id,
+			historiaLapiz: [...stateLapiz.historiaLapiz, lapiz],
+		});
+	};
 	const updateLapizColorGrosor = (valor1, valor2) => {
 		setStateLapiz({
 			...stateLapiz,
@@ -56,9 +63,10 @@ const useLapiz = () => {
 		updateLapizActive,
 		updateLapizColor,
 		updateLapizGrosor,
-		add_historiaLapiz,
+		//add_historiaLapiz,
 		updateLapizColorGrosor,
-		add_historiaLapizId,
+		//add_historiaLapizId,
+		s_lapizAddHId,
 	};
 };
 

@@ -19,7 +19,7 @@ const initialState = {
 	active: '',
 	color: 'red',
 	colorFondo: 'yellow',
-	grosor: 1,
+	grosor: 2,
 };
 const useInitialState = () => {
 	const [state, setState] = useState(initialState);

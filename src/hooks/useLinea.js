@@ -43,6 +43,13 @@ const useLinea = () => {
 			historiaLinea: [...stateLinea.historiaLinea, valor],
 		});
 	};
+	const s_lineaAddHId = (valor, id) => {
+		setStateLinea({
+			...stateLinea,
+			id: id,
+			historiaLinea: [...stateLinea.historiaLinea, valor],
+		});
+	};
 	const updateLineaColorGrosor = (valor1, valor2) => {
 		setStateLinea({
 			...stateLinea,
@@ -63,9 +70,10 @@ const useLinea = () => {
 		updateLineaColor,
 		updateLineaGrosor,
 		add_historiaLinea,
-		add_historiaLinea_id,
+		//add_historiaLinea_id,
 		updateLineaColorGrosor,
 		s_lineaUpdateH,
+		s_lineaAddHId,
 	};
 };
 

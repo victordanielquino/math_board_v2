@@ -12,7 +12,7 @@ import AppContextText from '../context/AppContextText';
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
 import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
 import {
-	utilsLinea_graficaLinea,
+	u_lineaGrafica,
 	utilsLinea_graficaLineaHistoria,
 } from '../utils/UtilsLinea';
 import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
@@ -23,7 +23,7 @@ const PaintLinea = (id_canvas) => {
 	// useContext:
 	const { stateCanvas } = useContext(AppContextCanvas);
 	const { stateCuadrado } = useContext(AppContextCuadrado);
-	const { stateLinea, add_historiaLinea_id } = useContext(AppContextLinea);
+	const { stateLinea, s_lineaAddHId } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
@@ -42,31 +42,15 @@ const PaintLinea = (id_canvas) => {
 	};
 	let canvas = '';
 	let context = '';
-
-	const canvasLineaDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
-	const update_canvasLineaDatos = () => {
-		canvasLineaDatos.top = canvas.getBoundingClientRect().top;
-		canvasLineaDatos.left = canvas.getBoundingClientRect().left;
-		canvasLineaDatos.width = canvas.getBoundingClientRect().width;
-		canvasLineaDatos.height = canvas.getBoundingClientRect().height;
-	};
-
 	const mouse = {
 		click: false,
 		move: false,
-		primerClick: false,
 		pos: { x: 0, y: 0 },
 		pos_prev: { x: 0, y: 0 },
 	};
 	const mouseReinicia = () => {
 		mouse.click = false;
 		mouse.move = false;
-		mouse.primerClick = false;
 		mouse.pos.x = 0;
 		mouse.pos_prev.x = 0;
 		mouse.pos.y = 0;
@@ -91,38 +75,43 @@ const PaintLinea = (id_canvas) => {
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
-
-		if (mouse.primerClick) {
-			Linea.x_ini = mouse.pos_prev.x;
-			Linea.y_ini = mouse.pos_prev.y;
-			mouse.primerClick = false;
-		}
-		Linea.x_fin = mouse.pos.x;
-		Linea.y_fin = mouse.pos.y;
 	};
+	// 1
 	const mouseDownLinea = (e) => {
 		mouse.click = true;
 		captura_Pos_Posprev(e);
+		Linea.x_ini = mouse.pos.x;
+		Linea.y_ini = mouse.pos.y;
 	};
+	// 2
 	const mouseMoveLinea = (e) => {
 		if (mouse.click) {
-			if (!mouse.move) {
-				mouse.primerClick = true;
-				mouse.move = true;
-			}
+			mouse.move = true;
 			captura_Pos_Posprev(e);
+			Linea.x_fin = mouse.pos.x;
+			Linea.y_fin = mouse.pos.y;
 			paint();
-			utilsLinea_graficaLinea(context, Linea); // utilsPaint_graficaLinea
+			u_lineaGrafica(context, Linea); // utilsPaint_graficaLinea
 		}
 	};
+	// 3
 	const mouseUpLinea = () => {
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-			Linea.id = stateLinea.id;
-			paint();
-			add_historiaLinea_id(Linea, stateLinea.id + 1);
-			utilsLinea_graficaLinea(context, Linea);
+			s_lineaAddHId(Linea, stateLinea.id + 1);
 		}
 		mouseReinicia();
+	};
+	const canvasLineaDatos = {
+		top: 0,
+		left: 0,
+		width: 0,
+		height: 0,
+	};
+	const update_canvasLineaDatos = () => {
+		canvasLineaDatos.top = canvas.getBoundingClientRect().top;
+		canvasLineaDatos.left = canvas.getBoundingClientRect().left;
+		canvasLineaDatos.width = canvas.getBoundingClientRect().width;
+		canvasLineaDatos.height = canvas.getBoundingClientRect().height;
 	};
 	// LOGICA END.
 
@@ -142,6 +131,10 @@ const PaintLinea = (id_canvas) => {
 			canvas.removeEventListener('mouseup', mouseUpLinea);
 		};
 	}, [stateLinea]);
+	useEffect(() => {
+		console.log('se agrego una linea...');
+		paint();
+	}, [stateLinea.historiaLinea]);
 };
 
 export default PaintLinea;

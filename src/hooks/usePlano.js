@@ -25,7 +25,7 @@ const usePlano = () => {
 			historiaPlano: [...statePlano.historiaPlano, valor],
 		});
 	};
-	const add_plano_en_historiaId = (valor, id) => {
+	const s_planoAddHId = (valor, id) => {
 		setStatePlano({
 			...statePlano,
 			id: id,
@@ -36,7 +36,7 @@ const usePlano = () => {
 		statePlano,
 		updatePlanoActive,
 		add_plano_en_historia,
-		add_plano_en_historiaId,
+		s_planoAddHId,
 	};
 };
 

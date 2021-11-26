@@ -11,21 +11,35 @@ import AppContextText from '../context/AppContextText';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
-import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
-import { uPlano_graficaCuadradoHistoriaConEjes } from '../utils/UtilsPlano';
+import { u_planoGraficaH } from '../utils/UtilsPlano';
 import {
-	u_getCuadrado,
-	u_moverCuadrado,
+	u_cuadradoGraficaH,
+	u_cuadradoGet,
+	u_cuadradoMover,
 	u_cuadradoSegmentado,
-	get_pts_redimencion,
-	u_updateZiseCuadrado,
-	u_getLinea, // linea
+	u_cuadradoGetPtsRedimencion,
+	u_cuadradoUpdateZise,
+} from '../utils/UtilsCuadrado';
+import {
+	u_lineaGraficaH,
+	u_lineaGet,
 	u_lineaSegmentado,
-	u_moverLinea,
-	get_pts_redimencion_linea,
-	u_updateZiseLinea,
+	u_lineaMover,
+	u_lineaGetPtsRedimencion,
+	u_lineaUpdateZise,
+} from '../utils/UtilsLinea';
+import { u_lapizGraficaH } from '../utils/UtilsLapiz';
+import {
+	//u_getCuadrado,
+	//u_moverCuadrado,
+	//u_cuadradoSegmentado,
+	//get_pts_redimencion,
+	//u_updateZiseCuadrado,
+	//u_getLinea, // linea
+	//u_lineaSegmentado,
+	//u_moverLinea,
+	//get_pts_redimencion_linea,
+	//u_updateZiseLinea,
 	u_getPlano,
 	u_planoSegmentado,
 	u_moverPlano,
@@ -33,10 +47,10 @@ import {
 	u_updateZisePlano,
 } from '../utils/UtilsMover';
 import {
-	u_getLapiz,
+	u_lapizGet,
 	u_lapizSegmentado,
-	u_moverLapiz,
-} from '../utils/UtilsMoverLapiz';
+	u_lapizMover,
+} from '../utils/UtilsLapiz';
 import { u_textGraficaH, u_getText, u_textMover } from '../utils/UtilsText';
 
 const PaintMover = (id_canvas) => {
@@ -52,13 +66,10 @@ const PaintMover = (id_canvas) => {
 	// LOGICA:
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		uPlano_graficaCuadradoHistoriaConEjes(context, statePlano.historiaPlano); // plano cartesiano
-		utilsCuadrado_graficaCuadradoHistoria(
-			context,
-			stateCuadrado.historiaCuadrado
-		);
-		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
+		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		u_textGraficaH(context, stateText.historiaText);
 	};
 	let canvas = '';
@@ -163,7 +174,7 @@ const PaintMover = (id_canvas) => {
 	};
 	const clickSobreLapiz = () => {
 		lapizSelect || cuadradoSelect || lineaSelect ? paint() : '';
-		lapizSelect = u_getLapiz(
+		lapizSelect = u_lapizGet(
 			stateLapiz.historiaLapiz,
 			mouse.pos.x,
 			mouse.pos.y
@@ -185,7 +196,7 @@ const PaintMover = (id_canvas) => {
 			// LINEA:
 			if (mouse.seleccionar_linea_pts) {
 				// selecciono previamente una linea
-				let arrayPts = get_pts_redimencion_linea(lineaSelect);
+				let arrayPts = u_lineaGetPtsRedimencion(lineaSelect);
 				mouse.linea_pto = busca_linea_ptoClick(
 					mouse.pos.x,
 					mouse.pos.y,
@@ -203,7 +214,7 @@ const PaintMover = (id_canvas) => {
 			}
 			if (!mouse.linea_punto_mover) {
 				// no tiene seleccionado una linea previamente
-				lineaSelect = u_getLinea(
+				lineaSelect = u_lineaGet(
 					stateLinea.historiaLinea,
 					mouse.pos.x,
 					mouse.pos.y
@@ -227,7 +238,7 @@ const PaintMover = (id_canvas) => {
 				// CUADRADO:
 				if (mouse.seleccionar_cuadrado_pts) {
 					// ya tiene seleccionado un cuadrado previamente
-					let arrayPts = get_pts_redimencion(cuadradoSelect);
+					let arrayPts = u_cuadradoGetPtsRedimencion(cuadradoSelect);
 					mouse.cuadrado_pto = busca_cuadrado_ptoClick(
 						mouse.pos.x,
 						mouse.pos.y,
@@ -244,7 +255,7 @@ const PaintMover = (id_canvas) => {
 				}
 				if (!mouse.cuadrado_punto_mover) {
 					// no tiene seleccionando un cuadrado aun
-					cuadradoSelect = u_getCuadrado(
+					cuadradoSelect = u_cuadradoGet(
 						stateCuadrado.historiaCuadrado,
 						mouse.pos.x,
 						mouse.pos.y
@@ -331,35 +342,35 @@ const PaintMover = (id_canvas) => {
 			if (mouse.mover_cuadrado) {
 				// CUADRADO:
 				captura_Pos_Posprev(e);
-				cuadradoSelect = u_moverCuadrado(cuadradoSelect, mouse);
+				cuadradoSelect = u_cuadradoMover(cuadradoSelect, mouse);
 				paint();
 				u_cuadradoSegmentado(context, cuadradoSelect);
 			} else {
 				// CUADRADO PTOS:
 				if (mouse.cuadrado_punto_mover) {
 					captura_Pos_Posprev(e);
-					cuadradoSelect = u_updateZiseCuadrado(cuadradoSelect, mouse);
+					cuadradoSelect = u_cuadradoUpdateZise(cuadradoSelect, mouse);
 					paint();
 					u_cuadradoSegmentado(context, cuadradoSelect);
 				} else {
 					// LINEA:
 					if (mouse.mover_linea) {
 						captura_Pos_Posprev(e);
-						lineaSelect = u_moverLinea(lineaSelect, mouse);
+						lineaSelect = u_lineaMover(lineaSelect, mouse);
 						paint();
 						u_lineaSegmentado(context, lineaSelect);
 					} else {
 						// LINEA PTOS:
 						if (mouse.linea_punto_mover) {
 							captura_Pos_Posprev(e);
-							lineaSelect = u_updateZiseLinea(lineaSelect, mouse);
+							lineaSelect = u_lineaUpdateZise(lineaSelect, mouse);
 							paint();
 							u_lineaSegmentado(context, lineaSelect);
 						} else {
 							// LAPIZ:
 							if (mouse.mover_lapiz) {
 								captura_Pos_Posprev(e);
-								lapizSelect = u_moverLapiz(lapizSelect, mouse);
+								lapizSelect = u_lapizMover(lapizSelect, mouse);
 								paint();
 								u_lapizSegmentado(context, lapizSelect);
 							} else {

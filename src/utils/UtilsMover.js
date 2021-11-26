@@ -350,20 +350,19 @@ const u_updateZisePlano = (plano, mouse) => {
 	}
 	return plano;
 };
-export {
-	//u_getCuadrado,
-	//u_moverCuadrado,
-	//u_cuadradoSegmentado,
-	//get_pts_redimencion,
-	//u_updateZiseCuadrado,
-	//u_getLinea,
-	//u_lineaSegmentado,
-	//u_moverLinea,
-	//get_pts_redimencion_linea,
-	//u_updateZiseLinea,
-	u_getPlano,
-	u_planoSegmentado,
-	u_moverPlano,
-	get_pts_redimencion_plano,
-	u_updateZisePlano,
-};
+export //u_getCuadrado,
+//u_moverCuadrado,
+//u_cuadradoSegmentado,
+//get_pts_redimencion,
+//u_updateZiseCuadrado,
+//u_getLinea,
+//u_lineaSegmentado,
+//u_moverLinea,
+//get_pts_redimencion_linea,
+//u_updateZiseLinea,
+//u_getPlano,
+//u_planoSegmentado,
+//u_moverPlano,
+//get_pts_redimencion_plano,
+//u_updateZisePlano,
+ {};

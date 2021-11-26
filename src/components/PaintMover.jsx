@@ -11,7 +11,14 @@ import AppContextText from '../context/AppContextText';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { u_planoGraficaH } from '../utils/UtilsPlano';
+import {
+	u_planoGraficaH,
+	u_planoGet,
+	u_planoSegmentado,
+	u_planoMover,
+	u_planoGetPtsRedimencion,
+	u_planoUpdateZise,
+} from '../utils/UtilsPlano';
 import {
 	u_cuadradoGraficaH,
 	u_cuadradoGet,
@@ -29,23 +36,7 @@ import {
 	u_lineaUpdateZise,
 } from '../utils/UtilsLinea';
 import { u_lapizGraficaH } from '../utils/UtilsLapiz';
-import {
-	//u_getCuadrado,
-	//u_moverCuadrado,
-	//u_cuadradoSegmentado,
-	//get_pts_redimencion,
-	//u_updateZiseCuadrado,
-	//u_getLinea, // linea
-	//u_lineaSegmentado,
-	//u_moverLinea,
-	//get_pts_redimencion_linea,
-	//u_updateZiseLinea,
-	u_getPlano,
-	u_planoSegmentado,
-	u_moverPlano,
-	get_pts_redimencion_plano,
-	u_updateZisePlano,
-} from '../utils/UtilsMover';
+import {} from '../utils/UtilsMover';
 import {
 	u_lapizGet,
 	u_lapizSegmentado,
@@ -280,7 +271,7 @@ const PaintMover = (id_canvas) => {
 					if (mouse.plano_seleccionar_pts) {
 						console.log('selection plano preview');
 						// ya tiene seleccionado un plano previamente
-						let arrayPts = get_pts_redimencion_plano(planoSelect);
+						let arrayPts = u_planoGetPtsRedimencion(planoSelect);
 						mouse.plano_pto = busca_cuadrado_ptoClick(
 							mouse.pos.x,
 							mouse.pos.y,
@@ -298,7 +289,7 @@ const PaintMover = (id_canvas) => {
 					}
 					if (!mouse.plano_seleccionar_pts) {
 						// no tiene seleccionado un plano aun
-						planoSelect = u_getPlano(
+						planoSelect = u_planoGet(
 							statePlano.historiaPlano,
 							mouse.pos.x,
 							mouse.pos.y
@@ -377,14 +368,14 @@ const PaintMover = (id_canvas) => {
 								// PLANO:
 								if (mouse.plano_mover) {
 									captura_Pos_Posprev(e);
-									planoSelect = u_moverPlano(planoSelect, mouse);
+									planoSelect = u_planoMover(planoSelect, mouse);
 									paint();
 									u_planoSegmentado(context, planoSelect);
 								} else {
 									// PLANO PTOS:
 									if (mouse.plano_pto_mover) {
 										captura_Pos_Posprev(e);
-										planoSelect = u_updateZisePlano(planoSelect, mouse);
+										planoSelect = u_planoUpdateZise(planoSelect, mouse);
 										paint();
 										u_planoSegmentado(context, planoSelect);
 									} else {

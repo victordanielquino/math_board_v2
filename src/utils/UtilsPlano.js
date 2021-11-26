@@ -232,6 +232,112 @@ const u_planoDeleteById = (array, id) => {
 		element.id == id ? (element.visible = false) : '';
 	});
 };
+// PLANO: CUADRADOS PEQUEÑOS REDIMENCIONAR PLANO
+const u_planoGetPtsRedimencion = (cuadrado) => {
+	let width_p = 10;
+	let width_c = 2;
+
+	let x_ini = cuadrado.x_ini - width_c;
+	let y_ini = cuadrado.y_ini - width_c;
+	let x_fin = cuadrado.x_fin + width_c;
+	let y_fin = cuadrado.y_fin + width_c;
+
+	let vectorPuntosCuadrado = [
+		{
+			x1: x_ini + (x_fin - x_ini) / width_c - width_p,
+			y1: y_ini - width_p,
+			x2: x_ini + (x_fin - x_ini) / width_c + width_p,
+			y2: y_ini + width_p,
+		},
+		{
+			x1: x_fin - width_p,
+			y1: y_ini + (y_fin - y_ini) / width_c - width_p,
+			x2: x_fin + width_p,
+			y2: y_ini + (y_fin - y_ini) / width_c + width_p,
+		},
+		{
+			x1: x_ini + (x_fin - x_ini) / width_c - width_p,
+			y1: y_fin - width_p,
+			x2: x_ini + (x_fin - x_ini) / width_c + width_p,
+			y2: y_fin + width_p,
+		},
+		{
+			x1: x_ini - width_p,
+			y1: y_ini + (y_fin - y_ini) / width_c - width_p,
+			x2: x_ini + width_p,
+			y2: y_ini + (y_fin - y_ini) / width_c + width_p,
+		},
+	];
+	return vectorPuntosCuadrado;
+};
+// PLANO: SEGMENTADO:
+const u_planoSegmentado = (context, cuadrado) => {
+	context.strokeStyle = 'red'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
+	context.setLineDash([14, 4]); // lineas segmentadas
+
+	let x_ini = cuadrado.x_ini - 2;
+	let y_ini = cuadrado.y_ini - 2;
+	let x_fin = cuadrado.x_fin + 2;
+	let y_fin = cuadrado.y_fin + 2;
+
+	context.beginPath();
+	context.moveTo(x_ini, y_ini); // (x_ini, y_ini)
+	context.lineTo(x_fin, y_ini); // (x_fin, y_ini)
+	context.lineTo(x_fin, y_fin); // (x_fin, y_fin)
+	context.lineTo(x_ini, y_fin); // (x_ini, y_fin)
+	context.lineTo(x_ini, y_ini); // (x_ini, y_ini)
+	context.stroke();
+	context.closePath();
+
+	context.fillStyle = 'red'; // borde Color
+	context.setLineDash([14, 4]); // lineas segmentadas
+
+	let array = u_planoGetPtsRedimencion(cuadrado);
+	array.forEach((elem) => {
+		context.beginPath();
+		context.moveTo(elem.x1, elem.y1); // (x_ini, y_ini)
+		context.lineTo(elem.x2, elem.y1); // (x_fin, y_ini)
+		context.lineTo(elem.x2, elem.y2); // (x_fin, y_fin)
+		context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
+		context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
+		context.fill();
+		context.closePath();
+	});
+};
+// PLANO: MOVER
+const u_planoMover = (plano, mouse) => {
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	plano.x_ini = plano.x_ini + recorrido_x;
+	plano.y_ini = plano.y_ini + recorrido_y;
+	plano.x_fin = plano.x_fin + recorrido_x;
+	plano.y_fin = plano.y_fin + recorrido_y;
+	return plano;
+};
+// PLANO: UPDATE ZISE
+const u_planoUpdateZise = (plano, mouse) => {
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	switch (mouse.plano_pto) {
+		case 'top':
+			plano.y_ini = plano.y_ini + recorrido_y;
+			break;
+		case 'right':
+			plano.x_fin = plano.x_fin + recorrido_x;
+			break;
+		case 'button':
+			plano.y_fin = plano.y_fin + recorrido_y;
+			break;
+		case 'lefth':
+			plano.x_ini = plano.x_ini + recorrido_x;
+			break;
+		default:
+			console.log('ocurrio un error');
+			break;
+	}
+	return plano;
+};
 export {
 	uPlano_graficaCuadrado,
 	uPlano_graficaCuadradoConEjes,
@@ -240,4 +346,8 @@ export {
 	u_planoGet,
 	u_planoGraficaH,
 	u_planoDeleteById,
+	u_planoSegmentado,
+	u_planoMover,
+	u_planoGetPtsRedimencion,
+	u_planoUpdateZise,
 };

@@ -39,35 +39,13 @@ const MenuBorrador = () => {
 
 	// EFFECT:
 	useEffect(() => {
-		updatePaletaGrosor(stateBorrador.grosor);
+		//updatePaletaGrosor(stateBorrador.grosor);
 	}, [stateBorrador, updateBorradorGrosor]);
 
 	return (
 		<article className="article__menuBorrador">
 			<div className="article__menuBorrador__tamano">
-				<span htmlFor="">TAMAÑO DEL BORRADOR: </span>
-				<input
-					type="text"
-					className="input"
-					id="grosorBorrador"
-					placeholder="2"
-					defaultValue="4"
-					disabled
-				/>
-				<input
-					className="button"
-					id="button1_txt"
-					type="button"
-					value="+"
-					onClick={() => handleGrosor('+')}
-				/>
-				<input
-					className="button"
-					id="button2_txt"
-					type="button"
-					value="-"
-					onClick={() => handleGrosor('-')}
-				/>
+				<span htmlFor="">BORRADOR</span>
 			</div>
 		</article>
 	);

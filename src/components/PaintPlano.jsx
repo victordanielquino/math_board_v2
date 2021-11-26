@@ -91,10 +91,14 @@ const PaintPlano = (id_canvas) => {
 	let mouseUpPlano = (e) => {
 		captura_Pos_Posprev(e);
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-			plano.x_ini = mouse.pos.x - 150;
-			plano.y_ini = mouse.pos.y - 150;
-			plano.x_fin = mouse.pos.x + 150;
-			plano.y_fin = mouse.pos.y + 150;
+			let xMin = plano.x_min;
+			let yMax = plano.y_max;
+			let width = -xMin * plano.width_cuadricula + plano.width_cuadricula;
+			let height = yMax * plano.width_cuadricula + plano.width_cuadricula;
+			plano.x_ini = mouse.pos.x - width;
+			plano.y_ini = mouse.pos.y - height;
+			plano.x_fin = mouse.pos.x + width;
+			plano.y_fin = mouse.pos.y + height;
 			s_planoAddHId(plano, statePlano.id + 1);
 		}
 		mouseReinicia();

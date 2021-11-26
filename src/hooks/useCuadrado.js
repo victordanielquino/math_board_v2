@@ -1,6 +1,7 @@
 import { useState } from 'react';
 const initialStateCuadrado = {
 	active: false,
+	id: 0,
 	bordeEstado: true, // si tendra borde
 	bordeGrosor: 5,
 	bordeColor: 'yellow',
@@ -68,6 +69,13 @@ const useCuadrado = () => {
 			historiaCuadrado: [...stateCuadrado.historiaCuadrado, cuadrado],
 		});
 	};
+	const s_cuadradoAddHId = (cuadrado, id) => {
+		setStateCuadrado({
+			...stateCuadrado,
+			id: id,
+			historiaCuadrado: [...stateCuadrado.historiaCuadrado, cuadrado],
+		});
+	};
 	// DELETE: DELETE_IN:	historiaCuadrado[]
 	// UPDATE: UPDATE_IN:	historiaCuadrado[]
 	const update_cuadrado_en_historia = (array) => {
@@ -112,6 +120,7 @@ const useCuadrado = () => {
 		update_all,
 		update_cuadradoH, // new
 		s_cuadradoAddH,
+		s_cuadradoAddHId,
 	};
 };
 

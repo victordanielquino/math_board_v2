@@ -23,7 +23,7 @@ import { u_textGraficaH } from '../utils/UtilsText';
 const PaintCuadrado = (id_canvas) => {
 	// useContext:
 	const { stateCanvas } = useContext(AppContextCanvas);
-	const { stateCuadrado, s_cuadradoAddH } = useContext(AppContextCuadrado);
+	const { stateCuadrado, s_cuadradoAddHId } = useContext(AppContextCuadrado);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
@@ -106,7 +106,7 @@ const PaintCuadrado = (id_canvas) => {
 	const mouseUpCuadrado = () => {
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			cuadrado = u_cuadradoValidaPosicion(cuadrado);
-			s_cuadradoAddH(cuadrado);
+			s_cuadradoAddHId(cuadrado);
 		}
 		mouseReinicia();
 	};

@@ -11,6 +11,7 @@ import AppContextCanvas from '../context/AppContextCanvas';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
+import AppContextCirculo from "../context/AppContextCirculo";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -22,6 +23,7 @@ import useCanvas from '../hooks/useCanvas';
 import useLinea from '../hooks/useLinea';
 import usePlano from '../hooks/usePlano';
 import useText from '../hooks/useText';
+import useCirculo from "../hooks/useCirculo";
 
 import Layout from '../containers/Layout';
 import Home from '../pages/Home';
@@ -37,6 +39,8 @@ const App = () => {
 	const initialStateLinea = useLinea();
 	const initialStatePlano = usePlano();
 	const initialStateText = useText();
+	const initialStateCirculo = useCirculo();
+
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -48,13 +52,15 @@ const App = () => {
 								<AppContextLinea.Provider value={initialStateLinea}>
 									<AppContextPlano.Provider value={initialStatePlano}>
 										<AppContextText.Provider value={initialStateText}>
-											<BrowserRouter>
-												<Layout>
-													{/* <Routes>
-										<Route exact path="/" element={<Home />} />
-									</Routes> */}
-												</Layout>
-											</BrowserRouter>
+											<AppContextCirculo.Provider value={initialStateCirculo}>
+												<BrowserRouter>
+													<Layout>
+														{/* <Routes>
+															<Route exact path="/" element={<Home />} />
+														</Routes> */}
+													</Layout>
+												</BrowserRouter>
+											</AppContextCirculo.Provider>
 										</AppContextText.Provider>
 									</AppContextPlano.Provider>
 								</AppContextLinea.Provider>

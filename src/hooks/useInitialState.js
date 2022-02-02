@@ -90,6 +90,12 @@ const useInitialState = () => {
 					active: 'textIcon',
 				});
 				break;
+			case 'circuloIcon':
+				setState({
+					...state,
+					active: 'circuloIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;

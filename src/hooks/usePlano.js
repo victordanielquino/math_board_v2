@@ -5,6 +5,8 @@ const initialStatePlano = {
 	x_min: -7,
 	y_max: 5,
 	salto: 1,
+	h: 0,
+	k: 0,
 	color_cuadricula: '#abb2b9',
 	width_cuadricula: 30,
 	historiaPlano: [],

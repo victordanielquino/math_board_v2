@@ -73,18 +73,8 @@ const useCirculo = () => {
 	};
 
 	return {
-		stateCuadrado,
-		updateCuadradoActive,
-		updateCuadradoBordeGrosor,
-		updateCuadradoBordeEstado,
-		updateCuadradoBorde_ColorEstado,
-		updateCuadradoFondoEstado,
-		updateCuadradoFondo_ColorEstado,
-		add_cuadrado_en_historia,
-		update_cuadrado_en_historia,
-		update_all,
-		update_cuadradoH, // new
-		s_cuadradoAddH,
+		stateCirculo,
+		updateCirculoActive
 	};
 };
 

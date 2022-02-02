@@ -295,7 +295,7 @@ const PaintMover = (id_canvas) => {
 							mouse.pos.y
 						);
 						if (planoSelect) {
-							console.log('selection plano');
+							console.log('1 selection plano');
 							// hizo click sobre un plano
 							mouse.plano_seleccionar_pts = true;
 							mouse.plano_mover = true;

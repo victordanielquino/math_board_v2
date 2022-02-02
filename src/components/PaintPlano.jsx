@@ -66,8 +66,10 @@ const PaintPlano = (id_canvas) => {
 		x_fin: 0,
 		y_fin: 0,
 
-		x_min: statePlano.x_min,
-		y_max: statePlano.y_max,
+		//x_min: statePlano.x_min,
+		// y_max: statePlano.y_max,
+		x_min: -5,
+		y_max: 5,
 		salto: statePlano.salto,
 	};
 	let captura_Pos_Posprev = (e) => {
@@ -99,6 +101,9 @@ const PaintPlano = (id_canvas) => {
 			plano.y_ini = mouse.pos.y - height;
 			plano.x_fin = mouse.pos.x + width;
 			plano.y_fin = mouse.pos.y + height;
+			plano.h = mouse.pos.x;
+			plano.k = mouse.pos.y;
+			console.log('plano:', plano);
 			s_planoAddHId(plano, statePlano.id + 1);
 		}
 		mouseReinicia();

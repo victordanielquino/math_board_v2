@@ -9,6 +9,7 @@ import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextCuadricula from '../context/AppContextCanvas';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
+import AppContextCirculo from "../context/AppContextCirculo";
 
 import Keyboard from '../containers/Keyboard';
 
@@ -27,6 +28,7 @@ import lineaIcon from '../assets/icons/linea.svg';
 import funcionIcon from '../assets/icons/function1.svg';
 import sumatoriaIcon from '../assets/icons/sumatoria1.svg';
 import imageIcon from '../assets/icons/image1.svg';
+import circuloIcon from '../assets/icons/circle.svg';
 
 import cuadriculaIcon from '../assets/icons/cuadricula.svg';
 import keyboardIcon from '../assets/icons/keyboard1.svg';
@@ -42,6 +44,7 @@ const NavIzq = () => {
 	const { updateLineaActive } = useContext(AppContextLinea);
 	const { updatePlanoActive } = useContext(AppContextPlano);
 	const { updateTextActive } = useContext(AppContextText);
+	const { updateCirculoActive } = useContext(AppContextCirculo);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -61,6 +64,7 @@ const NavIzq = () => {
 		// [zoomInIcon, 'zoomInIcon'],
 		// [zoomOutIcon, 'zoomOutIcon'],
 		[cuadriculaIcon, 'cuadriculaIcon'],
+		[circuloIcon, 'circuloIcon'],
 	];
 
 	const handleIcon = (icon) => {
@@ -78,6 +82,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'lapizIcon':
 				updateMoverActive(false);
@@ -88,6 +93,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'borradorIcon':
 				updateMoverActive(false);
@@ -98,6 +104,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'lineaIcon':
 				updateMoverActive(false);
@@ -108,6 +115,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'cuadradoIcon':
 				updateMoverActive(false);
@@ -118,6 +126,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'planoIcon':
 				updateMoverActive(false);
@@ -128,6 +137,7 @@ const NavIzq = () => {
 				updatePlanoActive(true);
 				updateCuadriculaActive(true);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'cuadriculaIcon':
 				updateMoverActive(false);
@@ -138,6 +148,7 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(true);
 				updateTextActive(false);
+				updateCirculoActive(false);
 				break;
 			case 'textIcon':
 				updateMoverActive(false);
@@ -148,6 +159,18 @@ const NavIzq = () => {
 				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				updateTextActive(true);
+				updateCirculoActive(false);
+				break;
+			case 'circuloIcon':
+				updateMoverActive(false);
+				updateLapizActive(false);
+				updateBorradorActive(false);
+				updateLineaActive(false);
+				updateCuadradoActive(false);
+				updatePlanoActive(false);
+				updateCuadriculaActive(false);
+				updateTextActive(false);
+				updateCirculoActive(true);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');

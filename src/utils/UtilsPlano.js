@@ -323,7 +323,7 @@ const u_planoUpdateZise = (plano, mouse) => {
 			plano.x_ini = plano.x_ini + recorrido_x;
 			break;
 		default:
-			console.log('ocurrio un error');
+			console.log('ocurrio un error: u_planoUpdateZise');
 			break;
 	}
 	return plano;

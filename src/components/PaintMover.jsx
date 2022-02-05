@@ -8,6 +8,7 @@ import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
+import AppContextCirculo from "../context/AppContextCirculo";
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
@@ -26,7 +27,16 @@ import {
 	u_cuadradoSegmentado,
 	u_cuadradoGetPtsRedimencion,
 	u_cuadradoUpdateZise,
+	u_cuadradoValidaPosicion
 } from '../utils/UtilsCuadrado';
+import {
+	u_circuloGraficaH,
+	u_circuloMover,
+	u_circuloBordeSegmentado,
+	u_circuloUpdateZise,
+	u_circuloOpera,
+	u_circuloValidaPosicion
+} from "../utils/UtilsCirculo";
 import {
 	u_lineaGraficaH,
 	u_lineaGet,
@@ -53,12 +63,14 @@ const PaintMover = (id_canvas) => {
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
+	const { stateCirculo } = useContext(AppContextCirculo);
 
 	// LOGICA:
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 		u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
 		u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+		u_circuloGraficaH(context, stateCirculo.historiaCirculo);
 		u_lineaGraficaH(context, stateLinea.historiaLinea);
 		u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		u_textGraficaH(context, stateText.historiaText);
@@ -70,6 +82,7 @@ const PaintMover = (id_canvas) => {
 	let lapizSelect = {};
 	let planoSelect = {};
 	let textSelect = {};
+	let circuloSelect = {};
 
 	const mouse = {
 		pos: { x: 0, y: 0 },
@@ -90,12 +103,17 @@ const PaintMover = (id_canvas) => {
 		mover_lapiz: false,
 		// PLANO:
 		plano_mover: false,
+		plano_mover_pto: false,
 		plano_seleccionar_pts: false,
-		plano_pto_mover: false,
 		plano_pto: '',
 		// TEXTO
 		texo_active: true,
 		texto_mover: false,
+		// CIRCULO
+		circulo_mover: false,
+		circulo_mover_pts: false,
+		circulo_seleccionar_pts: false,
+		circulo_pto: '',
 	};
 	const canvasMoverDatos = {
 		top: 0,
@@ -278,12 +296,11 @@ const PaintMover = (id_canvas) => {
 							arrayPts
 						);
 						if (mouse.plano_pto != '') {
-							console.log(mouse.plano_pto);
-							mouse.plano_pto_mover = true; // se movera el lado seleccionado
 							mouse.plano_mover = false; // no se movera el cuadrado
+							mouse.plano_mover_pto = true; // se movera el lado seleccionado
 						} else {
-							mouse.plano_pto_mover = false; // move_size
 							mouse.plano_mover = false;
+							mouse.plano_mover_pto = false; // move_size
 							mouse.plano_seleccionar_pts = false;
 						}
 					}
@@ -297,9 +314,9 @@ const PaintMover = (id_canvas) => {
 						if (planoSelect) {
 							console.log('1 selection plano');
 							// hizo click sobre un plano
-							mouse.plano_seleccionar_pts = true;
 							mouse.plano_mover = true;
-							mouse.plano_pto_mover = false;
+							mouse.plano_mover_pto = false;
+							mouse.plano_seleccionar_pts = true;
 							u_planoSegmentado(context, planoSelect);
 						} else {
 							// TEXTO
@@ -315,6 +332,9 @@ const PaintMover = (id_canvas) => {
 								mouse.texto_mover = true;
 								//mouse.plano_pto_mover = false;
 								//u_planoSegmentado(context, planoSelect);
+							} else {
+								// CIRCULO PUNTOS:
+								circuloSelect = u_circuloOpera(context, circuloSelect, stateCirculo.historiaCirculo, mouse);
 							}
 						}
 					}
@@ -322,7 +342,7 @@ const PaintMover = (id_canvas) => {
 			}
 		}
 
-		if (!lapizSelect && !lineaSelect && !cuadradoSelect && !planoSelect) {
+		if (!lapizSelect && !lineaSelect && !cuadradoSelect && !planoSelect && !circuloSelect) {
 			console.log('paint');
 			paint();
 		}
@@ -330,60 +350,67 @@ const PaintMover = (id_canvas) => {
 	// 2:
 	const mouseMoveMover = (e) => {
 		if (mouse.click) {
+			captura_Pos_Posprev(e);
 			if (mouse.mover_cuadrado) {
 				// CUADRADO:
-				captura_Pos_Posprev(e);
 				cuadradoSelect = u_cuadradoMover(cuadradoSelect, mouse);
 				paint();
 				u_cuadradoSegmentado(context, cuadradoSelect);
 			} else {
 				// CUADRADO PTOS:
 				if (mouse.cuadrado_punto_mover) {
-					captura_Pos_Posprev(e);
 					cuadradoSelect = u_cuadradoUpdateZise(cuadradoSelect, mouse);
 					paint();
 					u_cuadradoSegmentado(context, cuadradoSelect);
 				} else {
 					// LINEA:
 					if (mouse.mover_linea) {
-						captura_Pos_Posprev(e);
 						lineaSelect = u_lineaMover(lineaSelect, mouse);
 						paint();
 						u_lineaSegmentado(context, lineaSelect);
 					} else {
 						// LINEA PTOS:
 						if (mouse.linea_punto_mover) {
-							captura_Pos_Posprev(e);
 							lineaSelect = u_lineaUpdateZise(lineaSelect, mouse);
 							paint();
 							u_lineaSegmentado(context, lineaSelect);
 						} else {
 							// LAPIZ:
 							if (mouse.mover_lapiz) {
-								captura_Pos_Posprev(e);
 								lapizSelect = u_lapizMover(lapizSelect, mouse);
 								paint();
 								u_lapizSegmentado(context, lapizSelect);
 							} else {
 								// PLANO:
 								if (mouse.plano_mover) {
-									captura_Pos_Posprev(e);
 									planoSelect = u_planoMover(planoSelect, mouse);
 									paint();
 									u_planoSegmentado(context, planoSelect);
 								} else {
 									// PLANO PTOS:
-									if (mouse.plano_pto_mover) {
-										captura_Pos_Posprev(e);
+									if (mouse.plano_mover_pto) {
 										planoSelect = u_planoUpdateZise(planoSelect, mouse);
 										paint();
 										u_planoSegmentado(context, planoSelect);
 									} else {
 										// TEXTO
 										if (mouse.texto_mover) {
-											captura_Pos_Posprev(e);
 											textSelect = u_textMover(textSelect, mouse);
 											paint();
+										} else {
+											if(mouse.circulo_mover){
+												// CIRCULO MOVER:
+												circuloSelect = u_circuloMover(circuloSelect, mouse);
+												paint();
+												u_circuloBordeSegmentado(context, circuloSelect);
+											} else {
+												// CIRCULO MOVER PTS REDIMENCION:
+												if (mouse.circulo_mover_pts) {
+													circuloSelect = u_circuloUpdateZise(circuloSelect, mouse);
+													paint();
+													u_circuloBordeSegmentado(context, circuloSelect);
+												}
+											}
 										}
 									}
 								}
@@ -396,18 +423,9 @@ const PaintMover = (id_canvas) => {
 	};
 	// 3:
 	const mouseUpMover = (e) => {
-		if (mouse.cuadrado_punto_mover) {
-			if (cuadradoSelect.x_fin < cuadradoSelect.x_ini) {
-				let aux = cuadradoSelect.x_fin;
-				cuadradoSelect.x_fin = cuadradoSelect.x_ini;
-				cuadradoSelect.x_ini = aux;
-			}
-			if (cuadradoSelect.y_fin < cuadradoSelect.y_ini) {
-				let aux = cuadradoSelect.y_fin;
-				cuadradoSelect.y_fin = cuadradoSelect.y_ini;
-				cuadradoSelect.y_ini = aux;
-			}
-		}
+		mouse.cuadrado_punto_mover ? cuadradoSelect = u_cuadradoValidaPosicion(cuadradoSelect): '';
+		mouse.circulo_mover_pts ? circuloSelect = u_circuloValidaPosicion(circuloSelect): '';
+
 		mouse.click = false;
 		// CUADRADO:
 		mouse.mover_cuadrado = false;
@@ -421,9 +439,14 @@ const PaintMover = (id_canvas) => {
 		mouse.mover_lapiz = false;
 		// PLANO:
 		mouse.plano_mover = false;
-		mouse.plano_pto_mover = false;
+		mouse.plano_mover_pto = false;
 		mouse.plano_pto = '';
+		// TEXTO:
 		mouse.texto_mover = false;
+		// CIRCULO:
+		mouse.circulo_mover = false;
+		mouse.circulo_mover_pts = false;
+		mouse.circulo_pto = '';
 	};
 	const update_canvasMoverDatos = () => {
 		canvasMoverDatos.top = canvas.getBoundingClientRect().top;

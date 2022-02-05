@@ -7,6 +7,7 @@ import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
+import AppContextCirculo from "../context/AppContextCirculo";
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
@@ -15,6 +16,7 @@ import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
 import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
 import { uPlano_graficaCuadradoHistoriaConEjes } from '../utils/UtilsPlano';
 import { u_textGraficaH } from '../utils/UtilsText';
+import { u_circuloGraficaH} from "../utils/UtilsCirculo";
 
 const PaintCuadricula = (canvasId) => {
 	// useContext:
@@ -24,6 +26,7 @@ const PaintCuadricula = (canvasId) => {
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
+	const { stateCirculo } = useContext(AppContextCirculo)
 
 	// LOGICA:
 	let context = '';
@@ -34,6 +37,7 @@ const PaintCuadricula = (canvasId) => {
 			context,
 			stateCuadrado.historiaCuadrado
 		);
+		u_circuloGraficaH(context, stateCirculo.historiaCirculo);
 		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz);
 		u_textGraficaH(context, stateText.historiaText);

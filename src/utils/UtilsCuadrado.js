@@ -195,6 +195,7 @@ const u_cuadradoSegmentado = (context, cuadrado) => {
 const u_cuadradoUpdateZise = (cuadrado, mouse) => {
 	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
 	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	console.log(mouse.cuadrado_pto)
 	switch (mouse.cuadrado_pto) {
 		case 'top':
 			cuadrado.y_ini = cuadrado.y_ini + recorrido_y;

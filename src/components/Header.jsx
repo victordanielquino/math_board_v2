@@ -13,6 +13,7 @@ import MenuCuadrado from '../containers/MenuCuadrado';
 import MenuCuadricula from '../containers/MenuCuadricula';
 import MenuLinea from '../containers/MenuLinea';
 import MenuText from '../containers/MenuText';
+import MenuCirculo from "../containers/MenuCirculo";
 
 // context:
 import AppContext from '../context/AppContext';
@@ -34,6 +35,7 @@ const Header = () => {
 	const [toggleMenuLinea, setToggleMenuLinea] = useState(false);
 	const [toggleMenuPlano, setToggleMenuPlano] = useState(false);
 	const [toggleMenuText, setToggleMenuText] = useState(false);
+	const [toggleMenuCirculo, setToggleMenuCirculo] = useState(false);
 
 	// useEffect:
 	useEffect(() => {
@@ -48,6 +50,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'lapizIcon':
 				setToggleMenu1(false);
@@ -59,6 +62,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'borradorIcon':
 				setToggleMenu1(false);
@@ -70,6 +74,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'cuadradoIcon':
 				setToggleMenu1(false);
@@ -81,6 +86,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'lineaIcon':
 				setToggleMenu1(false);
@@ -92,6 +98,7 @@ const Header = () => {
 				setToggleMenuLinea(true);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'planoIcon':
 				setToggleMenu1(false);
@@ -103,6 +110,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(true);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'cuadriculaIcon':
 				setToggleMenu1(false);
@@ -114,6 +122,7 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(false);
+				setToggleMenuCirculo(false);
 				break;
 			case 'textIcon':
 				setToggleMenu1(false);
@@ -125,6 +134,19 @@ const Header = () => {
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
 				setToggleMenuText(true);
+				setToggleMenuCirculo(false);
+				break;
+			case 'circuloIcon':
+				setToggleMenu1(false);
+				setToggleMenuMover(false);
+				setToggleMenuLapiz(false);
+				setToggleMenuBorrador(false);
+				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(false);
+				setToggleMenuLinea(false);
+				setToggleMenuPlano(false);
+				setToggleMenuText(false);
+				setToggleMenuCirculo(true);
 				break;
 			default:
 				setToggleMenu1(true);
@@ -135,6 +157,7 @@ const Header = () => {
 				setToggleMenuCuadricula(false);
 				setToggleMenuLinea(false);
 				setToggleMenuPlano(false);
+				setToggleMenuCirculo(false);
 				break;
 		}
 	}, [state]);
@@ -157,6 +180,7 @@ const Header = () => {
 				{toggleMenuCuadricula && <MenuCuadricula />}
 				{toggleMenuLinea && <MenuLinea />}
 				{toggleMenuText && <MenuText />}
+				{toggleMenuCirculo && <MenuCirculo />}
 			</div>
 			<div className="navbar-right">
 				<ul>

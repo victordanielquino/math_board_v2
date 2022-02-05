@@ -7,7 +7,10 @@ const initialStateCirculo = {
 	bordeColor: 'yellow',
 	fondoEstado: true, // si tendra fondo
 	fondoColor: 'black',
-	radio: 20,
+	radioX: 50,
+	radioY: 50,
+	h: 0,
+	k: 0,
 	x_ini: 0,
 	y_ini: 0,
 	width: 10,
@@ -44,7 +47,7 @@ const useCirculo = () => {
 			bordeEstado: estado,
 		});
 	};
-	const s_ciruloFondoEstado = (valor) => {
+	const s_circuloUpdateFondoEstado = (valor) => {
 		setStateCirculo({
 			...stateCirculo,
 			fondoEstado: valor,
@@ -58,23 +61,52 @@ const useCirculo = () => {
 		});
 	};
 	// CREATE: ADD_IN:	historiaCuadrado[]
-	const s_ciruloAddH = (circulo) => {
+	const s_circuloAddH = (circulo) => {
 		setStateCirculo({
 			...stateCirculo,
 			historiaCirculo: [...stateCirculo.historiaCirculo, circulo],
 		});
 	};
-
-	const s_ciruloUpdateH = (array) => {
-		setStateCuirculo({
-			...stateCuirculo,
-			historiaCuirculo: array,
+	const s_circuloUpdateAll = (
+		colorBorde,
+		colorFondo,
+		bordeGrosor,
+		bordeEstadoIn,
+		fondoEstadoIn
+	) => {
+		setStateCirculo({
+			...stateCirculo,
+			bordeColor: colorBorde,
+			fondoColor: colorFondo,
+			bordeGrosor: bordeGrosor,
+			bordeEstado: bordeEstadoIn,
+			fondoEstado: fondoEstadoIn,
+		});
+	};
+	const s_circuloAddHId = (circulo, id) => {
+		setStateCirculo({
+			...stateCirculo,
+			id: id,
+			historiaCirculo: [...stateCirculo.historiaCirculo, circulo],
+		});
+	};
+	const s_circuloUpdateRadio = (valor) => {
+		setStateCirculo({
+			...stateCirculo,
+			radioX: valor,
+			radioY: valor,
 		});
 	};
 
 	return {
 		stateCirculo,
-		updateCirculoActive
+		updateCirculoActive,
+		s_circuloUpdateBordeGrosor,
+		s_circuloUpdateBordeColorEstado,
+		s_circuloUpdateFondoColorEstado,
+		s_circuloUpdateAll,
+		s_circuloAddHId,
+		s_circuloUpdateRadio
 	};
 };
 

@@ -10,6 +10,7 @@ import AppContextCuadricula from '../context/AppContextCanvas';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
+import AppContextTriangulo from "../context/AppContextTriangulo";
 
 import Keyboard from '../containers/Keyboard';
 
@@ -29,9 +30,9 @@ import funcionIcon from '../assets/icons/function1.svg';
 import sumatoriaIcon from '../assets/icons/sumatoria1.svg';
 import imageIcon from '../assets/icons/image1.svg';
 import circuloIcon from '../assets/icons/circle.svg';
-
 import cuadriculaIcon from '../assets/icons/cuadricula.svg';
 import keyboardIcon from '../assets/icons/keyboard1.svg';
+import trianguloIcon from '../assets/icons/triangle.svg';
 
 const NavIzq = () => {
 	// useContext:
@@ -45,6 +46,7 @@ const NavIzq = () => {
 	const { updatePlanoActive } = useContext(AppContextPlano);
 	const { updateTextActive } = useContext(AppContextText);
 	const { updateCirculoActive } = useContext(AppContextCirculo);
+	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -52,19 +54,20 @@ const NavIzq = () => {
 	const iconosPaleta = [
 		[moverIcon, 'moverIcon'],
 		[lapizIcon, 'lapizIcon'],
-		[borradorIcon, 'borradorIcon'],
+		[textIcon, 'textIcon'],
 		// [funcionIcon, 'funcionIcon'],
 		// [sumatoriaIcon, 'sumatoriaIcon'],
-		[textIcon, 'textIcon'],
 		[lineaIcon, 'lineaIcon'],
 		[cuadradoIcon, 'cuadradoIcon'],
+		[circuloIcon, 'circuloIcon'],
 		// [calculadoraIcon, 'calculadoraIcon'],
-		[planoIcon, 'planoIcon'],
+		[trianguloIcon, 'trianguloIcon'],
 		// [imageIcon, 'imageIcon'],
 		// [zoomInIcon, 'zoomInIcon'],
 		// [zoomOutIcon, 'zoomOutIcon'],
+		[planoIcon, 'planoIcon'],
 		[cuadriculaIcon, 'cuadriculaIcon'],
-		[circuloIcon, 'circuloIcon'],
+		[borradorIcon, 'borradorIcon'],
 	];
 
 	const handleIcon = (icon) => {
@@ -83,6 +86,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'lapizIcon':
 				updateMoverActive(false);
@@ -94,6 +98,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'borradorIcon':
 				updateMoverActive(false);
@@ -105,6 +110,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'lineaIcon':
 				updateMoverActive(false);
@@ -116,6 +122,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'cuadradoIcon':
 				updateMoverActive(false);
@@ -127,6 +134,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'planoIcon':
 				updateMoverActive(false);
@@ -138,6 +146,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(true);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'cuadriculaIcon':
 				updateMoverActive(false);
@@ -149,6 +158,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(true);
 				updateTextActive(false);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'textIcon':
 				updateMoverActive(false);
@@ -160,6 +170,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(true);
 				updateCirculoActive(false);
+				s_trianguloUpdateActive(false);
 				break;
 			case 'circuloIcon':
 				updateMoverActive(false);
@@ -171,6 +182,19 @@ const NavIzq = () => {
 				updateCuadriculaActive(false);
 				updateTextActive(false);
 				updateCirculoActive(true);
+				s_trianguloUpdateActive(false);
+				break;
+			case 'trianguloIcon':
+				updateMoverActive(false);
+				updateLapizActive(false);
+				updateBorradorActive(false);
+				updateLineaActive(false);
+				updateCuadradoActive(false);
+				updatePlanoActive(false);
+				updateCuadriculaActive(false);
+				updateTextActive(false);
+				updateCirculoActive(false);
+				s_trianguloUpdateActive(true);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');

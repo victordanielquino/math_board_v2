@@ -1,4 +1,6 @@
 // LAPIZ: GRAFICA
+import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "./UtilsCirculo";
+
 const utilsLapiz_graficaLapiz = (context, lapiz) => {
 	if (lapiz.visible) {
 		context.lineWidth = lapiz.grosor;
@@ -100,6 +102,47 @@ const u_lapizMover = (lapiz, mouse) => {
 	lapiz.y_may = lapiz.y_may + recorrido_y;
 	return lapiz;
 };
+// LAPIZ: GET
+const u_lapizGetClick = (array, x, y) => {
+	let resp = '';
+	array.forEach((lapiz) => {
+		if (lapiz.visible) {
+			let x1 = lapiz.x_min;
+			let y1 = lapiz.y_min;
+			let x2 = lapiz.x_may;
+			let y2 = lapiz.y_may;
+			if (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20) {
+				resp = lapiz;
+			}
+		}
+	});
+	return resp;
+};
+// LAPIZ: SI SE HIZO CLICK SOBRE UN LAPIZ, PODREMOS MOVER
+const u_lapizClickSobreLapiz = (lapizSelect, mouse) => {
+	(lapizSelect) ? mouse.lapiz_mover = true : mouse.lapiz_mover = false;
+}
+// CIRCULO: BUSCA CIRCULO PARA PODER MOVERLO O EDITAR SU TAMANO
+const u_lapizOpera = (lapizSelect, array, mouse) => {
+	lapizSelect = u_lapizGetClick(array, mouse.pos.x, mouse.pos.y);
+	u_lapizClickSobreLapiz(lapizSelect, mouse);
+	return lapizSelect;
+}
+// LAPIZ: SEGMENTADO:
+const u_lapizBordeSegmentado = (context, lapiz) => {
+	context.strokeStyle = 'red'; // borde Color
+	context.lineWidth = 1; // borde grosor de linea
+	context.setLineDash([10, 4]); // lineas segmentadas
+
+	context.beginPath();
+	context.moveTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
+	context.lineTo(lapiz.x_may + 20, lapiz.y_min - 20); // (x_fin, y_ini)
+	context.lineTo(lapiz.x_may + 20, lapiz.y_may + 20); // (x_fin, y_fin)
+	context.lineTo(lapiz.x_min - 20, lapiz.y_may + 20); // (x_ini, y_fin)
+	context.lineTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
+	context.stroke();
+	context.closePath();
+};
 
 export {
 	utilsLapiz_graficaLapiz,
@@ -110,4 +153,6 @@ export {
 	u_lapizGraficaLinea,
 	u_lapizSegmentado,
 	u_lapizMover,
+	u_lapizOpera,
+	u_lapizBordeSegmentado
 };

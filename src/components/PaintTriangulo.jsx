@@ -21,7 +21,7 @@ import { u_textGraficaH } from '../utils/UtilsText';
 import { u_circuloGraficaH } from "../utils/UtilsCirculo";
 import { u_trianguloGraficaH } from "../utils/UtilsTriangulo";
 
-const PaintCirculo = (id_canvas) => {
+const PaintTriangulo = (id_canvas) => {
     // useContext:
     const { stateCanvas } = useContext(AppContextCanvas);
     const { stateCuadrado } = useContext(AppContextCuadrado);
@@ -29,38 +29,37 @@ const PaintCirculo = (id_canvas) => {
     const { stateLapiz } = useContext(AppContextLapiz);
     const { statePlano } = useContext(AppContextPlano);
     const { stateText } = useContext(AppContextText);
-    const { stateTriangulo } = useContext(AppContextTriangulo);
-    const { stateCirculo, s_circuloAddHId } = useContext(AppContextCirculo);
+    const { stateCirculo } = useContext(AppContextCirculo);
+    const { stateTriangulo, s_trianguloAddHId } = useContext(AppContextTriangulo);
 
     // LOGICA:
     const paint = () => {
         utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
         u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
         u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-        u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-        u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
         u_lineaGraficaH(context, stateLinea.historiaLinea);
         u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
         u_textGraficaH(context, stateText.historiaText);
+        u_circuloGraficaH(context, stateCirculo.historiaCirculo);
+        u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
     };
+
     let canvas = '';
     let context = '';
-    let circulo = {
-        id: stateCirculo.id,
+    let triangulo = {
+        id: stateTriangulo.id,
         visible: true,
-        bordeEstado: stateCirculo.bordeEstado,
-        bordeGrosor: stateCirculo.bordeGrosor,
-        bordeColor: stateCirculo.bordeColor,
-        fondoEstado: stateCirculo.fondoEstado,
-        fondoColor: stateCirculo.fondoColor,
-        x_ini: 0,
-        y_ini: 0,
-        x_fin: 0,
-        y_fin: 0,
-        radioX: stateCirculo.radioX,
-        radioY: stateCirculo.radioY,
-        h: stateCirculo.h,
-        k: stateCirculo.k
+        bordeEstado: stateTriangulo.bordeEstado,
+        bordeGrosor: stateTriangulo.bordeGrosor,
+        bordeColor: stateTriangulo.bordeColor,
+        fondoEstado: stateTriangulo.fondoEstado,
+        fondoColor: stateTriangulo.fondoColor,
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
+        x3: 0,
+        y3: 0,
     };
     const mouse = {
         click: false,
@@ -76,47 +75,50 @@ const PaintCirculo = (id_canvas) => {
         mouse.pos.y = 0;
         mouse.pos_prev.y = 0;
     };
-    const update_canvasCirculoDatos = () => {
-        canvasCirculoDatos.top = canvas.getBoundingClientRect().top;
-        canvasCirculoDatos.left = canvas.getBoundingClientRect().left;
-        canvasCirculoDatos.width = canvas.getBoundingClientRect().width;
-        canvasCirculoDatos.height = canvas.getBoundingClientRect().height;
+    const update_canvasTrianguloDatos = () => {
+        canvasTrianguloDatos.top = canvas.getBoundingClientRect().top;
+        canvasTrianguloDatos.left = canvas.getBoundingClientRect().left;
+        canvasTrianguloDatos.width = canvas.getBoundingClientRect().width;
+        canvasTrianguloDatos.height = canvas.getBoundingClientRect().height;
     };
     const captura_Pos_Posprev = (e) => {
         const x = e.clientX;
         const y = e.clientY;
-        const x_real = x - canvasCirculoDatos.left;
-        const y_real = y - canvasCirculoDatos.top;
+        const x_real = x - canvasTrianguloDatos.left;
+        const y_real = y - canvasTrianguloDatos.top;
         mouse.pos_prev.x = mouse.pos.x;
         mouse.pos_prev.y = mouse.pos.y;
         mouse.pos.x = x_real;
         mouse.pos.y = y_real;
     };
-    const canvasCirculoDatos = {
+    const canvasTrianguloDatos = {
         top: 0,
         left: 0,
         width: 0,
         height: 0,
     };
     // 1
-    let mouseDownCirculo = (e) => {
+    let mouseDownTriangulo = (e) => {
         mouse.click = true;
         captura_Pos_Posprev(e);
     };
     // 2
-    let mouseMoveCirculo = (e) => {
+    let mouseMoveTriangulo = (e) => {
     };
     // 3
-    let mouseUpCirculo = (e) => {
+    let mouseUpTriangulo = (e) => {
         captura_Pos_Posprev(e);
         if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            circulo.x_ini = mouse.pos.x - circulo.radioX;
-            circulo.y_ini = mouse.pos.y - circulo.radioY;
-            circulo.x_fin = mouse.pos.x + circulo.radioX;
-            circulo.y_fin = mouse.pos.y + circulo.radioY;
-            circulo.h = mouse.pos.x;
-            circulo.k = mouse.pos.y;
-            s_circuloAddHId(circulo, stateCirculo.id + 1);
+            triangulo.x1 = mouse.pos.x;
+            triangulo.y1 = mouse.pos.y - 50;
+
+            triangulo.x2 = mouse.pos.x - 50;
+            triangulo.y2 = mouse.pos.y + 50;
+
+            triangulo.x3 = mouse.pos.x + 50;
+            triangulo.y3 = mouse.pos.y + 50;
+
+            s_trianguloAddHId(triangulo, stateTriangulo.id + 1);
         }
         mouseReinicia();
     };
@@ -126,21 +128,21 @@ const PaintCirculo = (id_canvas) => {
     useEffect(() => {
         canvas = document.getElementById(id_canvas);
         context = canvas.getContext('2d');
-        if (stateCirculo.active) {
-            update_canvasCirculoDatos();
-            canvas.addEventListener('mousedown', mouseDownCirculo);
-            canvas.addEventListener('mousemove', mouseMoveCirculo);
-            canvas.addEventListener('mouseup', mouseUpCirculo);
+        if (stateTriangulo.active) {
+            update_canvasTrianguloDatos();
+            canvas.addEventListener('mousedown', mouseDownTriangulo);
+            canvas.addEventListener('mousemove', mouseMoveTriangulo);
+            canvas.addEventListener('mouseup', mouseUpTriangulo);
         }
         return () => {
-            canvas.removeEventListener('mousedown', mouseDownCirculo);
-            canvas.removeEventListener('mousemove', mouseMoveCirculo);
-            canvas.removeEventListener('mouseup', mouseUpCirculo);
+            canvas.removeEventListener('mousedown', mouseDownTriangulo);
+            canvas.removeEventListener('mousemove', mouseMoveTriangulo);
+            canvas.removeEventListener('mouseup', mouseUpTriangulo);
         };
-    }, [stateCirculo]);
+    }, [stateTriangulo]);
     useEffect(() => {
         paint();
-    }, [stateCirculo.historiaCirculo]);
+    }, [stateTriangulo.historiaTriangulo]);
 }
 
-export default PaintCirculo;
+export default PaintTriangulo;

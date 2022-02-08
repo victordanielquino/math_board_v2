@@ -8,18 +8,17 @@ import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
+import AppContextTriangulo from "../context/AppContextTriangulo";
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
-import {
-	u_lineaGrafica,
-	utilsLinea_graficaLineaHistoria,
-} from '../utils/UtilsLinea';
+import { u_cuadradoGraficaH } from '../utils/UtilsCuadrado';
+import { u_lineaGrafica, u_lineaGraficaH } from '../utils/UtilsLinea';
 import { u_circuloGraficaH } from "../utils/UtilsCirculo";
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
-import { uPlano_graficaCuadradoHistoriaConEjes } from '../utils/UtilsPlano';
+import { u_lapizGraficaH } from '../utils/UtilsLapiz';
+import { u_planoGraficaH } from '../utils/UtilsPlano';
 import { u_textGraficaH } from '../utils/UtilsText';
+import { u_trianguloGraficaH } from "../utils/UtilsTriangulo";
 
 const PaintLinea = (id_canvas) => {
 	// useContext:
@@ -30,18 +29,17 @@ const PaintLinea = (id_canvas) => {
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
 	const { stateCirculo} = useContext(AppContextCirculo);
+	const { stateTriangulo } = useContext(AppContextTriangulo)
 
 	// LOGICA:
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		uPlano_graficaCuadradoHistoriaConEjes(context, statePlano.historiaPlano); // plano cartesiano
-		utilsCuadrado_graficaCuadradoHistoria(
-			context,
-			stateCuadrado.historiaCuadrado
-		);
+		u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
+		u_cuadradoGraficaH(context,stateCuadrado.historiaCuadrado);
 		u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		u_textGraficaH(context, stateText.historiaText);
 	};
 	let canvas = '';
@@ -136,7 +134,6 @@ const PaintLinea = (id_canvas) => {
 		};
 	}, [stateLinea]);
 	useEffect(() => {
-		console.log('se agrego una linea...');
 		paint();
 	}, [stateLinea.historiaLinea]);
 };

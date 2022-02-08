@@ -12,6 +12,7 @@ import AppContextLinea from '../context/AppContextLinea';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
+import AppContextTriangulo from "../context/AppContextTriangulo";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -24,6 +25,7 @@ import useLinea from '../hooks/useLinea';
 import usePlano from '../hooks/usePlano';
 import useText from '../hooks/useText';
 import useCirculo from "../hooks/useCirculo";
+import useTriangulo from "../hooks/useTriangulo";
 
 import Layout from '../containers/Layout';
 import Home from '../pages/Home';
@@ -40,6 +42,7 @@ const App = () => {
 	const initialStatePlano = usePlano();
 	const initialStateText = useText();
 	const initialStateCirculo = useCirculo();
+	const initialStateTriangulo = useTriangulo();
 
 
 	return (
@@ -53,13 +56,15 @@ const App = () => {
 									<AppContextPlano.Provider value={initialStatePlano}>
 										<AppContextText.Provider value={initialStateText}>
 											<AppContextCirculo.Provider value={initialStateCirculo}>
-												<BrowserRouter>
-													<Layout>
-														{/* <Routes>
-															<Route exact path="/" element={<Home />} />
-														</Routes> */}
-													</Layout>
-												</BrowserRouter>
+												<AppContextTriangulo.Provider value={initialStateTriangulo}>
+													<BrowserRouter>
+														<Layout>
+															{/* <Routes>
+																<Route exact path="/" element={<Home />} />
+															</Routes> */}
+														</Layout>
+													</BrowserRouter>
+												</AppContextTriangulo.Provider>
 											</AppContextCirculo.Provider>
 										</AppContextText.Provider>
 									</AppContextPlano.Provider>

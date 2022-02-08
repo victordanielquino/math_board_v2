@@ -8,15 +8,17 @@ import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
+import AppContextTriangulo from "../context/AppContextTriangulo";
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
-import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
-import { uPlano_graficaCuadradoHistoriaConEjes } from '../utils/UtilsPlano';
+import { u_cuadradoGraficaH } from '../utils/UtilsCuadrado';
+import { u_lineaGraficaH } from '../utils/UtilsLinea';
+import { u_lapizGraficaH } from '../utils/UtilsLapiz';
+import { u_planoGraficaH } from '../utils/UtilsPlano';
 import { u_textGraficaH } from '../utils/UtilsText';
-import { u_circuloGraficaH} from "../utils/UtilsCirculo";
+import { u_circuloGraficaH } from "../utils/UtilsCirculo";
+import { u_trianguloGraficaH } from "../utils/UtilsTriangulo";
 
 const PaintCuadricula = (canvasId) => {
 	// useContext:
@@ -26,20 +28,22 @@ const PaintCuadricula = (canvasId) => {
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
-	const { stateCirculo } = useContext(AppContextCirculo)
+	const { stateCirculo } = useContext(AppContextCirculo);
+	const { stateTriangulo } = useContext(AppContextTriangulo);
 
 	// LOGICA:
 	let context = '';
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas);
-		uPlano_graficaCuadradoHistoriaConEjes(context, statePlano.historiaPlano);
-		utilsCuadrado_graficaCuadradoHistoria(
+		u_planoGraficaH(context, statePlano.historiaPlano);
+		u_cuadradoGraficaH(
 			context,
 			stateCuadrado.historiaCuadrado
 		);
 		u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz);
+		u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
+		u_lineaGraficaH(context, stateLinea.historiaLinea);
+		u_lapizGraficaH(context, stateLapiz.historiaLapiz);
 		u_textGraficaH(context, stateText.historiaText);
 	};
 	// LOGICA END.

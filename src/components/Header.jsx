@@ -14,6 +14,7 @@ import MenuCuadricula from '../containers/MenuCuadricula';
 import MenuLinea from '../containers/MenuLinea';
 import MenuText from '../containers/MenuText';
 import MenuCirculo from "../containers/MenuCirculo";
+import MenuTriangulo from "../containers/MenuTriangulo";
 
 // context:
 import AppContext from '../context/AppContext';
@@ -36,128 +37,54 @@ const Header = () => {
 	const [toggleMenuPlano, setToggleMenuPlano] = useState(false);
 	const [toggleMenuText, setToggleMenuText] = useState(false);
 	const [toggleMenuCirculo, setToggleMenuCirculo] = useState(false);
+	const [toggleMenuTriangulo, setToggleMenuTriangulo] = useState(false);
 
 	// useEffect:
 	useEffect(() => {
+		setToggleMenu1(false);
+		setToggleMenuMover(false);
+		setToggleMenuLapiz(false);
+		setToggleMenuBorrador(false);
+		setToggleMenuCuadrado(false);
+		setToggleMenuCuadricula(false);
+		setToggleMenuLinea(false);
+		setToggleMenuPlano(false);
+		setToggleMenuText(false);
+		setToggleMenuCirculo(false);
+		setToggleMenuTriangulo(false);
 		switch (state.active) {
 			case 'moverIcon':
-				setToggleMenu1(false);
 				setToggleMenuMover(true);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'lapizIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
 				setToggleMenuLapiz(true);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'borradorIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
 				setToggleMenuBorrador(true);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'cuadradoIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
 				setToggleMenuCuadrado(true);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'lineaIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
 				setToggleMenuLinea(true);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'planoIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
 				setToggleMenuPlano(true);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'cuadriculaIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
 				setToggleMenuCuadricula(true);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
-				setToggleMenuCirculo(false);
 				break;
 			case 'textIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
 				setToggleMenuText(true);
-				setToggleMenuCirculo(false);
 				break;
 			case 'circuloIcon':
-				setToggleMenu1(false);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuText(false);
 				setToggleMenuCirculo(true);
+				break;
+			case 'trianguloIcon':
+				setToggleMenuTriangulo(true);
 				break;
 			default:
 				setToggleMenu1(true);
-				setToggleMenuMover(false);
-				setToggleMenuLapiz(false);
-				setToggleMenuBorrador(false);
-				setToggleMenuCuadrado(false);
-				setToggleMenuCuadricula(false);
-				setToggleMenuLinea(false);
-				setToggleMenuPlano(false);
-				setToggleMenuCirculo(false);
 				break;
 		}
 	}, [state]);
@@ -181,6 +108,7 @@ const Header = () => {
 				{toggleMenuLinea && <MenuLinea />}
 				{toggleMenuText && <MenuText />}
 				{toggleMenuCirculo && <MenuCirculo />}
+				{toggleMenuTriangulo && <MenuTriangulo />}
 			</div>
 			<div className="navbar-right">
 				<ul>

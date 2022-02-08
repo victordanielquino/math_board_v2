@@ -124,7 +124,7 @@ const u_circuloGetClick = (context, array, x, y) => {
             }
         }
     });
-    resp ? u_circuloBordeSegmentado(context, resp):'';
+    //resp ? u_circuloBordeSegmentado(context, resp):'';
     return resp;
 };
 // CIRCULO: MOVER

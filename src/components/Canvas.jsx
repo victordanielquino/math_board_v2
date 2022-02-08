@@ -14,7 +14,8 @@ import PaintLinea from './PaintLinea';
 import PaintCuadrado from './PaintCuadrado';
 import PaintCuadricula from './PaintCuadricula';
 import PaintPlano from './PaintPlano';
-import PaintCirculo from "./PaintCirculo";
+import PaintCirculo from './PaintCirculo';
+import PaintTriangulo from './PaintTriangulo';
 
 const Canvas = () => {
 	// useContext:
@@ -35,6 +36,7 @@ const Canvas = () => {
 	PaintLinea('canvas-1');
 	PaintPlano('canvas-1');
 	PaintCirculo('canvas-1');
+	PaintTriangulo('canvas-1');
 
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 75);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 90);

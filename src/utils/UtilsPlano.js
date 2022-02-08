@@ -1,3 +1,5 @@
+import {u_cuadradoGetPtsRedimencion} from "./UtilsCuadrado";
+
 const Texto = {
 	texto: 'Hola mundo', //texto de prueba
 	texto_color: 'black', //color externo
@@ -294,7 +296,6 @@ const u_planoSegmentado = (context, cuadrado) => {
 };
 // PLANO: MOVER
 const u_planoMover = (plano, mouse) => {
-	console.log('mueve plano')
 	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
 	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
 	plano.x_ini = plano.x_ini + recorrido_x;
@@ -328,6 +329,120 @@ const u_planoUpdateZise = (plano, mouse) => {
 	}
 	return plano;
 };
+// CUADRADO: CLICK SOBRE ALGUN PUNTO PARA REDIMENCIONAR EL CUADRADO
+const u_planoBuscaPtoClickParaRedimencionar = (x, y, plano) => {
+	let array = u_planoGetPtsRedimencion(plano);
+	let resp = '';
+	if (
+		array[0].x1 < x &&
+		x < array[0].x2 &&
+		array[0].y1 < y &&
+		y < array[0].y2
+	)
+		resp = 'top';
+	else if (
+		array[1].x1 < x &&
+		x < array[1].x2 &&
+		array[1].y1 < y &&
+		y < array[1].y2
+	)
+		resp = 'right';
+	else if (
+		array[2].x1 < x &&
+		x < array[2].x2 &&
+		array[2].y1 < y &&
+		y < array[2].y2
+	)
+		resp = 'button';
+	else if (
+		array[3].x1 < x &&
+		x < array[3].x2 &&
+		array[3].y1 < y &&
+		y < array[3].y2
+	)
+		resp = 'lefth';
+	return resp;
+};
+// PLANO: GET
+const u_planoGetClick = (array, x, y) => {
+	let resp = '';
+	array.forEach((plano) => {
+		if (plano.visible) {
+			plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
+				? (resp = plano)
+				: '';
+		}
+	});
+	return resp;
+};
+// PLANO: SI SE HIZO CLICK SOBRE UN PLANO, PODREMOS EDITAR ZISE U MOVER
+const u_planoClickSobrePlano = (planoSelect, mouse) => {
+	if (planoSelect) {
+		mouse.plano_mover = true;
+		mouse.plano_mover_pts = false;
+		mouse.plano_seleccionar_pts = true;
+	} else{
+		mouse.plano_mover = false;
+		mouse.plano_mover_pts = false;
+		mouse.plano_seleccionar_pts =false;
+	}
+}
+// PLANO: BUSCA PLANO PARA PODER MOVERLO O EDITAR SU TAMANO
+const u_planoOpera = (context, planoSelect, array, mouse) => {
+	if (mouse.plano_seleccionar_pts){
+		mouse.plano_pto = u_planoBuscaPtoClickParaRedimencionar(
+			mouse.pos.x, mouse.pos.y, planoSelect
+		);
+		if(mouse.plano_pto != '') {
+			mouse.plano_mover = false;
+			mouse.plano_mover_pts = true;
+		} else {
+			mouse.plano_mover = false;
+			mouse.plano_mover_pts = false; // move_size
+			mouse.plano_seleccionar_pts = false;
+		}
+	}
+	if (!mouse.plano_seleccionar_pts){
+		planoSelect = u_planoGetClick(array, mouse.pos.x, mouse.pos.y);
+		u_planoClickSobrePlano(planoSelect, mouse);
+	}
+	return planoSelect;
+}
+// PLANO: SEGMENTADO:
+const u_planoBordeSegmentado = (context, plano) => {
+	context.strokeStyle = 'red'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
+	context.setLineDash([14, 4]); // lineas segmentadas
+
+	let x_ini = plano.x_ini - 2;
+	let y_ini = plano.y_ini - 2;
+	let x_fin = plano.x_fin + 2;
+	let y_fin = plano.y_fin + 2;
+
+	context.beginPath();
+	context.moveTo(x_ini, y_ini); // (x_ini, y_ini)
+	context.lineTo(x_fin, y_ini); // (x_fin, y_ini)
+	context.lineTo(x_fin, y_fin); // (x_fin, y_fin)
+	context.lineTo(x_ini, y_fin); // (x_ini, y_fin)
+	context.lineTo(x_ini, y_ini); // (x_ini, y_ini)
+	context.stroke();
+	context.closePath();
+
+	context.fillStyle = 'red'; // borde Color
+	context.setLineDash([14, 4]); // lineas segmentadas
+
+	let array = u_planoGetPtsRedimencion(plano);
+	array.forEach((elem) => {
+		context.beginPath();
+		context.moveTo(elem.x1, elem.y1); // (x_ini, y_ini)
+		context.lineTo(elem.x2, elem.y1); // (x_fin, y_ini)
+		context.lineTo(elem.x2, elem.y2); // (x_fin, y_fin)
+		context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
+		context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
+		context.fill();
+		context.closePath();
+	});
+};
 export {
 	uPlano_graficaCuadrado,
 	uPlano_graficaCuadradoConEjes,
@@ -340,4 +455,6 @@ export {
 	u_planoMover,
 	u_planoGetPtsRedimencion,
 	u_planoUpdateZise,
+	u_planoOpera,
+	u_planoBordeSegmentado
 };

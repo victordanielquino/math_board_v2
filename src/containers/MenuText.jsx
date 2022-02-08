@@ -19,7 +19,9 @@ const MenuText = () => {
 		tamano: 11,
 		texto: 'new text',
 		x_ini: 400,
-		y_ini: 400,
+		y_ini: 0,
+		x_fin:0,
+		y_fin:200,
 		color: stateText.color,
 		visible: true,
 	};
@@ -30,20 +32,13 @@ const MenuText = () => {
 		{ colorLine: 'blue', id: 'colorBlueText' },
 		{ colorLine: 'yellow', id: 'colorYellowText' },
 	];
-	const graficaTexto = (context, obj) => {
-		context.fillStyle = 'red'; //color de relleno
-		context.font = `${obj.tamano}px arial`; //estilo de texto
-		context.beginPath(); //iniciar ruta
-		context.fillText(obj.texto, obj.x_ini, obj.y_ini); //texto con método stroke
-		context.closePath();
-	};
-	const graficaTexto2 = () => {
+	const graficaTexto = () => {
 		canvas = document.getElementById('canvas-1');
 		context = canvas.getContext('2d');
 		context.fillStyle = textoNew.color; //color de relleno
 		context.font = `${textoNew.tamano}px arial`; //estilo de texto
 		context.beginPath(); //iniciar ruta
-		context.fillText(textoNew.texto, textoNew.x_ini, textoNew.y_ini); //texto con método stroke
+		context.fillText(textoNew.texto, textoNew.x_ini, textoNew.y_fin); //texto con método stroke
 		context.closePath();
 	};
 	const updatePaletaColor = (color) => {
@@ -70,10 +65,12 @@ const MenuText = () => {
 		let tamano = document.getElementById('t_inputTamano').value;
 		let texto = document.getElementById('t_inputTexto').value;
 		let color = stateText.color;
+		textoNew.y_ini = textoNew.y_fin - tamano*1;
+		textoNew.x_fin = textoNew.x_ini + texto.length * tamano/2;
 		textoNew.texto = texto;
 		textoNew.color = color;
 		textoNew.tamano = tamano;
-		graficaTexto2();
+		graficaTexto();
 		//u_textGrafica(context, textoNew);
 		s_textAddHId(textoNew, stateText.id + 1);
 	};

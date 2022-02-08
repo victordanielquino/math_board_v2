@@ -1,24 +1,6 @@
 // LINEA:
-const utilsLinea_graficaLinea = (context, linea) => {
-	if (linea.visible) {
-		context.lineWidth = linea.grosor;
-		context.strokeStyle = linea.color;
-		context.setLineDash([0, 0]);
+import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "./UtilsCirculo";
 
-		context.beginPath();
-		context.moveTo(linea.x_ini, linea.y_ini);
-		context.lineTo(linea.x_fin, linea.y_fin);
-		context.stroke();
-		context.closePath();
-	}
-};
-
-// LAPIZ - HISORIA:
-const utilsLinea_graficaLineaHistoria = (context, array) => {
-	array.forEach((element) => {
-		utilsLinea_graficaLinea(context, element);
-	});
-};
 // DISTANCIA ENTRE 2 PUNTOS
 const distancia_p1_p2 = (x1, y1, x2, y2) => {
 	let dp = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -52,12 +34,7 @@ const u_lineaGet = (array, x, y) => {
 	});
 	return resp;
 };
-// LINEA: GRAFICA HISOTORIA
-const u_lineaGraficaH = (context, array) => {
-	array.forEach((element) => {
-		utilsLinea_graficaLinea(context, element);
-	});
-};
+
 // LINEA: DELETE POR ID
 const u_lineaDeleteById = (array, linea_id) => {
 	array.forEach((element) => {
@@ -78,6 +55,12 @@ const u_lineaGrafica = (context, linea) => {
 		context.stroke();
 		context.closePath();
 	}
+};
+// LINEA: GRAFICA HISOTORIA
+const u_lineaGraficaH = (context, array) => {
+	array.forEach((element) => {
+		u_lineaGrafica(context, element);
+	});
 };
 // CUADRADOS PARA UPDATE LINEA:
 const u_lineaGetPtsRedimencion = (linea) => {
@@ -104,8 +87,118 @@ const u_lineaGetPtsRedimencion = (linea) => {
 	];
 	return vectorPuntosLinea;
 };
+// LINEA: MOVER
+const u_lineaMover = (linea, mouse) => {
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	linea.x_ini = linea.x_ini + recorrido_x;
+	linea.y_ini = linea.y_ini + recorrido_y;
+	linea.x_fin = linea.x_fin + recorrido_x;
+	linea.y_fin = linea.y_fin + recorrido_y;
+	return linea;
+};
+// LINEA: UPDATE ZISE
+const u_lineaUpdateZise = (linea, mouse) => {
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	switch (mouse.linea_pto) {
+		case 'ini':
+			linea.x_ini = linea.x_ini + recorrido_x;
+			linea.y_ini = linea.y_ini + recorrido_y;
+			break;
+		case 'fin':
+			linea.x_fin = linea.x_fin + recorrido_x;
+			linea.y_fin = linea.y_fin + recorrido_y;
+			break;
+		default:
+			console.log('ocurrio un error');
+			break;
+	}
+	return linea;
+};
+// LINEA: CLICK SOBRE ALGUN PUNTO PARA REDIMENCIONAR LA LINEA
+const u_lineaBuscaPtoClickParaRedimencionar= (x, y, lineaSelect) => {
+	let array = u_lineaGetPtsRedimencion(lineaSelect);
+	let resp = '';
+	if (
+		array[0].x1 < x &&
+		x < array[0].x2 &&
+		array[0].y1 < y &&
+		y < array[0].y2
+	)
+		resp = 'ini';
+	else if (
+		array[1].x1 < x &&
+		x < array[1].x2 &&
+		array[1].y1 < y &&
+		y < array[1].y2
+	)
+		resp = 'fin';
+	return resp;
+};
+// LINEA: GET
+const u_lineaGetClick = (array, x, y) => {
+	let resp = '';
+	array.forEach((elem) => {
+		if (elem.visible) {
+			let x1 = elem.x_ini;
+			let y1 = elem.y_ini;
+			let x2 = elem.x_fin;
+			let y2 = elem.y_fin;
+			// parte 1:
+			let a = y1 - y2;
+			let b = x2 - x1;
+			let c = y1 * (x1 - x2) - x1 * (y1 - y2);
+			let dnum = a * x + b * y + c;
+			dnum < 0 ? (dnum = dnum * -1) : '';
+			let dden = Math.sqrt(a * a + b * b);
+			let d = dnum / dden;
+			// parte 2:
+			let px = x1 + (x2 - x1) / 2;
+			let py = y1 + (y2 - y1) / 2;
+			let dis_valido = distancia_p1_p2(px, py, x2, y2);
+			let dis = distancia_p1_p2(px, py, x, y);
+			// sol:
+			if (d < 20 && dis < dis_valido) resp = elem;
+		}
+	});
+	return resp;
+};
+// LINEA: SI SE HIZO CLICK SOBRE UNA LINEA, PODREMOS EDITAR ZISE U MOVER
+const u_lineaClickSobreLinea = (lineaSelect, mouse) => {
+	if (lineaSelect) {
+		mouse.linea_mover = true;
+		mouse.linea_mover_pts = false;
+		mouse.linea_seleccionar_pts = true;
+	} else{
+		mouse.linea_mover = false;
+		mouse.linea_mover_pts = false;
+		mouse.linea_seleccionar_pts =false;
+	}
+}
+// LINEA: BUSCA LINEA PARA PODER MOVERLO O EDITAR SU TAMANO
+const u_lineaOpera = (lineaSelect, array, mouse) => {
+	if (mouse.linea_seleccionar_pts){
+		mouse.linea_pto = u_lineaBuscaPtoClickParaRedimencionar(
+			mouse.pos.x, mouse.pos.y, lineaSelect
+		);
+		if(mouse.linea_pto != '') {
+			mouse.linea_mover = false;
+			mouse.linea_mover_pts = true;
+		} else {
+			mouse.linea_mover = false;
+			mouse.linea_mover_pts = false; // move_size
+			mouse.linea_seleccionar_pts = false;
+		}
+	}
+	if (!mouse.linea_seleccionar_pts){
+		lineaSelect = u_lineaGetClick(array, mouse.pos.x, mouse.pos.y);
+		u_lineaClickSobreLinea(lineaSelect, mouse);
+	}
+	return lineaSelect;
+}
 // LINEA SEGMENTADO:
-const u_lineaSegmentado = (context, linea) => {
+const u_lineaBordeSegmentado = (context, linea) => {
 	context.strokeStyle = 'red'; // borde Color
 	context.lineWidth = 1; // borde grosor de linea
 	context.setLineDash([10, 4]); // lineas segmentadas
@@ -115,9 +208,6 @@ const u_lineaSegmentado = (context, linea) => {
 	let y_fin = linea.y_fin;
 	let inc = 20;
 	// ANGULO DE INCLINACION:
-	// P1(X1,Y1) Y P2(X2,Y2)
-	// ANGULO = TAN-1(m), M = PENDIENTE.
-	// m = (y2-y1)/(x2-x1)
 	let x1 = linea.x_ini;
 	let y1 = linea.y_ini;
 	let x2 = linea.x_fin;
@@ -157,45 +247,14 @@ const u_lineaSegmentado = (context, linea) => {
 		context.closePath();
 	});
 };
-// LINEA: MOVER
-const u_lineaMover = (linea, mouse) => {
-	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
-	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
-	linea.x_ini = linea.x_ini + recorrido_x;
-	linea.y_ini = linea.y_ini + recorrido_y;
-	linea.x_fin = linea.x_fin + recorrido_x;
-	linea.y_fin = linea.y_fin + recorrido_y;
-	return linea;
-};
-// LINEA: UPDATE ZISE
-const u_lineaUpdateZise = (linea, mouse) => {
-	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
-	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
-	switch (mouse.linea_pto) {
-		case 'ini':
-			linea.x_ini = linea.x_ini + recorrido_x;
-			linea.y_ini = linea.y_ini + recorrido_y;
-			break;
-		case 'fin':
-			linea.x_fin = linea.x_fin + recorrido_x;
-			linea.y_fin = linea.y_fin + recorrido_y;
-			break;
-		default:
-			console.log('ocurrio un error');
-			break;
-	}
-	return linea;
-};
-
 export {
-	utilsLinea_graficaLinea,
-	utilsLinea_graficaLineaHistoria,
 	u_lineaDeleteById,
 	u_lineaGraficaH,
 	u_lineaGet,
 	u_lineaGrafica,
 	u_lineaGetPtsRedimencion,
-	u_lineaSegmentado,
 	u_lineaMover,
 	u_lineaUpdateZise,
+	u_lineaOpera,
+	u_lineaBordeSegmentado
 };

@@ -8,17 +8,17 @@ import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextPlano from '../context/AppContextPlano';
 
 // utils:
-import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
-import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
+import { utilsCuadricula_graficaCuadricula } from './Grid/UtilsCuadricula';
+import { utilsCuadrado_graficaCuadradoHistoria } from './Square/UtilsCuadrado';
+import { utilsLinea_graficaLineaHistoria } from './Line/UtilsLinea';
+import { utilsLapiz_graficaLapizHistoria } from './Pencil/UtilsLapiz';
 
 import {
 	uPlano_graficaCuadrado,
 	uPlano_graficaCuadradoConEjes,
 	uPlano_graficaCuadradoHistoria,
 	u_planoGraficaH,
-} from '../utils/UtilsPlano';
+} from './Plano/UtilsPlano';
 
 const PaintPlano = (id_canvas) => {
 	// useContext:

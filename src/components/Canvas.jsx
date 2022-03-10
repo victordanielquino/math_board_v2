@@ -7,15 +7,16 @@ import AppContextCanvas from '../context/AppContextCanvas';
 import '../styles/Canvas.scss';
 
 // components:
-import PaintMover from './PaintMover';
-import PainLapiz from '../components/PaintLapiz';
-import PaintBorrador from './PaintBorrador';
-import PaintLinea from './PaintLinea';
-import PaintCuadrado from './PaintCuadrado';
-import PaintCuadricula from './PaintCuadricula';
-import PaintPlano from './PaintPlano';
-import PaintCirculo from './PaintCirculo';
-import PaintTriangulo from './PaintTriangulo';
+import PaintMover from './Move/PaintMover';
+import PainLapiz from './Pencil/PaintLapiz';
+import PaintBorrador from './Eraser/PaintBorrador';
+import PaintLinea from './Line/PaintLinea';
+import PaintCuadrado from './Square/PaintCuadrado';
+import PaintCuadricula from './Grid/PaintCuadricula';
+import PaintPlano from './Plano/PaintPlano';
+import PaintCirculo from './Circle/PaintCirculo';
+import PaintTriangulo from './Triangle/PaintTriangulo';
+import PaintImagen from "./PaintImagen";
 
 const Canvas = () => {
 	// useContext:
@@ -37,6 +38,7 @@ const Canvas = () => {
 	PaintPlano('canvas-1');
 	PaintCirculo('canvas-1');
 	PaintTriangulo('canvas-1');
+	PaintImagen('canvas-1');
 
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 75);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 90);

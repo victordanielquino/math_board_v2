@@ -17,9 +17,11 @@ const initialState = {
 		'ZXCVBNM,'.split(''),
 	],
 	active: '',
+	activePrev: '',
 	color: 'red',
 	colorFondo: 'yellow',
 	grosor: 2,
+	elmSelect: false,
 };
 const useInitialState = () => {
 	const [state, setState] = useState(initialState);
@@ -102,6 +104,12 @@ const useInitialState = () => {
 					active: 'trianguloIcon',
 				});
 				break;
+			case 'imagenIcon':
+				setState({
+					...state,
+					active: 'imagenIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;
@@ -125,6 +133,20 @@ const useInitialState = () => {
 			colorFondo: valor,
 		});
 	};
+	const setElmSelect = (boolean) => {
+		setState({
+			...state,
+			elmSelect: boolean
+		});
+	}
+	const s_setActiveActivePrev = (optionIcon, optionIconPrev) => {
+		setState({
+			...state,
+			active: optionIcon,
+			activePrev: optionIconPrev,
+		});
+	}
+
 
 	return {
 		state,
@@ -134,6 +156,8 @@ const useInitialState = () => {
 		updateColor,
 		updateColorFondo,
 		updateGrosor,
+		setElmSelect,
+		s_setActiveActivePrev,
 	};
 };
 

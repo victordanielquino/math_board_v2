@@ -1,5 +1,5 @@
 // TEXTO: GRAFICA
-import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "./UtilsCirculo";
+import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "../components/Circle/UtilsCirculo";
 
 const u_textGrafica = (context, obj) => {
 	context.fillStyle = obj.color;
@@ -56,7 +56,7 @@ const u_textGetClick = (array, x, y) => {
 	});
 	return resp;
 };
-// LAPIZ: SI SE HIZO CLICK SOBRE UN LAPIZ, PODREMOS MOVER
+// TEXT: SI SE HIZO CLICK SOBRE UN LAPIZ, PODREMOS MOVER
 const u_textClickSobreText = (textSelect, mouse) => {
 	(textSelect) ? mouse.text_mover = true : mouse.text_mover = false;
 }

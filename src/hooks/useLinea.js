@@ -4,6 +4,8 @@ const initialStateLinea = {
 	color: 'black',
 	grosor: 2,
 	id: 0,
+	type: 'line',
+	segment: false,
 	historiaLinea: [],
 };
 
@@ -63,6 +65,18 @@ const useLinea = () => {
 			historiaLinea: array,
 		});
 	};
+	const s_lineSetType = (lineType) => {
+		setStateLinea({
+			...stateLinea,
+			type: lineType,
+		});
+	};
+	const s_lineSetSegment = (boolean) => {
+		setStateLinea({
+			...stateLinea,
+			segment: boolean,
+		});
+	};
 
 	return {
 		stateLinea,
@@ -74,6 +88,8 @@ const useLinea = () => {
 		updateLineaColorGrosor,
 		s_lineaUpdateH,
 		s_lineaAddHId,
+		s_lineSetType,
+		s_lineSetSegment
 	};
 };
 

@@ -11,6 +11,7 @@ import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
 import AppContextTriangulo from "../context/AppContextTriangulo";
+import AppContextImagen from "../context/AppContextImagen";
 
 import Keyboard from '../containers/Keyboard';
 
@@ -28,7 +29,7 @@ import cuadradoIcon from '../assets/icons/square.svg';
 import lineaIcon from '../assets/icons/linea.svg';
 import funcionIcon from '../assets/icons/function1.svg';
 import sumatoriaIcon from '../assets/icons/sumatoria1.svg';
-import imageIcon from '../assets/icons/image1.svg';
+import imagenIcon from '../assets/icons/image1.svg';
 import circuloIcon from '../assets/icons/circle.svg';
 import cuadriculaIcon from '../assets/icons/cuadricula.svg';
 import keyboardIcon from '../assets/icons/keyboard1.svg';
@@ -36,7 +37,7 @@ import trianguloIcon from '../assets/icons/triangle.svg';
 
 const NavIzq = () => {
 	// useContext:
-	const { state, updateCanvasPaleta } = useContext(AppContext);
+	const { state, updateCanvasPaleta , s_setActiveActivePrev} = useContext(AppContext);
 	const { updateMoverActive } = useContext(AppContextMover);
 	const { updateLapizActive } = useContext(AppContextLapiz);
 	const { updateBorradorActive } = useContext(AppContextBorrador);
@@ -47,6 +48,7 @@ const NavIzq = () => {
 	const { updateTextActive } = useContext(AppContextText);
 	const { updateCirculoActive } = useContext(AppContextCirculo);
 	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
+	const { s_imagenUpdateActive } = useContext(AppContextImagen);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -62,7 +64,7 @@ const NavIzq = () => {
 		[circuloIcon, 'circuloIcon'],
 		// [calculadoraIcon, 'calculadoraIcon'],
 		[trianguloIcon, 'trianguloIcon'],
-		// [imageIcon, 'imageIcon'],
+		[imagenIcon, 'imagenIcon'],
 		// [zoomInIcon, 'zoomInIcon'],
 		// [zoomOutIcon, 'zoomOutIcon'],
 		[planoIcon, 'planoIcon'],
@@ -74,133 +76,103 @@ const NavIzq = () => {
 		// HOOKS - useInitialState:
 		updateCanvasPaleta(icon);
 
+		updateMoverActive(false);
+		updateLapizActive(false);
+		updateBorradorActive(false);
+		updateLineaActive(false);
+		updateCuadradoActive(false);
+		updatePlanoActive(false);
+		updateCuadriculaActive(false);
+		updateTextActive(false);
+		updateCirculoActive(false);
+		s_trianguloUpdateActive(false);
+		s_imagenUpdateActive(false);
 		// HOOKS - useLapiz:
 		switch (icon) {
 			case 'moverIcon':
 				updateMoverActive(true);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'lapizIcon':
-				updateMoverActive(false);
 				updateLapizActive(true);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'borradorIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
 				updateBorradorActive(true);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'lineaIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
 				updateLineaActive(true);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'cuadradoIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
 				updateCuadradoActive(true);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'planoIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
 				updatePlanoActive(true);
-				updateCuadriculaActive(true);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'cuadriculaIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
 				updateCuadriculaActive(true);
-				updateTextActive(false);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'textIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
 				updateTextActive(true);
-				updateCirculoActive(false);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'circuloIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
 				updateCirculoActive(true);
-				s_trianguloUpdateActive(false);
 				break;
 			case 'trianguloIcon':
-				updateMoverActive(false);
-				updateLapizActive(false);
-				updateBorradorActive(false);
-				updateLineaActive(false);
-				updateCuadradoActive(false);
-				updatePlanoActive(false);
-				updateCuadriculaActive(false);
-				updateTextActive(false);
-				updateCirculoActive(false);
 				s_trianguloUpdateActive(true);
+				break;
+			case 'imagenIcon':
+				s_imagenUpdateActive(true);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');
 				break;
 		}
 	};
+
+	const updateIcon = (icon, boolean) => {
+		switch (icon) {
+			case 'moverIcon':
+				updateMoverActive(boolean);
+				break;
+			case 'lapizIcon':
+				updateLapizActive(boolean);
+				break;
+			case 'borradorIcon':
+				updateBorradorActive(boolean);
+				break;
+			case 'lineaIcon':
+				updateLineaActive(boolean);
+				break;
+			case 'cuadradoIcon':
+				updateCuadradoActive(boolean);
+				break;
+			case 'planoIcon':
+				updatePlanoActive(boolean);
+				break;
+			case 'cuadriculaIcon':
+				updateCuadriculaActive(boolean);
+				break;
+			case 'textIcon':
+				updateTextActive(boolean);
+				break;
+			case 'circuloIcon':
+				updateCirculoActive(boolean);
+				break;
+			case 'trianguloIcon':
+				s_trianguloUpdateActive(boolean);
+				break;
+			case 'imagenIcon':
+				s_imagenUpdateActive(boolean);
+				break;
+			default:
+				console.log('Opcion no registrada!!!');
+				break;
+		}
+	};
+	const handleIcon2 = (icon) => {
+		let activePrev = state.active;
+		let active = icon;
+		s_setActiveActivePrev(active, activePrev);
+	}
 
 	// useEffect:
 	useEffect(() => {
@@ -218,6 +190,11 @@ const NavIzq = () => {
 			//console.log('return useEffect: [state]');
 		};
 	}, [state]);
+	useEffect(() => {
+		console.log('ue NavIzq:',state);
+		updateIcon(state.activePrev, false);
+		updateIcon(state.active, true);
+	}, [state.active])
 
 	return (
 		<nav className="navIzq__nav">
@@ -225,7 +202,7 @@ const NavIzq = () => {
 				{iconosPaleta.map((elem) => (
 					<img
 						src={elem[0]}
-						onClick={() => handleIcon(elem[1])}
+						onClick={() => handleIcon2(elem[1])}
 						key={elem[1]}
 						id={elem[1]}
 					/>

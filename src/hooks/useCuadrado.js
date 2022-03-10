@@ -1,6 +1,7 @@
 import { useState } from 'react';
 const initialStateCuadrado = {
 	active: false,
+	edit: true,
 	id: 0,
 	bordeEstado: true, // si tendra borde
 	bordeGrosor: 5,

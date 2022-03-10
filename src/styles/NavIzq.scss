@@ -39,6 +39,7 @@
 		width: 25px;
 		cursor: pointer;
 		padding: 5px;
+		user-select: none;
 	}
 	div img:hover {
 		background-color: var(--greiTipo0_3);

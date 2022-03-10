@@ -5,9 +5,9 @@ import AppContextCirculo from "../context/AppContextCirculo";
 // styles:
 import '../styles/MenuCirculo.scss';
 // components:
-import PaletaGrosor from '../components/PaletaGrosor';
-import PaletaColorBorde from '../components/PaletaColor';
-import PaletaColorFondo from '../components/PaletaColor';
+import PaletaGrosor from '../components/PaletaGrosor/PaletaGrosor';
+import PaletaColorBorde from '../components/PaletaColor/PaletaColor';
+import PaletaColorFondo from '../components/PaletaColor/PaletaColor';
 
 const MenuCirculo = () => {
     // useContext:

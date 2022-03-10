@@ -12,9 +12,10 @@ import MenuBorrador from '../containers/MenuBorrador';
 import MenuCuadrado from '../containers/MenuCuadrado';
 import MenuCuadricula from '../containers/MenuCuadricula';
 import MenuLinea from '../containers/MenuLinea';
-import MenuText from '../containers/MenuText';
+import MenuText from '../containers/MenuText/MenuText';
 import MenuCirculo from "../containers/MenuCirculo";
 import MenuTriangulo from "../containers/MenuTriangulo";
+import MenuImagen from "../containers/MenuImagen";
 
 // context:
 import AppContext from '../context/AppContext';
@@ -38,6 +39,7 @@ const Header = () => {
 	const [toggleMenuText, setToggleMenuText] = useState(false);
 	const [toggleMenuCirculo, setToggleMenuCirculo] = useState(false);
 	const [toggleMenuTriangulo, setToggleMenuTriangulo] = useState(false);
+	const [toggleMenuImagen, setToggleMenuImagen] = useState(false);
 
 	// useEffect:
 	useEffect(() => {
@@ -52,6 +54,7 @@ const Header = () => {
 		setToggleMenuText(false);
 		setToggleMenuCirculo(false);
 		setToggleMenuTriangulo(false);
+		setToggleMenuImagen(false);
 		switch (state.active) {
 			case 'moverIcon':
 				setToggleMenuMover(true);
@@ -83,6 +86,9 @@ const Header = () => {
 			case 'trianguloIcon':
 				setToggleMenuTriangulo(true);
 				break;
+			case 'imagenIcon':
+				setToggleMenuImagen(true);
+				break;
 			default:
 				setToggleMenu1(true);
 				break;
@@ -109,6 +115,7 @@ const Header = () => {
 				{toggleMenuText && <MenuText />}
 				{toggleMenuCirculo && <MenuCirculo />}
 				{toggleMenuTriangulo && <MenuTriangulo />}
+				{toggleMenuImagen && <MenuImagen />}
 			</div>
 			<div className="navbar-right">
 				<ul>

@@ -13,6 +13,7 @@ import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
 import AppContextTriangulo from "../context/AppContextTriangulo";
+import AppContextImagen from "../context/AppContextImagen";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -26,6 +27,7 @@ import usePlano from '../hooks/usePlano';
 import useText from '../hooks/useText';
 import useCirculo from "../hooks/useCirculo";
 import useTriangulo from "../hooks/useTriangulo";
+import useImagen from "../hooks/useImagen";
 
 import Layout from '../containers/Layout';
 import Home from '../pages/Home';
@@ -43,12 +45,13 @@ const App = () => {
 	const initialStateText = useText();
 	const initialStateCirculo = useCirculo();
 	const initialStateTriangulo = useTriangulo();
-
+	const initialStateImagen = useImagen();
 
 	return (
 		<AppContext.Provider value={initialState}>
+			<AppContextMover.Provider value={initialStateMover}>
 			<AppContextCanvas.Provider value={initialStateCanvas}>
-				<AppContextMover.Provider value={initialStateMover}>
+
 					<AppContextLapiz.Provider value={initialStateLapiz}>
 						<AppContextBorrador.Provider value={initialStateBorrador}>
 							<AppContextCuadrado.Provider value={initialStateCuadrado}>
@@ -57,13 +60,17 @@ const App = () => {
 										<AppContextText.Provider value={initialStateText}>
 											<AppContextCirculo.Provider value={initialStateCirculo}>
 												<AppContextTriangulo.Provider value={initialStateTriangulo}>
-													<BrowserRouter>
-														<Layout>
-															{/* <Routes>
-																<Route exact path="/" element={<Home />} />
-															</Routes> */}
-														</Layout>
-													</BrowserRouter>
+													<AppContextImagen.Provider value={initialStateImagen}>
+
+															<BrowserRouter>
+																<Layout>
+																	{/* <Routes>
+																	<Route exact path="/" element={<Home />} />
+																</Routes> */}
+																</Layout>
+															</BrowserRouter>
+
+													</AppContextImagen.Provider>
 												</AppContextTriangulo.Provider>
 											</AppContextCirculo.Provider>
 										</AppContextText.Provider>
@@ -72,8 +79,9 @@ const App = () => {
 							</AppContextCuadrado.Provider>
 						</AppContextBorrador.Provider>
 					</AppContextLapiz.Provider>
-				</AppContextMover.Provider>
+
 			</AppContextCanvas.Provider>
+			</AppContextMover.Provider>
 		</AppContext.Provider>
 	);
 };

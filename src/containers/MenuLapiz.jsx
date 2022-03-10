@@ -5,8 +5,8 @@ import AppContext from '../context/AppContext';
 import AppContextLapiz from '../context/AppContextLapiz';
 
 // components:
-import PaletaColor from '../components/PaletaColor';
-import PaletaGrosor from '../components/PaletaGrosor';
+import PaletaColor from '../components/PaletaColor/PaletaColor';
+import PaletaGrosor from '../components/PaletaGrosor/PaletaGrosor';
 
 // styles:
 import '../styles/MenuLapiz.scss';
@@ -14,7 +14,7 @@ import '../styles/MenuLapiz.scss';
 const MenuLapiz = () => {
 	// useContext:
 	const { state } = useContext(AppContext);
-	const { updateLapizColorGrosor } = useContext(AppContextLapiz);
+	const { updateLapizColorGrosor, stateLapiz } = useContext(AppContextLapiz);
 
 	// LOGICA:
 
@@ -22,11 +22,9 @@ const MenuLapiz = () => {
 
 	// useEffect:
 	useEffect(() => {
+		//console.log('ue MenuLapiz.jsx');
 		updateLapizColorGrosor(state.color, state.grosor);
 	}, [state]);
-	useEffect(() => {
-		//console.log('STATE LAPIZ:', stateLapiz);
-	}, []);
 
 	return (
 		<article className="article__menuLapiz">

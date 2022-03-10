@@ -1,6 +1,8 @@
 import { useState } from 'react';
 const initialStateMover = {
 	active: false,
+	selectElm: false,
+	obj: {},
 };
 
 const useMover = () => {
@@ -12,9 +14,32 @@ const useMover = () => {
 			active: valor,
 		});
 	};
+	const setSelectElm = (boolean) => {
+		setStateMover({
+			...stateMover,
+			selectElm: boolean,
+		});
+	}
+	const setObj = (obj) => {
+		setStateMover({
+			...stateMover,
+			obj: obj,
+		});
+	}
+	const setSelectElmObj = (boolean, obj) => {
+		setStateMover({
+			...stateMover,
+			selectElm: boolean,
+			obj: obj,
+		});
+	}
+
 	return {
 		stateMover,
 		updateMoverActive,
+		setSelectElm,
+		setObj,
+		setSelectElmObj,
 	};
 };
 

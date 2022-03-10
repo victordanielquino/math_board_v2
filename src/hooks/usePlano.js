@@ -1,6 +1,8 @@
 import { useState } from 'react';
 const initialStatePlano = {
 	active: false,
+	visible: true,
+	edit: true,
 	id: 0,
 	x_min: -7,
 	y_max: 5,

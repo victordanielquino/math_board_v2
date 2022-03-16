@@ -4,13 +4,55 @@ import React, { useEffect, useContext } from 'react';
 import AppContextLapiz from '../../context/AppContextLapiz';
 
 // UTILS:
-import { u_lapizGraficaLinea } from './UtilsLapiz';
+import {u_lapizGraficaH, u_lapizGraficaLinea} from './UtilsLapiz';
+import AppContextCanvas from "../../context/AppContextCanvas";
+import AppContextLinea from "../../context/AppContextLinea";
+import AppContextPlano from "../../context/AppContextPlano";
+import AppContextText from "../../context/AppContextText";
+import AppContextCirculo from "../../context/AppContextCirculo";
+import AppContextTriangulo from "../../context/AppContextTriangulo";
+import AppContextCuadrado from "../../context/AppContextCuadrado";
+import AppContextImagen from "../../context/AppContextImagen";
+import {utilsCuadricula_graficaCuadricula} from "../Grid/UtilsCuadricula";
+import {u_planoGraficaH} from "../Plano/UtilsPlano";
+import {u_imagenGraficaH} from "../../utils/UtilsImagen";
+import {u_cuadradoGraficaH} from "../Square/UtilsCuadrado";
+import {u_circuloGraficaH} from "../Circle/UtilsCirculo";
+import {u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
+import {u_lineaGraficaH} from "../Line/UtilsLinea";
+import {u_textGraficaH} from "../Text/UtilsText";
 
 const PaintLapiz = (id_canvas) => {
 	// useContext:
 	const { stateLapiz, s_lapizAddHId } = useContext(AppContextLapiz);
+	const { stateCanvas } = useContext(AppContextCanvas);
+	const { stateLinea } = useContext(AppContextLinea);
+	const { statePlano } = useContext(AppContextPlano);
+	const { stateText } = useContext(AppContextText);
+	const { stateCirculo } = useContext(AppContextCirculo);
+	const { stateTriangulo } = useContext(AppContextTriangulo);
+	const { stateCuadrado } = useContext(AppContextCuadrado);
+	const { stateImagen } = useContext(AppContextImagen);
 
 	// LOGICA:
+	const paint = async () => {
+		console.log('PaintLapiz.jsx');
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
+		try {
+			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
+			await u_imagenGraficaH(context, stateImagen.historiaImagen);
+			u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+			u_circuloGraficaH(context, stateCirculo.historiaCirculo);
+			u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
+			u_lineaGraficaH(context, stateLinea.historiaLinea);
+			u_textGraficaH(context, stateText.historiaText);
+			u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		} catch (e) {
+			console.log(e.message);
+		}
+	}
 	let canvas = '';
 	let context = '';
 	const lapizNew = {
@@ -97,6 +139,15 @@ const PaintLapiz = (id_canvas) => {
 	// LOGICA END.
 
 	// useEffect:
+	useEffect(() => {
+		if (stateLapiz.active){
+			console.log('stateLapiz: active');
+			paint();
+		} else {
+			console.log('no active');
+		}
+	}, [stateLapiz.active]);
+
 	useEffect(() => {
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');

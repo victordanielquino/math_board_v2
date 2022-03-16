@@ -18,7 +18,7 @@ import { u_cuadradoGraficaH } from './Square/UtilsCuadrado';
 import { u_lineaGraficaH } from './Line/UtilsLinea';
 import { u_lapizGraficaH } from './Pencil/UtilsLapiz';
 import { u_planoGraficaH } from './Plano/UtilsPlano';
-import { u_textGraficaH } from '../utils/UtilsText';
+import { u_textGraficaH } from './Text/UtilsText';
 import { u_circuloGraficaH } from "./Circle/UtilsCirculo";
 import { u_trianguloGraficaH } from "./Triangle/UtilsTriangulo";
 import { u_imagenGraficaH, getBase64 } from "../utils/UtilsImagen";
@@ -39,6 +39,9 @@ const PaintImagen = (id_canvas) => {
     let canvas = '';
     let context = '';
     const paint = async () => {
+        console.log('PaintImage.jsx');
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
         try {
             utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
             u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -57,9 +60,9 @@ const PaintImagen = (id_canvas) => {
     // useEffect:
     useEffect(() => {
         console.log('ue PaintImage.jsx');
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-    }, [stateImagen]);
+        stateImagen.active ? paint():'';
+    }, [stateImagen.active]);
+
     useEffect(async () => {
         stateImagen.historiaImagen.length > 0 ? await paint():'';
     }, [stateImagen.historiaImagen]);

@@ -31,7 +31,13 @@ import {Button} from "@mui/material";
 const MenuLinea = () => {
 	// useContext:
 	const { state } = useContext(AppContext);
-	const { updateLineaColorGrosor , s_lineSetType, s_lineSetSegment, stateLinea} = useContext(AppContextLinea);
+	const {
+		stateLinea,
+		s_lineSetType,
+		s_lineSetSegment,
+		h_lineaSetColorGrosor,
+		h_lineaSetColor,
+		h_lineaSetGrosor} = useContext(AppContextLinea);
 
 	// USESTATE:
 	const [variantLine, setVariantLine] = useState('outlined'); // variant: outlined, contained
@@ -123,13 +129,17 @@ const MenuLinea = () => {
 
 	// useEffect:
 	useEffect(() => {
-		//console.log('ue MenuLinea.jsx');
-		updateLineaColorGrosor(state.color, state.grosor);
-	}, [stateLinea.active]);
+		stateLinea.active ? h_lineaSetColor(state.color):'';
+	}, [state.color]);
+
+	useEffect(() => {
+		stateLinea.active ? h_lineaSetGrosor(state.grosor):'';
+	}, [state.grosor]);
 
 	useEffect(() => {
 		iniciaBtnTypeLine(stateLinea.type);
 		iniciaBtnSegmentLine(stateLinea.segment);
+		h_lineaSetColorGrosor(state.color, state.grosor);
 	}, []);
 
 	return (

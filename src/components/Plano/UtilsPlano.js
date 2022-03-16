@@ -114,24 +114,28 @@ const ejeCordenadaY = (context, plano) => {
 const uPlano_graficaNumeros = (context, plano, array_x, array_y, array_x_num, array_y_num) => {
 	// NUMEROS EN EJE X y Y:
 	context.fillStyle = 'black'; //color de relleno
-	context.font = '11px arial'; //estilo de texto
+	context.font = '12px arial'; //estilo de texto
+	context.textAlign = 'start';
+	context.textBaseline = 'bottom';
 	context.beginPath(); //iniciar ruta
 	for(let i = 0; i< array_x.length; i++){
 		(array_x_num[i] != 0) ?
-			context.fillText(array_x_num[i], array_x[i]-3, plano.k+12):
-			context.fillText(array_x_num[i], array_x[i]-10, plano.k+12);
+			context.fillText(array_x_num[i], array_x[i]-3, plano.k+20):
+			context.fillText(array_x_num[i], array_x[i]-10, plano.k+20);
 	}
+	context.textAlign = 'end';
 	for(let i = 0; i< array_y.length; i++){
 		(array_y_num[i] != 0) ?
-			context.fillText(array_y_num[i]* -1, plano.h-12, array_y[i]+3):
+			context.fillText(array_y_num[i]* -1, plano.h-5, array_y[i]+7):
 			'';
 	}
 	context.closePath();
 
 	context.textAlign = 'start';
+	context.textBaseline = 'bottom';
 	context.beginPath(); //iniciar ruta
-	context.fillText('Y', plano.h + 5, plano.y_ini+15);
-	context.fillText('X', plano.x_fin-15, plano.k-3);
+	context.fillText('Y', plano.h + 10, plano.y_ini+20);
+	context.fillText('X', plano.x_fin-20, plano.k-3);
 	context.closePath();
 };
 const uPlano_graficaCuadradoConEjes = (context, plano) => {
@@ -211,15 +215,33 @@ const u_planoGet = (array, x, y) => {
 	});
 	return resp;
 };
+// PLANO: GET ID
+const u_planoGetId = (array, x, y) => {
+	let resp = '';
+	let id = -1;
+	array.forEach((plano) => {
+		if (plano.visible && plano.edit) {
+			plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
+				? (resp = plano)
+				: '';
+		}
+	});
+	resp !== '' ? id = resp.id:'';
+	return id;
+};
 // PLANO: GRAFICA PLANO
 const u_planoGraficaH = (context, array) => {
 	array.forEach((element) => uPlano_graficaCuadradoConEjes(context, element));
 };
 // PLANO: DELETE POR ID
 const u_planoDeleteById = (array, id) => {
-	array.forEach((element) => {
+	/*array.forEach((element) => {
 		element.id == id ? (element.visible = false) : '';
-	});
+	});*/
+	let newArray = [];
+	for(let elm of array)
+		elm.id !== id ? newArray.push(elm):'';
+	return newArray;
 };
 // PLANO: CUADRADOS PEQUEÑOS REDIMENCIONAR PLANO
 const u_planoGetPtsRedimencion = (cuadrado) => {
@@ -456,5 +478,6 @@ export {
 	u_planoGetPtsRedimencion,
 	u_planoUpdateZise,
 	u_planoOpera,
-	u_planoBordeSegmentado
+	u_planoBordeSegmentado,
+	u_planoGetId
 };

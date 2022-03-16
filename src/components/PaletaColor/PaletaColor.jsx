@@ -24,12 +24,12 @@ const PaletaColor = (value) => {
 		arrayPaletaColor.forEach((dato) =>
 			document.getElementById(dato.id).classList.remove('activePaletaColor')
 		);
-		let elem = arrayPaletaColor.find((elem) => elem.colorLine == color);
+		let elem = arrayPaletaColor.find((elem) => elem.colorLine === color);
 		document.getElementById(elem.id).classList.add('activePaletaColor');
 	};
 	const handlePaletaColor = (color) => {
 		updatePaletaColor(color);
-		value.tipo == 'linea'
+		value.tipo === 'linea'
 			? updateColor(color) // CONTEXT COLOR
 			: updateColorFondo(color); // CONTEXT colorFondo
 	};
@@ -38,10 +38,10 @@ const PaletaColor = (value) => {
 	// useEffect:
 	useEffect(() => {
 		// se ejecuta solo la 1ra vez que se carga el componente.
-		value.tipo == 'linea'
+		value.tipo === 'linea'
 			? updatePaletaColor(state.color)
 			: updatePaletaColor(state.colorFondo);
-	}, [updateColor, updateColorFondo]);
+	}, []);
 
 	return (
 		<div className="article__menuLapiz__paletaColor">

@@ -17,7 +17,7 @@ import { u_cuadradoGraficaH } from '../Square/UtilsCuadrado';
 import { u_lineaGraficaH } from '../Line/UtilsLinea';
 import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
 import { u_planoGraficaH, uPlano_graficaCuadradoConEjes } from './UtilsPlano';
-import { u_textGraficaH } from '../../utils/UtilsText';
+import { u_textGraficaH } from '../Text/UtilsText';
 import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
 import { u_imagenGraficaH } from "../../utils/UtilsImagen";
@@ -37,6 +37,8 @@ const PaintPlano = (id_canvas) => {
 	// LOGICA:
 	const paint = async () => {
 		console.log('PaintPlano');
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
 		try {
 			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -83,8 +85,8 @@ const PaintPlano = (id_canvas) => {
 		y_ini: 0,
 		x_fin: 0,
 		y_fin: 0,
-		x_min: -5,
-		y_max: 5,
+		x_min: -3,
+		y_max: 3,
 		salto: statePlano.salto,
 	};
 	let captura_Pos_Posprev = (e) => {
@@ -158,6 +160,10 @@ const PaintPlano = (id_canvas) => {
 	useEffect(async () => {
 		statePlano.historiaPlano.length > 0 ? await paint():'';
 	}, [statePlano.historiaPlano]);
+	useEffect(() => {
+		console.log('ue PaintPlano.jsx');
+		statePlano.active ? paint():'';
+	}, [statePlano.active]);
 };
 
 export default PaintPlano;

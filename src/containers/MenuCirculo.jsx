@@ -24,7 +24,7 @@ const MenuCirculo = () => {
     // LOGICA:
     const handleRadio = (op) => {
         let valor = parseInt(document.getElementById('circulo_radio').value);
-        op == '+' ? (valor = valor + 5) : (valor = valor - 5);
+        op === '+' ? (valor = valor + 5) : (valor = valor - 5);
         if (valor < 5) {
             valor = 5;
         } else {
@@ -44,23 +44,16 @@ const MenuCirculo = () => {
     // LOGICA END
 
     // useEffect:
-    useEffect(() => {
-        // solo 1 vez al cargar el componente:
-    }, []);
-    useEffect(() => {
-        // solo cuando se modifica [stateCuadrado]:
-    }, [stateCirculo]);
 
     useEffect(() => {
-        // se ejecuta cada vez que se modifica el state.color
-        s_circuloUpdateBordeColorEstado(state.color, state.color != 'white');
+        s_circuloUpdateBordeColorEstado(state.color, state.color !== 'white');
     }, [state.color]);
 
     useEffect(() => {
         // se ejecuta cada vez que se modifica el state
         s_circuloUpdateFondoColorEstado(
             state.colorFondo,
-            state.colorFondo != 'white'
+            state.colorFondo !== 'white'
         );
     }, [state.colorFondo]);
 
@@ -73,11 +66,16 @@ const MenuCirculo = () => {
             state.color,
             state.colorFondo,
             state.grosor,
-            state.color != 'white',
-            state.colorFondo != 'white'
+            state.color !== 'white',
+            state.colorFondo !== 'white'
         );
         document.getElementById('circulo_radio').value = stateCirculo.radioX;
     }, []);
+
+    /*useEffect(() => {
+        console.log('radio:',stateCirculo.radioX)
+    }, [stateCirculo.radioX]);*/
+
     return (
         <article className="article__menuCirculo">
             <div className="article__menuCirculo__radio">

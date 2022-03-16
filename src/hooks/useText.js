@@ -2,12 +2,21 @@ import { useState } from 'react';
 const initialStateText = {
 	active: false,
 	id: 0,
-	tamano: 20,
-	texto: 'new text',
 	x_ini: 0,
 	y_ini: 0,
-	salto: 1,
-	color: 'black',
+	x_fin: 0,
+	y_fin: 0,
+	fontAlign: 'start',	// startr, end
+	fontBaseline: 'top', // top, bottom
+	fontColor: 'black',
+	fontBold: '',
+	fontItalic: '',
+	fontUnderL: '',
+	fontTypografia: 'helvatica',
+	fontSize: 20,
+	fontText: 'new text',
+	fontFocus: false,
+	textSelect: {},
 	historiaText: [],
 };
 
@@ -26,39 +35,132 @@ const useText = () => {
 			historiaText: [...stateText.historiaText, valor],
 		});
 	};
-	const s_textAddHId = (valor, id) => {
+	const s_textAddHId = (text, id) => {
 		setStateText({
 			...stateText,
 			id: id,
-			historiaText: [...stateText.historiaText, valor],
+			historiaText: [...stateText.historiaText, text],
 		});
 	};
-	const s_textUpdateColor = (color) => {
+
+	const h_textSetColor = (color) => {
 		setStateText({
 			...stateText,
-			color: color,
+			fontColor: color,
 		});
 	};
-	const s_textUpdateTamano = (tamano) => {
+	const h_textSetBold = (bold) => {
 		setStateText({
 			...stateText,
-			tamano: tamano,
+			fontBold: bold,
 		});
 	};
-	const s_textUpdateText = (txt) => {
+	const h_textSetItalic = (italic) => {
 		setStateText({
 			...stateText,
-			texto: txt,
+			fontItalic: italic,
 		});
 	};
+	const h_textSetUnderL = (underL) => {
+		setStateText({
+			...stateText,
+			fontUnderL: underL,
+		});
+	};
+	const h_textSetTypografia = (typografia) => {
+		setStateText({
+			...stateText,
+			fontTypografia: typografia,
+		});
+	};
+	const h_textSetSize = (size) => {
+		setStateText({
+			...stateText,
+			fontSize: size,
+		});
+	};
+	const h_textSetText = (text) => {
+		setStateText({
+			...stateText,
+			fontText: text,
+		});
+	};
+	const h_textSetFocus = (focus) => {
+		setStateText({
+			...stateText,
+			fontFocus: focus,
+		});
+	};
+	const h_textSetAll = (
+		x_ini, y_ini, color, focus, text
+	) => {
+		setStateText({
+			...stateText,
+			x_ini: x_ini,
+			y_ini: y_ini,
+			fontColor: color,
+			fontFocus: focus,
+			fontText: text,
+		});
+	}
+	const h_textAddHIdFocus = (text, id, boolean) => {
+		setStateText({
+			...stateText,
+			historiaText: [...stateText.historiaText, text],
+			id: id,
+			fontFocus: boolean,
+		});
+	};
+	const h_textSetH = (newHistoria) => {
+		setStateText({
+			...stateText,
+			historiaText: newHistoria,
+		});
+	};
+	const h_textDeleteId = (id) => {
+		let newArray = [];
+		for (let elm of stateText.historiaText)
+			elm.id !== id ? newArray.push(elm):'';
+		setStateText({
+			...stateText,
+			historiaText: newArray,
+		});
+	};
+	const h_textSetReset = () => {
+		setStateText({
+			...stateText,
+			active: false,
+			fontColor: 'black',
+			fontBold: '',
+			fontItalic: '',
+			fontUnderL: '',
+			fontTypografia: 'helvatica',
+			fontSize: 30,
+			fontText: 'new text',
+			fontFocus: false,
+			textSelect: {},
+		});
+	}
+
 	return {
 		stateText,
 		updateTextActive,
 		s_textAddH,
-		s_textUpdateColor,
-		s_textUpdateTamano,
-		s_textUpdateText,
 		s_textAddHId,
+
+		h_textSetColor,
+		h_textSetBold,
+		h_textSetItalic,
+		h_textSetUnderL,
+		h_textSetTypografia,
+		h_textSetSize,
+		h_textSetText,
+		h_textSetFocus,
+		h_textSetAll,
+		h_textAddHIdFocus,
+		h_textSetReset,
+		h_textSetH,
+		h_textDeleteId
 	};
 };
 

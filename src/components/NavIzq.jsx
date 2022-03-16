@@ -45,7 +45,7 @@ const NavIzq = () => {
 	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 	const { updateLineaActive } = useContext(AppContextLinea);
 	const { updatePlanoActive } = useContext(AppContextPlano);
-	const { updateTextActive } = useContext(AppContextText);
+	const { updateTextActive, h_textSetReset } = useContext(AppContextText);
 	const { updateCirculoActive } = useContext(AppContextCirculo);
 	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
 	const { s_imagenUpdateActive } = useContext(AppContextImagen);
@@ -71,62 +71,6 @@ const NavIzq = () => {
 		[cuadriculaIcon, 'cuadriculaIcon'],
 		[borradorIcon, 'borradorIcon'],
 	];
-
-	const handleIcon = (icon) => {
-		// HOOKS - useInitialState:
-		updateCanvasPaleta(icon);
-
-		updateMoverActive(false);
-		updateLapizActive(false);
-		updateBorradorActive(false);
-		updateLineaActive(false);
-		updateCuadradoActive(false);
-		updatePlanoActive(false);
-		updateCuadriculaActive(false);
-		updateTextActive(false);
-		updateCirculoActive(false);
-		s_trianguloUpdateActive(false);
-		s_imagenUpdateActive(false);
-		// HOOKS - useLapiz:
-		switch (icon) {
-			case 'moverIcon':
-				updateMoverActive(true);
-				break;
-			case 'lapizIcon':
-				updateLapizActive(true);
-				break;
-			case 'borradorIcon':
-				updateBorradorActive(true);
-				break;
-			case 'lineaIcon':
-				updateLineaActive(true);
-				break;
-			case 'cuadradoIcon':
-				updateCuadradoActive(true);
-				break;
-			case 'planoIcon':
-				updatePlanoActive(true);
-				break;
-			case 'cuadriculaIcon':
-				updateCuadriculaActive(true);
-				break;
-			case 'textIcon':
-				updateTextActive(true);
-				break;
-			case 'circuloIcon':
-				updateCirculoActive(true);
-				break;
-			case 'trianguloIcon':
-				s_trianguloUpdateActive(true);
-				break;
-			case 'imagenIcon':
-				s_imagenUpdateActive(true);
-				break;
-			default:
-				console.log('Opcion no registrada!!!');
-				break;
-		}
-	};
 
 	const updateIcon = (icon, boolean) => {
 		switch (icon) {
@@ -178,7 +122,7 @@ const NavIzq = () => {
 	useEffect(() => {
 		//console.log('useEffect: [state]');
 		iconosPaleta.map((elem) => {
-			if (state.active == elem[1]) {
+			if (state.active === elem[1]) {
 				document.getElementById(elem[1]).classList.add('navIzq__nav__active');
 			} else {
 				document
@@ -190,8 +134,8 @@ const NavIzq = () => {
 			//console.log('return useEffect: [state]');
 		};
 	}, [state]);
+
 	useEffect(() => {
-		console.log('ue NavIzq:',state);
 		updateIcon(state.activePrev, false);
 		updateIcon(state.active, true);
 	}, [state.active])

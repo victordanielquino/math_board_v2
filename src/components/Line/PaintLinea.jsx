@@ -18,7 +18,7 @@ import { u_lineaGrafica, u_lineaGraficaH, u_lineaVector } from './UtilsLinea';
 import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
 import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../../utils/UtilsText';
+import { u_textGraficaH } from '../Text/UtilsText';
 import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
 import { u_imagenGraficaH } from "../../utils/UtilsImagen";
 
@@ -36,19 +36,25 @@ const PaintLinea = (id_canvas) => {
 
 	// LOGICA:
 	const paint = async () => {
-		console.log('PaintLinea');
-		try {
-			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-			await u_imagenGraficaH(context, stateImagen.historiaImagen);
-			u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-			u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-			u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-			u_lineaGraficaH(context, stateLinea.historiaLinea);
-			u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-			u_textGraficaH(context, stateText.historiaText);
-		} catch (e) {
-			console.log(e.message);
+		if (stateLinea.active){
+			console.log('PaintLinea.jsx');
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			try {
+				utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+				u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
+				await u_imagenGraficaH(context, stateImagen.historiaImagen);
+				u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
+				u_circuloGraficaH(context, stateCirculo.historiaCirculo);
+				u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
+				u_lineaGraficaH(context, stateLinea.historiaLinea);
+				u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+				u_textGraficaH(context, stateText.historiaText);
+			} catch (e) {
+				console.log('error: PaintLinea.jsx',e.message);
+			}
+		} else {
+			console.log('PaintLinea.jsx no active');
 		}
 	}
 	let canvas = '';
@@ -188,7 +194,7 @@ const PaintLinea = (id_canvas) => {
 	};
 	// 3
 	const mouseUpLinea = () => {
-		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
+		if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
 			switch (Linea.type){
 				case 'cuadratic':
 					cuadratic_cdc_pto(Linea);
@@ -197,7 +203,7 @@ const PaintLinea = (id_canvas) => {
 					//isBezier(Linea);
 					break;
 				case 'vector':
-					isVector(Linea);
+					//isVector(Linea);
 					break;
 				default:
 					break;
@@ -223,24 +229,28 @@ const PaintLinea = (id_canvas) => {
 
 	// useEffect:
 	useEffect(() => {
-		console.log('ue PaintLinea.jsx');
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		if (stateLinea.active) {
-			update_canvasLineaDatos();
-			canvas.addEventListener('mousedown', mouseDownLinea);
-			canvas.addEventListener('mousemove', mouseMoveLinea);
-			canvas.addEventListener('mouseup', mouseUpLinea);
+		if (stateLinea.active){
+			console.log('ue PaintLinea.jsx');
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			if (stateLinea.active) {
+				update_canvasLineaDatos();
+				canvas.addEventListener('mousedown', mouseDownLinea);
+				canvas.addEventListener('mousemove', mouseMoveLinea);
+				canvas.addEventListener('mouseup', mouseUpLinea);
+			}
+			return () => {
+				canvas.removeEventListener('mousedown', mouseDownLinea);
+				canvas.removeEventListener('mousemove', mouseMoveLinea);
+				canvas.removeEventListener('mouseup', mouseUpLinea);
+			};
 		}
-		return () => {
-			canvas.removeEventListener('mousedown', mouseDownLinea);
-			canvas.removeEventListener('mousemove', mouseMoveLinea);
-			canvas.removeEventListener('mouseup', mouseUpLinea);
-		};
 	}, [stateLinea]);
 
-	useEffect(async () => {
-		stateLinea.historiaLinea.length > 0 ? await paint():'';
+	useEffect( () => {
+		if (stateLinea.active) {
+			stateLinea.historiaLinea.length > 0 ? paint():'';
+		}
 	}, [stateLinea.historiaLinea]);
 };
 

@@ -21,7 +21,16 @@ const utilsLapiz_graficaLapiz = (context, lapiz) => {
 const utilsLapiz_graficaLapizHistoria = (context, array) => {
 	array.forEach((element) => utilsLapiz_graficaLapiz(context, element));
 };
-
+// LAPIZ: GET ID
+const u_getLapizId = (array, x, y) => {
+	let id = -1;
+	array.forEach((pencil) => {
+		(pencil.visible && pencil.edit)
+			? ((pencil.x_min < x && x < pencil.x_may && pencil.y_min < y && y < pencil.y_may) ? (id = pencil.id) : '')
+			: '';
+	});
+	return id;
+};
 // LAPIZ: GET
 const u_lapizGet = (array, x, y) => {
 	let resp = '';
@@ -39,10 +48,14 @@ const u_lapizGet = (array, x, y) => {
 	return resp;
 };
 // LAPIZ: ELIMINA LAPIZ POR ID
-const u_lapizDeleteById = (array, lapiz_id) => {
-	array.forEach((element) => {
-		element.id == lapiz_id ? (element.visible = false) : '';
-	});
+const u_lapizDeleteById = (array, id) => {
+	// array.forEach((element) => {
+	// 	element.id === lapiz_id ? (element.visible = false) : '';
+	// });
+	let newArray = [];
+	for(let elm of array)
+		elm.id !== id ? newArray.push(elm):'';
+	return newArray;
 };
 const u_lapizGraficaH = (context, array) => {
 	array.forEach((element) => utilsLapiz_graficaLapiz(context, element));
@@ -149,6 +162,7 @@ export {
 	utilsLapiz_graficaLapizHistoria,
 	u_lapizGet,
 	u_lapizDeleteById,
+	u_getLapizId,
 	u_lapizGraficaH,
 	u_lapizGraficaLinea,
 	u_lapizSegmentado,

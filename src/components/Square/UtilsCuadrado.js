@@ -65,14 +65,32 @@ const u_cuadradoGet = (array, x, y) => {
 	});
 	return resp;
 };
+// CUADRADO: GET
+const u_cuadradoGetId = (array, x, y) => {
+	let resp = '';
+	let id = -1;
+	array.forEach((elem) => {
+		if (elem.visible) {
+			elem.x_ini < x && x < elem.x_fin && elem.y_ini < y && y < elem.y_fin
+				? (resp = elem)
+				: '';
+		}
+	});
+	resp !== '' ? id = resp.id:'';
+	return id;
+};
 // CUADRADO: DELETE POR ID
-const u_cuadradoDeleteById = (array, cuadradoId) => {
-	console.log('id:', cuadradoId);
+const u_cuadradoDeleteById = (array, id) => {
+	/*console.log('id:', cuadradoId);
 	let arrayNew = [];
 	array.forEach((element) => {
 		element.id != cuadradoId ? arrayNew.push(element) : '';
 	});
-	return arrayNew;
+	return arrayNew;*/
+	let newArray = [];
+	for(let elm of array)
+		elm.id !== id ? newArray.push(elm):'';
+	return newArray;
 };
 // CUADRADO: REPOSICIONA SI EL CUADRADO SE VOLTEA
 const u_cuadradoValidaPosicion = (cuadrado) => {
@@ -340,7 +358,6 @@ export {
 	utilsCuadrado_LimpiaCuadrado,
 	UC_graficaCuadradoHistoria_menosI,
 	u_cuadradoGet,
-	u_cuadradoDeleteById,
 	u_cuadradoGraficaH,
 	u_cuadradoValidaPosicion,
 	u_cuadradoGrafica,
@@ -349,5 +366,7 @@ export {
 	u_cuadradoGetPtsRedimencion,
 	u_cuadradoUpdateZise,
 	u_cuadradoOpera,
-	u_cuadradoBordeSegmentado
+	u_cuadradoBordeSegmentado,
+	u_cuadradoDeleteById,
+	u_cuadradoGetId
 };

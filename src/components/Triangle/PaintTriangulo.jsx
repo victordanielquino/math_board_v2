@@ -18,7 +18,7 @@ import { u_cuadradoGraficaH } from '../Square/UtilsCuadrado';
 import { u_lineaGraficaH } from '../Line/UtilsLinea';
 import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
 import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../../utils/UtilsText';
+import { u_textGraficaH } from '../Text/UtilsText';
 import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH, u_trianguloGrafica } from "./UtilsTriangulo";
 import { u_imagenGraficaH } from "../../utils/UtilsImagen";
@@ -37,7 +37,9 @@ const PaintTriangulo = (id_canvas) => {
 
     // LOGICA:
     const paint = async () => {
-        console.log('PaintTriangulo');
+        console.log('PaintTriangulo.jsx');
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
         try {
             utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
             u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -137,6 +139,15 @@ const PaintTriangulo = (id_canvas) => {
     // LOGICA END.
 
     // useEffect:
+    useEffect(() => {
+        if (stateTriangulo.active){
+            console.log('stateTriangulo: active');
+            paint();
+        } else {
+            console.log('no active');
+        }
+    }, [stateTriangulo.active]);
+
     useEffect(() => {
         console.log('ue PaintTriangulo.jsx');
         canvas = document.getElementById(id_canvas);

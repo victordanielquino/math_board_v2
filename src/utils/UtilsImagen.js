@@ -87,6 +87,17 @@ const u_imagenGetClick = (array, x, y) => {
     });
     return resp;
 };
+// IMAGEN: GET ID
+const u_imagenGetId = (array, x, y) => {
+    let resp = '';
+    let id = -1;
+    array.forEach((imagen) => {
+        (imagen.visible && imagen.edit && (imagen.x_ini < x && x < imagen.x_fin && imagen.y_ini < y && y < imagen.y_fin))
+            ? resp = imagen:'';
+    });
+    resp !== '' ? id = resp.id:'';
+    return id;
+};
 // IMAGEN: SI SE HIZO CLICK SOBRE UNA IMAGEN, PODREMOS MOVER
 const u_imagenClickSobreImagen = (imagenSelect, mouse) => {
     if (imagenSelect) {
@@ -255,6 +266,16 @@ const u_imagenUpdateZise = (imagen, mouse) => {
     }
     return imagen;
 };
+// IMAGEN: DELETE POR ID
+const u_imagenDeleteById = (array, id) => {
+    /*array.forEach((element) => {
+        element.id == id ? (element.visible = false) : '';
+    });*/
+    let newArray = [];
+    for(let elm of array)
+        elm.id !== id ? newArray.push(elm):'';
+    return newArray;
+};
 export {
     u_imagenGraficaH,
     u_imagenOpera,
@@ -263,4 +284,6 @@ export {
     u_imagenUpdateZise,
     u_getImageData,
     u_putImageData,
+    u_imagenGetId,
+    u_imagenDeleteById
 }

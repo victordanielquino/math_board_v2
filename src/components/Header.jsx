@@ -5,7 +5,7 @@ import '../styles/Header.scss';
 
 // containers:
 import Menu1 from '../containers/Menu1';
-import MenuPlano from '../containers/MenuPlano';
+import MenuPlano from '../containers/MenuPlano/MenuPlano';
 import MenuMover from '../containers/MenuMover';
 import MenuLapiz from '../containers/MenuLapiz';
 import MenuBorrador from '../containers/MenuBorrador';

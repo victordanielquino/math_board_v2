@@ -26,7 +26,19 @@ const useLinea = () => {
 		});
 		console.log('color:', stateLinea);
 	};
+	const h_lineaSetColor = (valor) => {
+		setStateLinea({
+			...stateLinea,
+			color: valor,
+		});
+	};
 	const updateLineaGrosor = (valor) => {
+		setStateLinea({
+			...stateLinea,
+			grosor: valor,
+		});
+	};
+	const h_lineaSetGrosor = (valor) => {
 		setStateLinea({
 			...stateLinea,
 			grosor: valor,
@@ -38,13 +50,7 @@ const useLinea = () => {
 			historiaLinea: [...stateLinea.historiaLinea, valor],
 		});
 	};
-	const add_historiaLinea_id = (valor, id) => {
-		setStateLinea({
-			...stateLinea,
-			id: id,
-			historiaLinea: [...stateLinea.historiaLinea, valor],
-		});
-	};
+
 	const s_lineaAddHId = (valor, id) => {
 		setStateLinea({
 			...stateLinea,
@@ -53,6 +59,14 @@ const useLinea = () => {
 		});
 	};
 	const updateLineaColorGrosor = (valor1, valor2) => {
+		setStateLinea({
+			...stateLinea,
+			color: valor1,
+			grosor: valor2,
+		});
+	};
+	const h_lineaSetColorGrosor = (valor1, valor2) => {
+		console.log(valor1, valor2)
 		setStateLinea({
 			...stateLinea,
 			color: valor1,
@@ -77,6 +91,12 @@ const useLinea = () => {
 			segment: boolean,
 		});
 	};
+	const h_lineSetH = (newHistoria) => {
+		setStateLinea({
+			...stateLinea,
+			historiaLinea: newHistoria,
+		});
+	};
 
 	return {
 		stateLinea,
@@ -89,7 +109,11 @@ const useLinea = () => {
 		s_lineaUpdateH,
 		s_lineaAddHId,
 		s_lineSetType,
-		s_lineSetSegment
+		s_lineSetSegment,
+		h_lineSetH,
+		h_lineaSetColorGrosor,
+		h_lineaSetColor,
+		h_lineaSetGrosor
 	};
 };
 

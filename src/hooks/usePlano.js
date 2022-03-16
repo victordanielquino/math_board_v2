@@ -4,8 +4,8 @@ const initialStatePlano = {
 	visible: true,
 	edit: true,
 	id: 0,
-	x_min: -7,
-	y_max: 5,
+	x_min: 0,
+	y_max: 0,
 	salto: 1,
 	h: 0,
 	k: 0,
@@ -54,6 +54,13 @@ const usePlano = () => {
 			width_cuadricula: valor,
 		});
 	};
+	const h_planoSetH = (newHistoria) => {
+		setStatePlano({
+			...statePlano,
+			historiaPlano: newHistoria,
+		});
+	};
+
 	return {
 		statePlano,
 		updatePlanoActive,
@@ -62,6 +69,7 @@ const usePlano = () => {
 		s_planoUpdateXmin,
 		s_planoUpdateYmax,
 		s_planoUpdateWidthCuadricula,
+		h_planoSetH
 	};
 };
 

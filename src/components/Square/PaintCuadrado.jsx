@@ -16,7 +16,7 @@ import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
 import { u_lineaGraficaH } from '../Line/UtilsLinea';
 import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
 import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../../utils/UtilsText';
+import { u_textGraficaH } from '../Text/UtilsText';
 import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
 import {
@@ -41,6 +41,8 @@ const PaintCuadrado = (id_canvas) => {
 	// LOGICA:
 	const paint = async () => {
 		console.log('PaintCuadrado');
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
 		try {
 			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -157,6 +159,14 @@ const PaintCuadrado = (id_canvas) => {
 		stateCuadrado.historiaCuadrado.length > 0 ? await paint():'';
 		//await paint();
 	}, [stateCuadrado.historiaCuadrado]);
+	useEffect(() => {
+		if (stateCuadrado.active){
+			console.log('stateCuadrado: active');
+			paint();
+		} else {
+			console.log('no active');
+		}
+	}, [stateCuadrado.active]);
 };
 
 export default PaintCuadrado;

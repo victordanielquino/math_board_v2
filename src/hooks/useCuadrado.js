@@ -107,6 +107,12 @@ const useCuadrado = () => {
 			fondoEstado: fondoEstadoIn,
 		});
 	};
+	const h_cuadradoSetH = (newHistoria) => {
+		setStateCuadrado({
+			...stateCuadrado,
+			historiaCuadrado: newHistoria,
+		});
+	};
 
 	return {
 		stateCuadrado,
@@ -122,6 +128,7 @@ const useCuadrado = () => {
 		update_cuadradoH, // new
 		s_cuadradoAddH,
 		s_cuadradoAddHId,
+		h_cuadradoSetH
 	};
 };
 

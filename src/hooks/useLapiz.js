@@ -30,19 +30,6 @@ const useLapiz = () => {
 			grosor: valor,
 		});
 	};
-	const add_historiaLapiz = (valor) => {
-		setStateLapiz({
-			...stateLapiz,
-			historiaLapiz: [...stateLapiz.historiaLapiz, valor],
-		});
-	};
-	const add_historiaLapizId = (lapiz, id) => {
-		setStateLapiz({
-			...stateLapiz,
-			id: id,
-			historiaLapiz: [...stateLapiz.historiaLapiz, lapiz],
-		});
-	};
 	const s_lapizAddHId = (lapiz, id) => {
 		setStateLapiz({
 			...stateLapiz,
@@ -57,16 +44,21 @@ const useLapiz = () => {
 			grosor: valor2,
 		});
 	};
+	const h_lapizSetH = (newHistoria) => {
+		setStateLapiz({
+			...stateLapiz,
+			historiaLapiz: newHistoria,
+		});
+	};
 
 	return {
 		stateLapiz,
 		updateLapizActive,
 		updateLapizColor,
 		updateLapizGrosor,
-		//add_historiaLapiz,
 		updateLapizColorGrosor,
-		//add_historiaLapizId,
 		s_lapizAddHId,
+		h_lapizSetH,
 	};
 };
 

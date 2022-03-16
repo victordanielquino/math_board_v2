@@ -5,7 +5,7 @@ import {u_circuloGraficaH} from "../Circle/UtilsCirculo";
 import {u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
 import {u_lineaGraficaH} from "../Line/UtilsLinea";
 import {u_lapizGraficaH} from "../Pencil/UtilsLapiz";
-import {u_textGraficaH} from "../../utils/UtilsText";
+import {u_textGraficaH} from "../Text/UtilsText";
 
 
 const paint = (

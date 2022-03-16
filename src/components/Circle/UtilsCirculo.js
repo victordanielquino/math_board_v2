@@ -243,6 +243,31 @@ const u_circuloUpdateZise = (circulo, mouse) => {
     }
     return circulo;
 };
+// CIRCULO: GET - ID
+const u_circuloGetId = (array, x, y) => {
+    let resp = '';
+    let id = -1;
+    array.forEach((circulo) => {
+        if (circulo.visible) {
+            let x1 = circulo.x_ini;
+            let y1 = circulo.y_ini;
+            let x2 = circulo.x_fin;
+            let y2 = circulo.y_fin;
+            if (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20) {
+                resp = circulo;
+            }
+        }
+    });
+    resp !== '' ? id = resp.id:'';
+    return id;
+};
+// CIRCULO: DELETE POR ID
+const u_circuloDeleteById = (array, id) => {
+    let newArray = [];
+    for(let elm of array)
+        elm.id !== id ? newArray.push(elm):'';
+    return newArray;
+};
 export {
     u_circuloGraficaH,
     u_circuloGetClick,
@@ -253,5 +278,7 @@ export {
     u_circuloClickSobreCirculo,
     u_circuloOpera,
     u_circuloValidaPosicion,
-    u_circuloGrafica
+    u_circuloGrafica,
+    u_circuloGetId,
+    u_circuloDeleteById
 }

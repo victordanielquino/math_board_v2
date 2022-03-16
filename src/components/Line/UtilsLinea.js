@@ -18,53 +18,83 @@ const u_lineaVector = (vector) => {
 	// recta:
 	let a = p2y - p1y;
 	let b = p1x - p2x;
-	let c = (p2x * p1y) - (p1y * p1x) - (p1x * p2y) + (p1x * p1y);
-	// circunferencia:
-	let d = - 2 * h;
-	let e = - 2 * k;
-	let f = (h * h) + (k * k) - (r * r);
-	// sistema de ecuaciones:
-	let a_ = (a * a) + (b * b);
-	let b_ = (2 * b * c) - (a * b * d) + (a * a * e);
-	let c_ = (c * c) - (a * c * d) + (a * a * f);
-	let discriminante = (b_ * b_) - (4 * a_ * c_);
-	let y1 = (- b_ + Math.sqrt(discriminante)) / (2 * a_);
-	let y2 = (- b_ - Math.sqrt(discriminante)) / (2 * a_);
-	let x1 = ((-b * y1) - c) / a;
-	let x2 = ((-b * y2) - c) / a;
+	let c = (p2x * p1y) - (p1x * p2y);
+	let x1 = 0;
+	let x2 = 0;
+	let y1 = 0;
+	let y2 = 0;
+	if (a !== 0 && b !== 0) {
+		// circunferencia:
+		let d = - 2 * h;
+		let e = - 2 * k;
+		let f = (h * h) + (k * k) - (r * r);
+		// sistema de ecuaciones:
+		let a_ = (a * a) + (b * b);
+		let b_ = (2 * b * c) - (a * b * d) + (a * a * e);
+		let c_ = (c * c) - (a * c * d) + (a * a * f);
+		let discriminante = (b_ * b_) - (4 * a_ * c_);
 
+		y1 = (- b_ + Math.sqrt(discriminante)) / (2 * a_);
+		y2 = (- b_ - Math.sqrt(discriminante)) / (2 * a_);
+		x1 = ((-b * y1) - c) / a;
+		x2 = ((-b * y2) - c) / a;
+	} else {
+		if (a === 0) {
+			y1 = p1y;
+			y2 = p1y;
+			x1 = p2x - 10;
+			x2 = p2x + 10;
+		} else {
+			if (b === 0) {
+				y1 = p2y - 10;
+				y2 = p2y + 10;
+				x1 = p1x;
+				x2 = p1x;
+			}
+		}
+	}
 	let pto = {
 		x:0,
 		y:0,
 	}
-	if (p1x < p2x) {
-		if (p1x < x1 && x1 < p2x) {
-			pto.x = x1;
-			pto.y = y1;
+	// p1 * ------------------- * p2
+	if (b === 0) {
+		if ( p1y < p2y) {
+			if (p1y < y1 && y1 < p2y) {
+				pto.x = x1;
+				pto.y = y1;
+			} else {
+				pto.x = x2;
+				pto.y = y2;
+			}
 		} else {
-			pto.x = x2;
-			pto.y = y2;
+			if (p2y < y1 && y1 < p1y) {
+				pto.x = x1;
+				pto.y = y1;
+			} else {
+				pto.x = x2;
+				pto.y = y2;
+			}
 		}
 	} else {
-		if (p2x < x1 && x1 < p1x) {
-			pto.x = x1;
-			pto.y = y1;
+		if (p1x < p2x) {
+			if (p1x < x1 && x1 < p2x) {
+				pto.x = x1;
+				pto.y = y1;
+			} else {
+				pto.x = x2;
+				pto.y = y2;
+			}
 		} else {
-			pto.x = x2;
-			pto.y = y2;
+			if (p2x < x1 && x1 < p1x) {
+				pto.x = x1;
+				pto.y = y1;
+			} else {
+				pto.x = x2;
+				pto.y = y2;
+			}
 		}
 	}
-	/*context.lineWidth = 1;
-	context.strokeStyle = 'black';
-	context.fillStyle = 'black';
-
-	context.setLineDash([0, 0]);
-	context.beginPath();
-	//context.arc(circulo.h, circulo.k, circulo.radio, 0, 2*Math.PI, true);
-	context.ellipse(pto.x, pto.y, 2, 2, 0, 0, 2*Math.PI);
-	context.fill();
-	context.stroke();
-	context.closePath();*/
 
 	// recta perpendicular al pto:
 	let a2 = b;
@@ -74,18 +104,23 @@ const u_lineaVector = (vector) => {
 	r = r - 5;
 	h = pto.x;
 	k = pto.y;
-	d = - 2 * h;
-	e = - 2 * k;
-	f = (h * h) + (k * k) - (r * r);
+	let d = - 2 * h;
+	let e = - 2 * k;
+	let f = (h * h) + (k * k) - (r * r);
 	// sistema de ecuaciones:
-	a_ = (a2 * a2) + (b2 * b2);
-	b_ = (2 * b2 * c2) - (a2 * b2 * d) + (a2 * a2 * e);
-	c_ = (c2 * c2) - (a2 * c2 * d) + (a2 * a2 * f);
-	discriminante = (b_ * b_) - (4 * a_ * c_);
+	let a_ = (a2 * a2) + (b2 * b2);
+	let b_ = (2 * b2 * c2) - (a2 * b2 * d) + (a2 * a2 * e);
+	let c_ = (c2 * c2) - (a2 * c2 * d) + (a2 * a2 * f);
+	let discriminante = (b_ * b_) - (4 * a_ * c_);
 	y1 = (- b_ + Math.sqrt(discriminante)) / (2 * a_);
 	y2 = (- b_ - Math.sqrt(discriminante)) / (2 * a_);
-	x1 = ((-b2 * y1) - c2) / a2;
-	x2 = ((-b2 * y2) - c2) / a2;
+	if (discriminante !== 0) {
+		x1 = ((-b2 * y1) - c2) / a2;
+		x2 = ((-b2 * y2) - c2) / a2;
+	} else {
+		x1 = p1x - r;
+		x2 = p1x + r;
+	}
 
 	let ptos = {
 		x1:x1,
@@ -129,11 +164,15 @@ const u_lineaGet = (array, x, y) => {
 };
 
 // LINEA: DELETE POR ID
-const u_lineaDeleteById = (array, linea_id) => {
-	array.forEach((element) => {
+const u_lineaDeleteById = (array, id) => {
+	/*array.forEach((element) => {
 		element.id == linea_id ? (element.visible = false) : '';
 	});
-	return array;
+	return array;*/
+	let newArray = [];
+	for(let elm of array)
+		elm.id !== id ? newArray.push(elm):'';
+	return newArray;
 };
 const u_drawLinea = (context, line) => {
 	context.lineWidth = line.grosor;
@@ -753,8 +792,41 @@ const u_lineaBordeSegmentado = (context, line) => {
 			break;
 	}
 };
+// LINEA: BUSCA LINEA AL HACER CLICK IN CANVAS
+const u_lineaGetId = (array, x, y) => {
+	let resp = '';
+	let id = -1;
+	let sw = true;
+	for(let i = array.length - 1; (i >= 0) && sw ; i--) {
+		let line = array[i];
+		if (line.visible && line.edit) {
+			switch (line.type) {
+				case 'line':
+					resp = searchLine(line, x, y);
+					break;
+				case 'bezier':
+					break;
+				case 'cuadratic':
+					resp = searchCuadratic(line, x, y);
+					break;
+				case 'vector':
+					resp = searchVector(line, x, y);
+					break;
+				default:
+					console.log('error: u_lineaGetClick()');
+					break;
+			}
+		}
+		if(resp !== '') {
+			sw = false;
+			id = resp.id;
+		}
+	}
+	return id;
+};
 export {
 	u_lineaDeleteById,
+	u_lineaGetId,
 	u_lineaGraficaH,
 	u_lineaGet,
 	u_lineaGrafica,

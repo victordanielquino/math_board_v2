@@ -26,10 +26,17 @@ const useImagen = () => {
             historiaImagen: [...stateImagen.historiaImagen, imagen],
         });
     };
+    const h_imagenSetH = (newHistoria) => {
+        setStateImagen({
+            ...stateImagen,
+            historiaImagen: newHistoria,
+        });
+    };
     return {
         stateImagen,
         s_imagenUpdateActive,
         s_imagenAddHId,
+        h_imagenSetH
     }
 }
 

@@ -72,6 +72,12 @@ const useTriangulo = () => {
             bordeGrosor: valor,
         });
     };
+    const h_trianguloSetH = (newHistoria) => {
+        setStateTriangulo({
+            ...stateTriangulo,
+            historiaTriangulo: newHistoria,
+        });
+    };
 
     return {
         stateTriangulo,
@@ -80,7 +86,8 @@ const useTriangulo = () => {
         s_trianguloUpdateFondoColorEstado,
         s_trianguloUpdateBordeGrosor,
         s_trianguloUpdateAll,
-        s_trianguloAddHId
+        s_trianguloAddHId,
+        h_trianguloSetH
     }
 }
 export default useTriangulo;

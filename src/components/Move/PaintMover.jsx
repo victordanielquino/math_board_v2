@@ -66,7 +66,7 @@ import {
 	u_textMover,
 	u_textOpera,
 	u_textBordeSegmentado,
-} from '../../utils/UtilsText';
+} from '../Text/UtilsText';
 import {
 	u_imagenGraficaH,
 	u_imagenOpera,
@@ -91,6 +91,7 @@ const PaintMover = (id_canvas) => {
 
 	// LOGICA:
 	const paint = async () => {
+		console.log('PaintMover.jsx');
 		try {
 			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -102,7 +103,7 @@ const PaintMover = (id_canvas) => {
 			u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 			u_textGraficaH(context, stateText.historiaText);
 		} catch (e) {
-			console.log('error:')
+			console.log('error: PaintMover.jsx')
 		}
 	};
 	const mover = {
@@ -294,9 +295,11 @@ const PaintMover = (id_canvas) => {
 			switch (mouse.elementSelect){
 				case 'text':
 					//if (mouse.text_mover) {
+					if (textSelect.edit){
 						textSelect = u_textMover(textSelect, mouse);
 						await paint()
 						u_textBordeSegmentado(context, textSelect);
+					}
 					//}
 					break;
 				case 'cuadrado':

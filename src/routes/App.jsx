@@ -14,6 +14,7 @@ import AppContextText from '../context/AppContextText';
 import AppContextCirculo from "../context/AppContextCirculo";
 import AppContextTriangulo from "../context/AppContextTriangulo";
 import AppContextImagen from "../context/AppContextImagen";
+import AppContextFunction from '../context/AppContextFunction';
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -28,8 +29,9 @@ import useText from '../hooks/useText';
 import useCirculo from "../hooks/useCirculo";
 import useTriangulo from "../hooks/useTriangulo";
 import useImagen from "../hooks/useImagen";
+import useFunction from "../hooks/useFunction";
 
-import Layout from '../containers/Layout';
+import Layout from '../Layout/Layout';
 import Home from '../pages/Home';
 import '../styles/global.css';
 
@@ -46,6 +48,7 @@ const App = () => {
 	const initialStateCirculo = useCirculo();
 	const initialStateTriangulo = useTriangulo();
 	const initialStateImagen = useImagen();
+	const initialStateFunction = useFunction();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -61,7 +64,7 @@ const App = () => {
 											<AppContextCirculo.Provider value={initialStateCirculo}>
 												<AppContextTriangulo.Provider value={initialStateTriangulo}>
 													<AppContextImagen.Provider value={initialStateImagen}>
-
+														<AppContextFunction.Provider value={initialStateFunction}>
 															<BrowserRouter>
 																<Layout>
 																	{/* <Routes>
@@ -69,7 +72,7 @@ const App = () => {
 																</Routes> */}
 																</Layout>
 															</BrowserRouter>
-
+														</AppContextFunction.Provider>
 													</AppContextImagen.Provider>
 												</AppContextTriangulo.Provider>
 											</AppContextCirculo.Provider>

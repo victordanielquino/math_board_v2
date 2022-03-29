@@ -1,21 +1,6 @@
 import { useState } from 'react';
 
 const initialState = {
-	alfabetoMay: [
-		'QWERTYUIOP'.split(''),
-		'ASDFGHJKLÑ'.split(''),
-		'ZXCVBNM,'.split(''),
-	],
-	alfabetoMin: [
-		'qwertyuiop'.split(''),
-		'asdfghjklñ'.split(''),
-		'zxcvbnm.'.split(''),
-	],
-	alfabeto: [
-		'QWERTYUIOP'.split(''),
-		'ASDFGHJKLÑ'.split(''),
-		'ZXCVBNM,'.split(''),
-	],
 	active: '',
 	activePrev: '',
 	color: 'red',
@@ -25,21 +10,6 @@ const initialState = {
 };
 const useInitialState = () => {
 	const [state, setState] = useState(initialState);
-
-	const toLowerCase = () => {
-		const auxArray = state.alfabetoMin;
-		setState({
-			...state,
-			alfabeto: auxArray,
-		});
-	};
-	const toUpperCase = () => {
-		const auxArray = state.alfabetoMay;
-		setState({
-			...state,
-			alfabeto: auxArray,
-		});
-	};
 
 	// ACTIVA Y DESACTIVA LA OPCION SELECCIONADA DE LA PALETA DE LA PIZARRA
 	const updateCanvasPaleta = (optionIcon) => {
@@ -110,6 +80,12 @@ const useInitialState = () => {
 					active: 'imagenIcon',
 				});
 				break;
+			case 'functionIcon':
+				setState({
+					...state,
+					active: 'functionIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;
@@ -150,8 +126,6 @@ const useInitialState = () => {
 
 	return {
 		state,
-		toLowerCase,
-		toUpperCase,
 		updateCanvasPaleta,
 		updateColor,
 		updateColorFondo,

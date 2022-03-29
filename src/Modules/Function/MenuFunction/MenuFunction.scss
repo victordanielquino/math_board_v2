@@ -1,0 +1,92 @@
+@import '../../../styles/vars';
+
+.article__menuFunction {
+	border-radius: 10px;
+	border-bottom: 1px solid var(--very-light-pink);
+	background-color: white;
+	display: flex;
+	//outline: 1px solid red;
+	padding: 10px;
+	justify-content: center;
+	width: 100%;
+
+	&__container {
+		//outline: 1px solid red;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+		&__red{
+			outline: 1px solid black;
+			border: 5px solid red;
+			inline-size: 5px;
+			border-radius: 50%;
+			height: 12px;
+			cursor: pointer;
+			width: 12px;
+		}
+		&__blue{
+			outline: 1px solid black;
+			border: 5px solid blue;
+			border-radius: 50%;
+			height: 12px;
+			width: 12px;
+			cursor: pointer;
+		}
+		&__black{
+			outline: 1px solid black;
+			border: 5px solid black;
+			border-radius: 50%;
+			height: 12px;
+			width: 12px;
+			cursor: pointer;
+			color: white;
+		}
+		&__green{
+			outline: 1px solid black;
+			border: 5px solid green;
+			border-radius: 50%;
+			height: 12px;
+			width: 12px;
+			cursor: pointer;
+		}
+		&__yellow{
+			outline: 1px solid black;
+			border: 5px solid yellow;
+			border-radius: 50%;
+			height: 12px;
+			width: 12px;
+			cursor: pointer;
+		}
+		&__white{
+			border: 1px solid black;
+			inline-size: 5px;
+			border-radius: 50%;
+			height: 22px;
+			width: 22px;
+			cursor: pointer;
+		}
+
+
+		&__selectorColor {
+			border-bottom: 1px solid var(--very-light-pink);
+			background-color: var(--greiTipo0_1);
+			border-radius: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 210px;
+			padding: 5px 10px;
+		}
+		&__selectorBackground {
+			border-bottom: 1px solid var(--very-light-pink);
+			background-color: var(--greiTipo0_1);
+			border-radius: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 230px;
+			padding: 5px 10px;
+		}
+	}
+}

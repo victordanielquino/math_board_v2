@@ -1,0 +1,57 @@
+@import '../../../styles/vars';
+
+.galery {
+  //outline: 1px solid black;
+  &__contenedor {
+    display: flex;
+    justify-content: space-between;
+
+    &__image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px dashed green;
+      border-radius: 5%;
+      width: 40%;
+
+      &__message {
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+
+      &__error {
+        font-size: 15px;
+        color: red;
+        margin-top: 10px;
+      }
+    }
+
+    &__lista {
+      //outline: 1px solid red;
+      width: 55%;
+      &__table {
+        &__row {
+          &__cell-lefth {
+
+          }
+          &__cell-right {
+            //outline: 1px solid black;
+            width: 25%;
+          }
+        }
+      }
+
+      &__pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+.desactive {
+  display: none;
+}
+.btn_preview {
+  margin: 0;
+}

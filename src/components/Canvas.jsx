@@ -7,17 +7,17 @@ import AppContextCanvas from '../context/AppContextCanvas';
 import '../styles/Canvas.scss';
 
 // components:
-import PaintMover from './Move/PaintMover';
-import PainLapiz from './Pencil/PaintLapiz';
-import PaintBorrador from './Eraser/PaintBorrador';
-import PaintLinea from './Line/PaintLinea';
-import PaintCuadrado from './Square/PaintCuadrado';
-import PaintCuadricula from './Grid/PaintCuadricula';
-import PaintPlano from './Plano/PaintPlano';
-import PaintCirculo from './Circle/PaintCirculo';
-import PaintTriangulo from './Triangle/PaintTriangulo';
-import PaintImagen from "./PaintImagen";
-import PaintText from "./Text/PaintText";
+import PaintMover from '../Modules/Move/PaintMover';
+import PainLapiz from '../Modules/Pencil/PaintLapiz';
+import PaintBorrador from '../Modules/Eraser/PaintBorrador';
+import PaintLinea from '../Modules/Line/PaintLinea';
+import PaintCuadrado from '../Modules/Square/PaintCuadrado';
+import PaintCuadricula from '../Modules/Grid/PaintCuadricula';
+import PaintPlano from '../Modules/Plano/PaintPlano';
+import PaintCirculo from '../Modules/Circle/PaintCirculo';
+import PaintTriangulo from '../Modules/Triangle/PaintTriangulo';
+import PaintImagen from "../Modules/Image/PaintImagen";
+import PaintText from "../Modules/Text/PaintText";
 
 const Canvas = () => {
 	// useContext:

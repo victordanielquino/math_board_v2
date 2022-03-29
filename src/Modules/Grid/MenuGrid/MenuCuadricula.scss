@@ -1,0 +1,65 @@
+@import 'src/styles/vars';
+
+.article__menuCuadricula {
+	border-radius: 10px;
+	border-bottom: 1px solid var(--very-light-pink);
+	background-color: white;
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+
+	&__paletaTipo {
+		border-radius: 10px;
+		border-bottom: 1px solid var(--very-light-pink);
+		padding: 5px;
+		background-color: var(--greiTipo0_1);
+		width: 250px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+
+		&__icons {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+
+			&__icon {
+				width: 40px;
+				height: 18px;
+				border-radius: 2px;
+				margin: 0 3px;
+				outline: 1px solid var(--greiTipo0_3);
+				cursor: pointer;
+			}
+			.activeIconCuadricula {
+				background-color: white;
+				outline: 2px solid var(--greiTipo0_6);
+			}
+		}
+	}
+
+	&__paletaAncho {
+		border-radius: 10px;
+		border-bottom: 1px solid var(--very-light-pink);
+		padding: 5px;
+		background-color: var(--greiTipo0_1);
+		width: 150px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		.inputButton {
+			// outline: 1px solid black;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			input {
+				width: 20px;
+				cursor: pointer;
+			}
+		}
+	}
+}

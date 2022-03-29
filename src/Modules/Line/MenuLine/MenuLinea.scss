@@ -1,0 +1,25 @@
+@import 'src/styles/vars';
+
+.article__menuLinea {
+	border-radius: 10px;
+	border-bottom: 1px solid var(--very-light-pink);
+	background-color: white;
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+
+	&__btns {
+		//outline: 1px solid grey;
+		width: 270px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__segment {
+		width: 132px;
+		display: flex;
+		justify-content: space-between;
+	}
+}

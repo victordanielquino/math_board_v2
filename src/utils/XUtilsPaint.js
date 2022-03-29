@@ -5,9 +5,9 @@ import { useContext } from 'react';
 import AppContextLinea from '../context/AppContextLinea';
 //import AppContextLapiz from '../context/AppContextLapiz';
 
-import { utilsLinea_graficaLineaHistoria } from '../components/Line/UtilsLinea';
-import { utilsLapiz_graficaLapizHistoria } from '../components/Pencil/UtilsLapiz';
-import { utilsCuadrado_graficaCuadradoHistoria } from '../components/Square/UtilsCuadrado';
+import { utilsLinea_graficaLineaHistoria } from '../Modules/Line/UtilsLinea';
+import { utilsLapiz_graficaLapizHistoria } from '../Modules/Pencil/UtilsLapiz';
+import { utilsCuadrado_graficaCuadradoHistoria } from '../Modules/Square/UtilsCuadrado';
 //
 // const { stateCanvas } = useContext(AppContextCanvas);
 //

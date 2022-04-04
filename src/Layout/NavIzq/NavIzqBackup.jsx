@@ -1,12 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-	faBell, faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare, faSlash, faCircle, faImage, faChartLine, faEraser, faGrip, faFlorinSign, faSquareRootVariable, faTableCellsLarge, faCalculator
+import {faBell, faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare,
 } from '@fortawesome/free-solid-svg-icons'; // fa-regular
 import {} from '@fortawesome/free-brands-svg-icons'; // fa-brands
-import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 
 import AppContext from '../../context/AppContext';
 import AppContextMover from '../../context/AppContextMover';
@@ -23,7 +19,6 @@ import AppContextImagen from "../../context/AppContextImagen";
 import AppContextFunction from "../../context/AppContextFunction";
 
 import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
-import Calculadora from "../../Modules/Calculator/Calculadora";
 
 import './NavIzq.scss';
 import moverIcon from '../../assets/icons/move1.svg';
@@ -58,6 +53,9 @@ const theme = createTheme({
 })
 const useStyles  = makeStyles(theme => ({
 	awesomeIcon : {
+		fontSize: '1.5em',
+		margin:0,
+		padding:'7px'
 	},
 }))
 const NavIzq = () => {
@@ -80,23 +78,40 @@ const NavIzq = () => {
 	const [navHeight, setNavHeight] = useState(window.innerHeight - 112);
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
 	const [select, setSelect] = useState('homeIcon');
-	const [toggleCalculadora, setToggleCalculadora] = useState(false);
 
+	const iconosPaleta = [
+		[moverIcon, 'moverIcon'],
+		[lapizIcon, 'lapizIcon'],
+		[textIcon, 'textIcon'],
+		// [sumatoriaIcon, 'sumatoriaIcon'],
+		[lineaIcon, 'lineaIcon'],
+		[cuadradoIcon, 'cuadradoIcon'],
+		[circuloIcon, 'circuloIcon'],
+		[trianguloIcon, 'trianguloIcon'],
+		[imagenIcon, 'imagenIcon'],
+		// [zoomInIcon, 'zoomInIcon'],
+		// [zoomOutIcon, 'zoomOutIcon'],
+		[planoIcon, 'planoIcon'],
+		[cuadriculaIcon, 'cuadriculaIcon'],
+		[borradorIcon, 'borradorIcon'],
+		[functionIcon, 'functionIcon'],
+		[calculadoraIcon, 'calculadoraIcon'],
+	];
 	const awesomeIcons = [
-		{ fontSize:'1.4em', type:'awesome', name: 'homeIcon', icon: <FontAwesomeIcon icon={faHouse} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'moverIcon', icon: <FontAwesomeIcon icon={faArrowsUpDownLeftRight} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'lapizIcon', icon: <FontAwesomeIcon icon={faPencil} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'textIcon', icon: <FontAwesomeIcon icon={faFont} style={{}}/> },
-		{ fontSize:'1.2em', type:'awesome', name: 'lineaIcon', icon:<FontAwesomeIcon icon={faSlash} style={{}}/>  },
-		{ fontSize:'1.4em', type:'mui', name: 'cuadradoIcon', icon: <CheckBoxOutlineBlankIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/>  },
-		{ fontSize:'1.4em', type:'mui', name: 'circuloIcon', icon: <PanoramaFishEyeIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.4em', type:'mui', name: 'trianguloIcon', icon: <ChangeHistoryIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'borradorIcon', icon: <FontAwesomeIcon icon={faEraser} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'functionIcon', icon: <FontAwesomeIcon icon={faFlorinSign} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'calculadoraIcon', icon: <FontAwesomeIcon icon={faCalculator} style={{}}/> },
+		{ name: 'homeIcon', icon: faHouse },
+		{ name: 'moverIcon', icon: faHouse },
+		{ name: 'lapizIcon', icon: faHouse },
+		{ name: 'textIcon', icon: faHouse },
+		{ name: 'lineaIcon', icon: faHouse },
+		{ name: 'cuadradoIcon', icon: faHouse },
+		{ name: 'circuloIcon', icon: faHouse },
+		{ name: 'trianguloIcon', icon: faHouse },
+		{ name: 'imagenIcon', icon: faHouse },
+		{ name: 'planoIcon', icon: faHouse },
+		{ name: 'cuadriculaIcon', icon: faHouse },
+		{ name: 'borradorIcon', icon: faHouse },
+		{ name: 'functionIcon', icon: faHouse },
+		{ name: 'calculadoraIcon', icon: faHouse },
 	]
 
 	// LOGICA:
@@ -146,8 +161,8 @@ const NavIzq = () => {
 				setToggleKeyboard(boolean);
 				break;
 			case 'calculadoraIcon':
-				//s_functionSetActive(boolean);
-				//setToggleCalculadora(boolean);
+				s_functionSetActive(boolean);
+				setToggleKeyboard(boolean);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');
@@ -170,6 +185,18 @@ const NavIzq = () => {
 
 	// useEffect:
 	useEffect(() => {
+		/*iconosPaleta.map((elem) => {
+			if (state.active === elem[1]) {
+				document.getElementById(elem[1]).classList.add('navIzq__nav__active');
+			} else {
+				document
+					.getElementById(elem[1])
+					.classList.remove('navIzq__nav__active');
+			}
+		});*/
+	}, [state]);
+
+	useEffect(() => {
 		updateIcon(state.activePrev, false);
 		updateIcon(state.active, true);
 	}, [state.active]);
@@ -183,13 +210,62 @@ const NavIzq = () => {
 
 	return (
 		<nav className="navIzq__nav" style={{height: navHeight+'px'}}>
+			<div className="navIzq__nav__top">
+				{/*{iconosPaleta.map((elem) => (
+					<img
+						src={elem[0]}
+						onClick={() => handleIcon2(elem[1])}
+						key={elem[1]}
+						id={elem[1]}
+					/>
+				))}*/}
+			</div>
 			<ButtonGroup orientation='vertical'>
 				{awesomeIcons.map((elem) => (
-					<Button key={`key-${elem.name}`} onClick={() => handleSelect(elem.name)} size='small' variant={select === elem.name ? 'contained':'outlined'} className={classes.awesomeIcon} style={{fontSize:elem.fontSize, padding:'5px 0'}}>
-						{elem.icon}
+					<Button onClick={() => handleSelect(elem.name)} size='small' variant={select === elem.name ? 'contained':'outlined'} className={classes.awesomeIcon}>
+						<FontAwesomeIcon icon={elem.icon}/>
 					</Button>
 				))}
 			</ButtonGroup>
+			<ButtonGroup orientation='vertical'>
+				<Button onClick={() => handleSelect('homeIcon')} size='small' variant={select === 'homeIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faHouse}/>
+				</Button>
+				<Button onClick={() => handleSelect('lapizIcon')} size='small' variant={select === 'lapizIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faPencil}/>
+				</Button>
+				<Button onClick={() => handleSelect('bellIcon')} size='small' variant={select === 'bellIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faBell}/>
+				</Button>
+				<Button onClick={() => handleSelect('moveIcon')} size='small' variant={select === 'moveIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faArrowsUpDownLeftRight}/>
+				</Button>
+				<Button onClick={() => handleSelect('textIcon')} size='small' variant={select === 'textIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faFont}/>
+				</Button>
+				<Button onClick={() => handleSelect('squareIcon')} size='small' variant={select === 'squareIcon' ? 'contained':'outlined'} className={classes.awesomeIcon}>
+					<FontAwesomeIcon icon={faSquare}/>
+				</Button>
+			</ButtonGroup>
+			{/*<ToggleButtonGroup
+				value={alignment}
+				exclusive
+				onChange={handleAlignment}
+				aria-label="text alignment"
+				orientation='vertical'
+				color='primary'
+				size='small'
+			>
+				<ToggleButton value="uno" aria-label="left aligned">
+					<HomeIcon />
+				</ToggleButton>
+				<ToggleButton value="dos" aria-label="centered">
+					<HomeIcon />
+				</ToggleButton>
+				<ToggleButton value="tres" aria-label="right aligned">
+					<HomeIcon />
+				</ToggleButton>
+			</ToggleButtonGroup>*/}
 			{toggleKeyboard && <Keyboard />}
 		</nav>
 	);

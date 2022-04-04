@@ -1,6 +1,50 @@
 @import '../../styles/vars';
 
 .article__menuLapiz {
+	&__paletaColorSinTitle {
+		border-radius: 10px;
+		border-bottom: 1px solid var(--very-light-pink);
+		padding: 5px;
+		background-color: var(--greiTipo0_2);
+		width: 180px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		&__container {
+			// outline: 1px solid red;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		.color {
+			outline: 1px solid grey;
+			border-radius: 50%;
+			margin: 0 5px;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+		}
+		.red {
+			background-color: red;
+		}
+		.black {
+			background-color: black;
+		}
+		.green {
+			background-color: green;
+		}
+		.blue {
+			background-color: blue;
+		}
+		.yellow {
+			background-color: yellow;
+		}
+		.activePaletaColor {
+			outline: 4px solid var(--greiTipo2_3);
+			width: 15px;
+			height: 15px;
+		}
+	}
 	&__paletaColor {
 		border-radius: 10px;
 		border-bottom: 1px solid var(--very-light-pink);

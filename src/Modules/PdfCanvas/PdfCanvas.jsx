@@ -65,7 +65,7 @@ const PdfCanvas = ({toggleModal = false, setToggleModal = false, canvasRef}) => 
             const bufferY = 200;
             const imgProps = (doc).getImageProperties(img);
             const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-            const pdfHeight =( (imgProps.height * pdfWidth) / imgProps.width) + 100;
+            const pdfHeight =( (imgProps.height * pdfWidth) / imgProps.width) + 70;
             doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
 
             if (file && fileReader) {

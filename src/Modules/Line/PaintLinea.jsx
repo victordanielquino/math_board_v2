@@ -3,25 +3,10 @@ import { useContext, useEffect } from 'react';
 // CONTEXT:
 import AppContext from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
-import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
-import AppContextLapiz from '../../context/AppContextLapiz';
-import AppContextPlano from '../../context/AppContextPlano';
-import AppContextText from '../../context/AppContextText';
-import AppContextCirculo from "../../context/AppContextCirculo";
-import AppContextTriangulo from "../../context/AppContextTriangulo";
-import AppContextImagen from "../../context/AppContextImagen";
 
 // utils:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
-import { u_cuadradoGraficaH } from '../Square/UtilsCuadrado';
-import { u_lineaGrafica, u_lineaGraficaH, u_lineaVector, u_lineDraw } from './UtilsLinea';
-import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
-import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
-import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../Text/UtilsText';
-import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
-import { u_imagenGraficaH } from "../Image/UtilsImagen";
+import { u_lineaVector, u_lineDraw } from './UtilsLinea';
 
 import draw from '../Draw/Draw'
 
@@ -29,14 +14,7 @@ const PaintLinea = (id_canvas) => {
 	// useContext:
 	const { state, h_addH } = useContext(AppContext);
 	const { stateCanvas } = useContext(AppContextGrid);
-	const { stateCuadrado } = useContext(AppContextCuadrado);
 	const { stateLinea, s_lineaAddHId, h_lineSetCanvas } = useContext(AppContextLinea);
-	const { stateLapiz } = useContext(AppContextLapiz);
-	const { statePlano } = useContext(AppContextPlano);
-	const { stateText } = useContext(AppContextText);
-	const { stateCirculo} = useContext(AppContextCirculo);
-	const { stateTriangulo } = useContext(AppContextTriangulo);
-	const { stateImagen } = useContext(AppContextImagen);
 
 	// LOGICA:
 	const paint = async () => {
@@ -45,7 +23,6 @@ const PaintLinea = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 				await draw(context, state.historia, state.canvas, stateCanvas);
 			} catch (e) {
 				console.log('error: PaintLinea.jsx',e.message);
@@ -227,34 +204,32 @@ const PaintLinea = (id_canvas) => {
 		canvasLineaDatos.width = canvas.getBoundingClientRect().width;
 		canvasLineaDatos.height = canvas.getBoundingClientRect().height;
 	};
+	const eventDraw = () => {
+		console.log('ue PaintLinea.jsx');
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
+		update_canvasLineaDatos();
+		if (stateLinea.active) {
+			console.log(state.historia)
+			state.historia.length > 0 ? paint():'';
+		}
+	}
 	// LOGICA END.
 
 	// useEffect:
 	useEffect(() => {
 		if (stateLinea.active){
-			console.log('ue PaintLinea.jsx');
-			canvas = document.getElementById(id_canvas);
-			context = canvas.getContext('2d');
-			if (stateLinea.active) {
-				update_canvasLineaDatos();
-				canvas.addEventListener('mousedown', mouseDownLinea);
-				canvas.addEventListener('mousemove', mouseMoveLinea);
-				canvas.addEventListener('mouseup', mouseUpLinea);
-			}
+			eventDraw();
+			canvas.addEventListener('mousedown', mouseDownLinea);
+			canvas.addEventListener('mousemove', mouseMoveLinea);
+			canvas.addEventListener('mouseup', mouseUpLinea);
 			return () => {
 				canvas.removeEventListener('mousedown', mouseDownLinea);
 				canvas.removeEventListener('mousemove', mouseMoveLinea);
 				canvas.removeEventListener('mouseup', mouseUpLinea);
 			};
 		}
-	}, [stateLinea]);
-
-	useEffect( () => {
-		if (stateLinea.active) {
-			console.log(state.historia)
-			state.historia.length > 0 ? paint():'';
-		}
-	}, [state.historia]);
+	}, [stateLinea, state.historia]);
 
 	useEffect(() => {
 		h_lineSetCanvas(state.canvas);

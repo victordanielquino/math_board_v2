@@ -17,6 +17,7 @@ import MenuCirculo from "../../Modules/Circle/MenuCircle/MenuCirculo";
 import MenuTriangulo from "../../Modules/Triangle/MenuTriangle/MenuTriangulo";
 import MenuImagen from "../../Modules/Image/MenuImage/MenuImagen";
 import MenuFunction from "../../Modules/Function/MenuFunction/MenuFunction";
+import MenuCalculadora from "../../Modules/Calculator/MenuCalculadora/MenuCalculadora";
 
 // context:
 import AppContext from '../../context/AppContext';
@@ -52,6 +53,7 @@ const Header = () => {
 	const [toggleMenuTriangulo, setToggleMenuTriangulo] = useState(false);
 	const [toggleMenuImagen, setToggleMenuImagen] = useState(false);
 	const [toggleMenuFunction, setToggleMenuFunction] = useState(false);
+	const [toggleMenuCalculadora, setToggleMenuCalculadora] = useState(false);
 
 	// LOGICA:
 	const classes = useStyle();
@@ -71,7 +73,11 @@ const Header = () => {
 		setToggleMenuTriangulo(false);
 		setToggleMenuImagen(false);
 		setToggleMenuFunction(false);
+		setToggleMenuCalculadora(false);
 		switch (state.active) {
+			case 'homeIcon':
+				setToggleMenuHeader(true);
+				break;
 			case 'moverIcon':
 				setToggleMenuMover(true);
 				break;
@@ -108,6 +114,9 @@ const Header = () => {
 			case 'functionIcon':
 				setToggleMenuFunction(true);
 				break;
+			case 'calculadoraIcon':
+				setToggleMenuCalculadora(true);
+				break;
 			default:
 				setToggleMenuHeader(true);
 				break;
@@ -135,6 +144,7 @@ const Header = () => {
 							{toggleMenuTriangulo && <MenuTriangulo />}
 							{toggleMenuImagen && <MenuImagen />}
 							{toggleMenuFunction && <MenuFunction />}
+							{toggleMenuCalculadora && <MenuCalculadora />}
 						</div>
 						<Typography  variant='h7' style={{ color: 'white'}}>
 							UMSA / INFORMÁTICA
@@ -143,35 +153,6 @@ const Header = () => {
 				</AppBar>
 				<Offset />
 			</div>
-			{/*<nav className="header__nav">
-				<div className="navbar-left">
-					<ul>
-						<li>
-							<a href="/">MathBoard</a>
-						</li>
-					</ul>
-				</div>
-				<div className="navbar-central">
-					{toggleMenuHeader && <MenuHeader />}
-					{toggleMenuPlano && <MenuPlano />}
-					{toggleMenuMover && <MenuMover />}
-					{toggleMenuLapiz && <MenuLapiz />}
-					{toggleMenuBorrador && <MenuBorrador />}
-					{toggleMenuCuadrado && <MenuCuadrado />}
-					{toggleMenuCuadricula && <MenuCuadricula />}
-					{toggleMenuLinea && <MenuLinea />}
-					{toggleMenuText && <MenuText />}
-					{toggleMenuCirculo && <MenuCirculo />}
-					{toggleMenuTriangulo && <MenuTriangulo />}
-					{toggleMenuImagen && <MenuImagen />}
-					{toggleMenuFunction && <MenuFunction />}
-				</div>
-				<div className="navbar-right">
-					<ul>
-						<li className="navbar-email">UMSA / INFORMÁTICA</li>
-					</ul>
-				</div>
-			</nav>*/}
 		</>
 	);
 };

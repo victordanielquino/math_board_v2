@@ -5,8 +5,8 @@ import AppContext from '../../../context/AppContext';
 import AppContextLinea from '../../../context/AppContextLinea';
 
 // components:
-import PaletaColor from '../../PaletaColor/PaletaColor';
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosor';
+import PaletaColor from '../../PaletaColor/PaletaColorSinTitle';
+import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
 
 // styles:
 import './MenuLinea.scss';
@@ -26,7 +26,7 @@ import PowerInputIcon from '@mui/icons-material/PowerInput';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 
-import {Button} from "@mui/material";
+import {Button, ButtonGroup} from "@mui/material";
 
 const MenuLinea = () => {
 	// useContext:
@@ -146,14 +146,18 @@ const MenuLinea = () => {
 		<article className="article__menuLinea">
 			{<PaletaGrosor title="LINEA" />}
 			<div className='article__menuLinea__btns'>
-				<Button variant={variantLine} size='small' onClick={() => handleBtnTypeLine('line')}><OpenInFullIcon fontSize='small'/></Button>
-				<Button variant={variantCuadratic} size='small' onClick={() => handleBtnTypeLine('cuadratic')}><UTurnRightIcon fontSize='small'/></Button>
-				<Button variant={variantBeziel} size='small' onClick={() => handleBtnTypeLine('bezier')}><SwapCallsIcon fontSize='small'/></Button>
-				<Button variant={variantVector} size='small' onClick={() => handleBtnTypeLine('vector')}><CallMadeIcon fontSize='small'/></Button>
+				<ButtonGroup>
+					<Button variant={variantLine} size='small' onClick={() => handleBtnTypeLine('line')}><OpenInFullIcon fontSize='small'/></Button>
+					<Button variant={variantCuadratic} size='small' onClick={() => handleBtnTypeLine('cuadratic')}><UTurnRightIcon fontSize='small'/></Button>
+					<Button variant={variantBeziel} size='small' onClick={() => handleBtnTypeLine('bezier')}><SwapCallsIcon fontSize='small'/></Button>
+					<Button variant={variantVector} size='small' onClick={() => handleBtnTypeLine('vector')}><CallMadeIcon fontSize='small'/></Button>
+				</ButtonGroup>
 			</div>
 			<div className='article__menuLinea__segment'>
-				<Button variant={variantSegmentFalse} color='success' size='small' onClick={() => handleBtnSegmentLine(false)}><HorizontalRuleIcon fontSize='small'/></Button>
-				<Button variant={variantSegmentTrue} color='success' size='small' onClick={() => handleBtnSegmentLine(true)}><MoreHorizIcon fontSize='small'/></Button>
+				<ButtonGroup>
+					<Button variant={variantSegmentFalse} color='primary' size='small' onClick={() => handleBtnSegmentLine(false)}><HorizontalRuleIcon fontSize='small'/></Button>
+					<Button variant={variantSegmentTrue} color='primary' size='small' onClick={() => handleBtnSegmentLine(true)}><MoreHorizIcon fontSize='small'/></Button>
+				</ButtonGroup>
 			</div>
 			{<PaletaColor tipo="linea" title="COLOR" />}
 		</article>

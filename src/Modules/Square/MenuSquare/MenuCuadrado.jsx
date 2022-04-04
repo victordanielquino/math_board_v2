@@ -8,7 +8,7 @@ import AppContextCuadrado from '../../../context/AppContextCuadrado';
 import './MenuCuadrado.scss';
 
 // components:
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosor';
+import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
 import PaletaColorBorde from '../../PaletaColor/PaletaColor';
 import PaletaColorFondo from '../../PaletaColor/PaletaColor';
 

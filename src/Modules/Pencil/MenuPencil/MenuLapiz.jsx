@@ -5,8 +5,8 @@ import AppContext from '../../../context/AppContext';
 import AppContextLapiz from '../../../context/AppContextLapiz';
 
 // components:
-import PaletaColor from '../../PaletaColor/PaletaColor';
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosor';
+import PaletaColor from '../../PaletaColor/PaletaColorSinTitle';
+import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
 
 // styles:
 import './MenuLapiz.scss';
@@ -27,7 +27,7 @@ const MenuLapiz = () => {
 	return (
 		<article className="article__menuLapiz">
 			{<PaletaGrosor title="LINEA" />}
-			{<PaletaColor tipo="linea" title="COLOR" />}
+			{<PaletaColor tipo="linea"/>}
 		</article>
 	);
 };

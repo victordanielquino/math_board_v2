@@ -5,7 +5,7 @@ import AppContextCirculo from "../../../context/AppContextCirculo";
 // styles:
 import './MenuCirculo.scss';
 // components:
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosor';
+import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
 import PaletaColorBorde from '../../PaletaColor/PaletaColor';
 import PaletaColorFondo from '../../PaletaColor/PaletaColor';
 

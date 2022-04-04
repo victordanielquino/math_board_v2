@@ -24,7 +24,8 @@ export default function MaxWidthDialog({
                                            fullWidth= true,
                                            maxWidth = 'xs',
                                            setStateSuccess,
-                                           successDisabled = false
+                                           successDisabled = false,
+                                            booleanFooter = true
 }) {
     //const [fullWidth, setFullWidth] = React.useState(true); // true, false
     //const [maxWidth, setMaxWidth] = React.useState('sm');// xs, sm, md, lg, xl
@@ -58,10 +59,13 @@ export default function MaxWidthDialog({
                 <DialogContent dividers>
                     {children}
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleSuccess()} disabled={successDisabled}>Success</Button>
-                    <Button onClick={handleClose} color='secondary'>Close</Button>
-                </DialogActions>
+                {
+                    booleanFooter &&
+                    <DialogActions>
+                        <Button onClick={() => handleSuccess()} disabled={successDisabled}>Success</Button>
+                        <Button onClick={handleClose} color='secondary'>Close</Button>
+                    </DialogActions>
+                }
             </Dialog>
         </React.Fragment>
     );

@@ -14,7 +14,6 @@ import AppContextTriangulo from "../../context/AppContextTriangulo";
 import AppContextImagen from "../../context/AppContextImagen";
 
 // utils:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
 import {
 	u_planoGraficaH,
 	u_planoMover,
@@ -89,7 +88,6 @@ const PaintMover = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 				await draw(context, state.historia, state.canvas, stateCanvas);
 			} catch (e) {
 				console.log('error: PaintMover.jsx')
@@ -169,7 +167,6 @@ const PaintMover = (id_canvas) => {
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
 	};
-	const prioridad_objetos = ['lapiz', 'text', 'linea','triangulo', 'circulo', 'cuadrado', 'imagen','plano'];
 	// 1:
 	const mouseDownMover = async (e) => {
 		captura_Pos_Posprev(e);
@@ -178,9 +175,7 @@ const PaintMover = (id_canvas) => {
 		elmSelectMove = {};
 		for (let i = state.historia.length -1; i >= 0 && !sw; i--) {
 			let elm = state.historia[i];
-			console.log(elm.canvas, ' - ', stateMover.canvas);
 			if (elm.canvas === state.canvas && elm.visible){
-				console.log('elm:', elm)
 				let array = [elm];
 				switch (elm.types) {
 					case 'square':
@@ -267,7 +262,6 @@ const PaintMover = (id_canvas) => {
 						console.log('no se encontro el type:', elm.types);
 				}
 				if(sw) {
-					console.log('elm select types:', elm.types);
 					mouse.elementSelect = elm.types;
 					mover.selectElm = true;
 					break; // cierra el for
@@ -275,108 +269,12 @@ const PaintMover = (id_canvas) => {
 			}
 		}
 		!sw ? console.log('no elem select!!!!'): '';
-		/*for(let elem of prioridad_objetos){
-			switch (elem) {
-				case 'triangulo':
-					trianguloSelect = u_trianguloOpera(context, trianguloSelect, stateTriangulo.historiaTriangulo, mouse);
-					if (trianguloSelect){
-						sw = true;
-						await paint();
-						u_trianguloBordeSegmentado(context, trianguloSelect);
-						mouse.click = true;
-						elmSelectMove = trianguloSelect;
-					}
-					break;
-				case 'circulo':
-					circuloSelect = u_circuloOpera(context, circuloSelect, stateCirculo.historiaCirculo, mouse);
-					if (circuloSelect){
-						sw = true;
-						await paint();
-						u_circuloBordeSegmentado(context, circuloSelect);
-						mouse.click = true;
-						elmSelectMove = circuloSelect;
-					}
-					break;
-				case 'imagen':
-					imagenSelect = u_imagenOpera(imagenSelect, stateImagen.historiaImagen, mouse);
-					if (imagenSelect){
-						sw = true;
-						await paint();
-						u_imagenBordeSegmentado(context, imagenSelect);
-						mouse.click = true;
-						elmSelectMove = imagenSelect;
-					}
-					break;
-				case 'cuadrado':
-					cuadradoSelect = u_cuadradoOpera(context, cuadradoSelect, stateCuadrado.historiaCuadrado, mouse);
-					if (cuadradoSelect){
-						sw = true;
-						await paint();
-						u_cuadradoBordeSegmentado(context, cuadradoSelect);
-						mouse.click = true;
-						elmSelectMove = cuadradoSelect;
-					}
-					break;
-				case 'plano':
-					planoSelect = u_planoOpera(context, planoSelect, statePlano.historiaPlano, mouse);
-					if (planoSelect){
-						sw = true;
-						await paint();
-						u_planoBordeSegmentado(context, planoSelect);
-						mouse.click = true;
-						elmSelectMove = planoSelect;
-					}
-					break;
-				case 'lapiz':
-					lapizSelect = u_lapizOpera(lapizSelect, stateLapiz.historiaLapiz, mouse);
-					if (lapizSelect){
-						sw = true;
-						await paint();
-						u_lapizBordeSegmentado(context, lapizSelect);
-						mouse.click = true;
-						elmSelectMove = lapizSelect;
-					}
-					break;
-				case 'linea':
-					lineaSelect = u_lineaOpera(lineaSelect, stateLinea.historiaLinea, mouse);
-					if (lineaSelect){
-						sw = true;
-						await paint();
-						u_lineaBordeSegmentado(context, lineaSelect);
-						mouse.click = true;
-						elmSelectMove = lineaSelect;
-					}
-					break;
-				case 'text':
-					textSelect = u_textOpera(textSelect, stateText.historiaText, mouse);
-					if (textSelect){
-						sw = true;
-						await paint();
-						u_textBordeSegmentado(context, textSelect);
-						mouse.click = true;
-						elmSelectMove = textSelect;
-					}
-					break;
-				default:
-					console.log('no selecciono nada');
-					break;
-			}
-			if(sw) {
-				mouse.elementSelect = elem;
-				mover.selectElm = true;
-				break; // cierra el for
-			}
-		}*/
+
 		if (mouse.elementSelect !== '' && !sw) {
 			paint();
 			mouse.elementSelect = '';
 		}
-		//console.log('paintmover: ', mover.selectElm);
-		//console.log('setselectElm: ', stateMover.selectElm);
-		//setSelectElm(mover.selectElm);
-		//setObj(elmSelectMove);
 		setSelectElmObj(mover.selectElm, elmSelectMove);
-		//setElmSelect(mover.selectElm);
 	};
 
 	// 2:

@@ -124,10 +124,10 @@ const Home = () => {
 					<Button variant="outlined" color='primary' size='small' onClick={() => handlePhotoCamera()}>
 						<PhotoCamera />
 					</Button>
-					<ReactToPrint
+					{/*<ReactToPrint
 						trigger={() => <button>Print this out!</button>}
 						content={() => canvasRef.current}
-					/>
+					/>*/}
 				</ButtonGroup>
 			</div>
 			<div className='home__canvas'>

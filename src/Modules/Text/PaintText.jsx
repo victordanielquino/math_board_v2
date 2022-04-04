@@ -2,43 +2,27 @@ import React, {useContext, useEffect, useState} from 'react';
 
 //
 import AppContextText from "../../context/AppContextText";
-import AppContextCanvas from "../../context/AppContextCanvas";
-import AppContextLinea from "../../context/AppContextLinea";
-import AppContextLapiz from "../../context/AppContextLapiz";
-import AppContextPlano from "../../context/AppContextPlano";
-import AppContextCirculo from "../../context/AppContextCirculo";
-import AppContextTriangulo from "../../context/AppContextTriangulo";
-import AppContextCuadrado from "../../context/AppContextCuadrado";
-import AppContextImagen from "../../context/AppContextImagen";
+import AppContextGrid from "../../context/AppContextGrid";
 
 // UTILS:
-import {u_lapizGraficaH} from "../Pencil/UtilsLapiz";
-import {u_textGraficaFontEdit, u_textGraficaH2, u_textGraficaH} from "./UtilsText";
-import {utilsCuadricula_graficaCuadricula} from "../Grid/UtilsCuadricula";
-import {u_planoGraficaH} from "../Plano/UtilsPlano";
-import {u_imagenGraficaH} from "../Image/UtilsImagen";
-import {u_cuadradoGraficaH} from "../Square/UtilsCuadrado";
-import {u_circuloGraficaH} from "../Circle/UtilsCirculo";
-import {u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
-import {u_lineaGraficaH} from "../Line/UtilsLinea";
+import AppContext from "../../context/AppContext";
+import draw from '../Draw/Draw';
 
 const PaintText = (id_canvas) => {
     // CONTEXT:
-    const { stateCanvas } = useContext(AppContextCanvas);
-    const { stateLinea } = useContext(AppContextLinea);
-    const { stateLapiz } = useContext(AppContextLapiz);
-    const { statePlano } = useContext(AppContextPlano);
+    const {
+        state,
+        h_addH,
+    } = useContext(AppContext);
+    const { stateCanvas } = useContext(AppContextGrid);
     const {
         stateText,
         h_textAddHIdFocus,
         h_textSetReset,
+        h_textSetCanvas,
+        h_textSetFocus
     } = useContext(AppContextText);
-    const { stateCirculo } = useContext(AppContextCirculo);
-    const { stateTriangulo } = useContext(AppContextTriangulo);
-    const { stateCuadrado } = useContext(AppContextCuadrado);
-    const { stateImagen } = useContext(AppContextImagen);
     // STATE:
-    const [size, setSize] = useState(stateText.fontSize);
 
     // LOGICA
     const paint = async () => {
@@ -47,17 +31,7 @@ const PaintText = (id_canvas) => {
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-                await u_imagenGraficaH(context, stateImagen.historiaImagen);
-                u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-                u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-                u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-                u_lineaGraficaH(context, stateLinea.historiaLinea);
-                if (stateText.fontFocus)
-                    u_textGraficaH2(context, stateText.historiaText);
-                else u_textGraficaH(context, stateText.historiaText);
-                u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+                await draw(context, state.historia, state.canvas, stateCanvas, stateText.fontFocus);
             } catch (e) {
                 console.log(e);
             }
@@ -70,15 +44,7 @@ const PaintText = (id_canvas) => {
         canvas = document.getElementById(id_canvas);
         context = canvas.getContext('2d');
         try {
-            utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-            u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-            await u_imagenGraficaH(context, stateImagen.historiaImagen);
-            u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-            u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-            u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-            u_lineaGraficaH(context, stateLinea.historiaLinea);
-            u_textGraficaH(context, stateText.historiaText);
-            u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+            await draw(context, state.historia, state.canvas, stateCanvas);
         } catch (e) {
             console.log(e);
         }
@@ -102,10 +68,13 @@ const PaintText = (id_canvas) => {
         fontSize: stateText.fontSize,
         fontText: 'new text...',
         fontFocus: false,
+        canvas: stateText.canvas,
+        types: 'text',
     };
     let canvas = '';
     let context = '';
     let textSelect = stateText.textSelect;
+    let textSelect2 = '';
     const mouse = {
         click: false,
         move: false,
@@ -139,15 +108,18 @@ const PaintText = (id_canvas) => {
     // 2
     const mouseMoveText = (e) => {};
     // 3
-    const mouseUpText = (e) => {
+    const mouseUpText = async (e) => {
         if (!text.fontFocus){
             //text.fontFocus = true;
             captura_Pos_Posprev(e);
             if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                 text.y_ini = text.y_ini - text.fontSize;
                 text.y_fin = text.y_fin - text.fontSize;
+                await h_textSetFocus(true);
+                h_addH(text);
                 //u_textGraficaFontEdit(context, text, true);
-                h_textAddHIdFocus(text, stateText.id + 1, true);
+                //h_textAddHIdFocus(text, stateText.id + 1, true);
+                //text.id = state.id;
             }
         } else {
             console.log('false....');
@@ -155,50 +127,58 @@ const PaintText = (id_canvas) => {
     };
     // 4:
     const keyDown = (e) => {
-        textSelect = stateText.historiaText[stateText.historiaText.length - 1];
-        // console.log(e);
-        //console.log(e.key);
-        //console.log(e.keyCode);
-        let key = e.key;
-        let keyV = e.which || e.keyCode;
-        let ctrl = e.ctrlKey
-            ? e.ctrlKey
-            : (key === 17) ? true : false;
-        if (keyV === 86 && ctrl) {
-            console.log("Ctrl+V is pressed.");
-            navigator.clipboard.readText()
-                .then(texto => {
-                    console.log("Aquí tenemos el texto: ", texto);
-                    key = texto;
-                    console.log('key:', key)
-                    textSelect.fontText = textSelect.fontText + key;
-                    paint();
-                })
-                .catch(error => {
-                    // Por si el usuario no da permiso u ocurre un error
-                    console.log("Hubo un error: ", error);
-                });
-        } else {
-            if (!objetoVacio(textSelect) && stateText.fontFocus) {
-                switch (e.keyCode){
-                    case 8: key = '';
-                        (textSelect.fontText.length > 0) ? textSelect.fontText = textSelect.fontText.slice(0,-1): '';
-                        break;
-                    case 9: key = ''; break;
-                    case 16: key = ''; break;
-                    case 17: key = ''; break;
-                    case 18: key = ''; break;
-                    case 20: key = ''; break;
-                    case 37: key = ''; break;
-                    case 38: key = ''; break;
-                    case 39: key = ''; break;
-                    case 40: key = ''; break;
-                    case 91: key = ''; break;
-                }
-                textSelect.fontText = textSelect.fontText + key;
-                paint();
+        textSelect = state.historia[state.historia.length - 1];
+        if (textSelect.canvas === stateText.canvas){
+            // console.log(e);
+            //console.log(e.key);
+            //console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 86 && ctrl) {
+                console.log("Ctrl+V is pressed.");
+                navigator.clipboard.readText()
+                    .then(texto => {
+                        console.log("Aquí tenemos el texto: ", texto);
+                        key = texto;
+                        console.log('key:', key)
+                        textSelect.fontText = textSelect.fontText + key;
+                        textSelect2 = textSelect;
+                        textSelect2.id = state.id-1;
+                        state.historia[state.historia.length -1] = textSelect2;
+                        paint();
+                    })
+                    .catch(error => {
+                        // Por si el usuario no da permiso u ocurre un error
+                        console.log("Hubo un error: ", error);
+                    });
             } else {
-                console.log('jejeje:', textSelect);
+                if (!objetoVacio(textSelect) && stateText.fontFocus) {
+                    switch (e.keyCode){
+                        case 8: key = '';
+                            (textSelect.fontText.length > 0) ? textSelect.fontText = textSelect.fontText.slice(0,-1): '';
+                            break;
+                        case 9: key = ''; break;
+                        case 16: key = ''; break;
+                        case 17: key = ''; break;
+                        case 18: key = ''; break;
+                        case 20: key = ''; break;
+                        case 37: key = ''; break;
+                        case 38: key = ''; break;
+                        case 39: key = ''; break;
+                        case 40: key = ''; break;
+                        case 91: key = ''; break;
+                    }
+                    textSelect.fontText = textSelect.fontText + key;
+                    textSelect2 = textSelect;
+                    textSelect2.id = state.id-1;
+                    state.historia[state.historia.length -1] = textSelect2;
+                    paint();
+                } else {
+                    console.log('jejeje:', textSelect);
+                }
             }
         }
     }
@@ -214,27 +194,33 @@ const PaintText = (id_canvas) => {
         canvasTextDatos.width = canvas.getBoundingClientRect().width;
         canvasTextDatos.height = canvas.getBoundingClientRect().height;
     };
+    const enventDraw = () => {
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
+        update_canvasTextDatos();
+        if (state.historia.length > 0) {
+            console.log('historia:',state.historia)
+            stateText.textSelect = state.historia[state.historia.length - 1];
+            paint();
+        }
+    }
 
     // EFECT:
     useEffect( () => {
         if (stateText.active){
-            console.log('ue PaintText 2.jsx');
-            canvas = document.getElementById(id_canvas);
-            context = canvas.getContext('2d');
-            if (stateText.active) {
-                update_canvasTextDatos();
-                canvas.addEventListener('mousedown', mouseDownText);
-                canvas.addEventListener('mousemove', mouseMoveText);
-                canvas.addEventListener('mouseup', mouseUpText);
-                document.addEventListener('keydown', keyDown);
-            } return () => {
+            enventDraw();
+            canvas.addEventListener('mousedown', mouseDownText);
+            canvas.addEventListener('mousemove', mouseMoveText);
+            canvas.addEventListener('mouseup', mouseUpText);
+            document.addEventListener('keydown', keyDown);
+            return () => {
                 canvas.removeEventListener('mousedown', mouseDownText);
                 canvas.removeEventListener('mousemove', mouseMoveText);
                 canvas.removeEventListener('mouseup', mouseUpText);
                 document.removeEventListener('keydown', keyDown);
             };
         }
-    }, [stateText]);
+    }, [stateText, state.historia]);
 
     useEffect(() => {
         if(stateText.fontFocus){
@@ -305,14 +291,11 @@ const PaintText = (id_canvas) => {
     }, [stateText.fontSize]);
 
     useEffect(() => {
-        if (stateText.active){
-            //console.log('historia: ',stateText.historiaText);
-            if (stateText.historiaText.length > 0) {
-                stateText.textSelect = stateText.historiaText[stateText.historiaText.length - 1];
-                paint();
-            }
+        h_textSetCanvas(state.canvas);
+        if (stateText.active) {
+            paint();
         }
-    }, [stateText.historiaText]);
+    }, [state.canvas]);
 };
 
 export default PaintText;

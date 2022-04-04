@@ -86,6 +86,9 @@ const u_getTextId = (array, x, y) => {
 	});
 	return id;
 };
+const u_textClickTrue = (text, x, y) => {
+	return (text.x_ini < x && x < text.x_fin && text.y_ini < y && y < text.y_fin);
+};
 // TEXTO: DELETE POR ID
 const u_textDeleteById = (array, id) => {
 	let newArray = [];
@@ -145,5 +148,6 @@ export {
 	u_textOpera,
 	u_textBordeSegmentado,
 	u_textGraficaFontEdit,
-	u_textGraficaH2
+	u_textGraficaH2,
+	u_textClickTrue
 };

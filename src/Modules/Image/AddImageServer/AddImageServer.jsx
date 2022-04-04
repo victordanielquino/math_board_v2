@@ -9,6 +9,7 @@ import { TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import InputFileImage from "../../../components/InputFileImage/InputFileImage";
 import ModalImageLoading from "../../../components/ModalImageLoading";
+import AppContext from "../../../context/AppContext";
 
 const useStyles  = makeStyles({
     errorMessage: {
@@ -20,13 +21,13 @@ const useStyles  = makeStyles({
     editInput : {
         //height: 30,
         //width: 100,
-        marginBottom: '0.5em'
         //width: 100,
     },
 });
 
 const AddImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
     // useContext:
+    const { state, h_addH } = useContext(AppContext);
     const { s_imagenAddHId, stateImagen } = useContext(AppContextImagen);
 
     // STATE:
@@ -64,6 +65,8 @@ const AddImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
         y_fin: 0,
         dataImagen:[],
         dataUse: false,
+        types: 'image',
+        canvas: stateImagen.canvas,
     };
     const handleSave = () => {
         if (file) {
@@ -81,7 +84,9 @@ const AddImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
                     imagenNew.x_fin = imagenNew.x_ini + widthImage;
                     imagenNew.y_fin = imagenNew.y_ini + heightImage;
                     console.log('imageNew:', imagenNew);
-                    s_imagenAddHId(imagenNew, stateImagen.id + 1);
+                    //s_imagenAddHId(imagenNew, stateImagen.id + 1);
+                    imagenNew.id = state.id;
+                    h_addH(imagenNew);
                     firestoreAddDoc('galeria', autor, fileName, urlImagen)
                         .then( resp => imagenNew.fileId = resp );
                 });
@@ -109,7 +114,7 @@ const AddImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
             handleSave();
             setStateSuccess(false);
         }
-    }, [stateSuccess])
+    }, [stateSuccess]);
 
     return (
         <>
@@ -125,7 +130,7 @@ const AddImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
                 className={classes.editInput}
                 InputProps={{ style: {fontSize: '1em'}}}
                 onChange={(e) => setFileName(e.target.value)}
-                sx={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, textTransform: 'none' }}
+                sx={{ minHeight: 0, minWidth: 0, padding: 0, margin: '0 0 10px 0', textTransform: 'none' }}
             />
             {
                 (!toggleLoading)

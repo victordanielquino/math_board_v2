@@ -7,6 +7,7 @@ const initialStateLinea = {
 	type: 'line',
 	segment: false,
 	historiaLinea: [],
+	canvas: ''
 };
 
 const useLinea = () => {
@@ -97,6 +98,12 @@ const useLinea = () => {
 			historiaLinea: newHistoria,
 		});
 	};
+	const h_lineSetCanvas = (value) => {
+		setStateLinea({
+			...stateLinea,
+			canvas: value,
+		});
+	};
 
 	return {
 		stateLinea,
@@ -113,7 +120,8 @@ const useLinea = () => {
 		h_lineSetH,
 		h_lineaSetColorGrosor,
 		h_lineaSetColor,
-		h_lineaSetGrosor
+		h_lineaSetGrosor,
+		h_lineSetCanvas
 	};
 };
 

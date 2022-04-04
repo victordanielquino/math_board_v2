@@ -16,6 +16,7 @@ const initialStateCirculo = {
 	width: 10,
 	height: 10,
 	historiaCirculo: [],
+	canvas: '',
 };
 
 const useCirculo = () => {
@@ -90,6 +91,12 @@ const useCirculo = () => {
 			historiaCirculo: newHistoria,
 		});
 	};
+	const h_circleSetCanvas = (value) => {
+		setStateCirculo({
+			...stateCirculo,
+			canvas: value,
+		});
+	};
 
 	return {
 		stateCirculo,
@@ -100,7 +107,8 @@ const useCirculo = () => {
 		s_circuloUpdateAll,
 		s_circuloAddHId,
 		s_circuloUpdateRadio,
-		h_circuloSetH
+		h_circuloSetH,
+		h_circleSetCanvas
 	};
 };
 

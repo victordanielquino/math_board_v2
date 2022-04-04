@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-//import AppContextCanvas from '../context/AppContextCanvas';
+//import AppContextGrid from '../context/AppContextGrid';
 //import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextLinea from '../context/AppContextLinea';
 //import AppContextLapiz from '../context/AppContextLapiz';
@@ -9,7 +9,7 @@ import { utilsLinea_graficaLineaHistoria } from '../Modules/Line/UtilsLinea';
 import { utilsLapiz_graficaLapizHistoria } from '../Modules/Pencil/UtilsLapiz';
 import { utilsCuadrado_graficaCuadradoHistoria } from '../Modules/Square/UtilsCuadrado';
 //
-// const { stateCanvas } = useContext(AppContextCanvas);
+// const { stateCanvas } = useContext(AppContextGrid);
 //
 // LINEA:
 const utilsPaint_LineaH = (context) => {

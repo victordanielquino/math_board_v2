@@ -314,6 +314,26 @@ const u_lineaGrafica = (context, line) => {
 		}
 	}
 };
+const u_lineDraw = (context, line) => {
+	if (line.visible) {
+		switch (line.type){
+			case 'line':
+				u_drawLinea(context, line);
+				break;
+			case 'cuadratic':
+				u_drawCuadratic(context, line);
+				break;
+			case 'bezier':
+				u_drawBezier(context, line);
+				break;
+			case 'vector':
+				u_drawVector(context, line);
+				break;
+			default:
+				break;
+		}
+	}
+};
 // LINEA: GRAFICA HISOTORIA
 const u_lineaGraficaH = (context, array) => {
 	array.forEach((element) => {
@@ -824,6 +844,26 @@ const u_lineaGetId = (array, x, y) => {
 	}
 	return id;
 };
+const u_lineClickTrue = (line, x, y) => {
+	let resp = '';
+	switch (line.type) {
+		case 'line':
+			resp = searchLine(line, x, y);
+			break;
+		case 'bezier':
+			break;
+		case 'cuadratic':
+			resp = searchCuadratic(line, x, y);
+			break;
+		case 'vector':
+			resp = searchVector(line, x, y);
+			break;
+		default:
+			console.log('error: u_lineaGetClick()');
+			break;
+	}
+	return resp !== '';
+};
 export {
 	u_lineaDeleteById,
 	u_lineaGetId,
@@ -835,5 +875,7 @@ export {
 	u_lineaUpdateZise,
 	u_lineaOpera,
 	u_lineaBordeSegmentado,
-	u_lineaVector
+	u_lineaVector,
+	u_lineDraw,
+	u_lineClickTrue
 };

@@ -37,6 +37,19 @@ const u_circuloGrafica = (context, circulo) => {
     (circulo.bordeColor != 'white') ? context.stroke(): '';
     context.closePath();
 }
+const u_circleDraw = (context, circulo) => {
+    context.lineWidth = circulo.bordeGrosor;
+    context.strokeStyle = circulo.bordeColor;
+    context.fillStyle = circulo.fondoColor;
+
+    context.setLineDash([0, 0]);
+    context.beginPath();
+    //context.arc(circulo.h, circulo.k, circulo.radio, 0, 2*Math.PI, true);
+    context.ellipse(circulo.h, circulo.k, circulo.radioX, circulo.radioY, 0, 0, 2*Math.PI);
+    (circulo.fondoColor != 'white') ? context.fill(): '';
+    (circulo.bordeColor != 'white') ? context.stroke(): '';
+    context.closePath();
+}
 // CIRCULO: GRAFICA ARRAY DE CIRCULOS
 const u_circuloGraficaH = (context, array) => {
     array.map(circulo => {
@@ -261,6 +274,13 @@ const u_circuloGetId = (array, x, y) => {
     resp !== '' ? id = resp.id:'';
     return id;
 };
+const u_circcleClickTrue = (circulo, x, y) => {
+    let x1 = circulo.x_ini;
+    let y1 = circulo.y_ini;
+    let x2 = circulo.x_fin;
+    let y2 = circulo.y_fin;
+    return (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20);
+};
 // CIRCULO: DELETE POR ID
 const u_circuloDeleteById = (array, id) => {
     let newArray = [];
@@ -280,5 +300,7 @@ export {
     u_circuloValidaPosicion,
     u_circuloGrafica,
     u_circuloGetId,
-    u_circuloDeleteById
+    u_circuloDeleteById,
+    u_circleDraw,
+    u_circcleClickTrue
 }

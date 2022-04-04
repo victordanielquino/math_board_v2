@@ -64,8 +64,7 @@ const useStyles  = makeStyles({
     },
 });
 
-const InputFileImage = ({ setFile, setFileReader, setWidthImage, setHeightImage }) => {
-    // useContext:
+const InputFileImage = ({ setFile, setFileReader, setWidthImage, setHeightImage, imageBase64 = '' }) => {
     // STATE:
     const [errorImage, setErrorImage] = useState(false);
     const [messageError, setMessageError] = useState('');

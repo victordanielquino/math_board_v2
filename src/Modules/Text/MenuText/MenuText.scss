@@ -9,11 +9,12 @@
 	justify-content: center;
 	align-items: center;
 	width: 100%;
+	color: black;
 
 	&__div {
 		//outline: 1px solid red;
 		display: flex;
-		width: 500px;
+		width: 550px;
 		justify-content: space-between;
 		align-items: center;
 

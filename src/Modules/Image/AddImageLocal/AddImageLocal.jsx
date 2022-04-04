@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import AppContextImagen from "../../../context/AppContextImagen";
 import InputFileImage from "../../../components/InputFileImage/InputFileImage";
+import AppContext from "../../../context/AppContext";
 
 const useStyles  = makeStyles({
     errorMessage: {
@@ -21,6 +22,7 @@ const useStyles  = makeStyles({
 
 const AddImageLocal = ({ setOpen, stateSuccess, setStateSuccess}) => {
     // CONTEXT:
+    const { state, h_addH } = useContext(AppContext);
     const { s_imagenAddHId, stateImagen } = useContext(AppContextImagen);
 
     // STATE:
@@ -56,6 +58,8 @@ const AddImageLocal = ({ setOpen, stateSuccess, setStateSuccess}) => {
         y_fin: 200,
         dataImagen:[],
         dataUse: false,
+        types: 'image',
+        canvas: stateImagen.canvas,
     };
     const handleSuccess = () => {
         if (file){
@@ -64,7 +68,9 @@ const AddImageLocal = ({ setOpen, stateSuccess, setStateSuccess}) => {
             imagenNew.y_fin = imagenNew.y_ini + heightImage;
             imagenNew.fileNombre = file.name;
             imagenNew.fileSrc = fileReader.result;
-            s_imagenAddHId(imagenNew, stateImagen.id + 1);
+            //s_imagenAddHId(imagenNew, stateImagen.id + 1);
+            imagenNew.id = state.id;
+            h_addH(imagenNew);
             setOpen(false);
         }else {
             setErrorFile(true);

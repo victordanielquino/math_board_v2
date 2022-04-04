@@ -12,15 +12,13 @@ import PaletaGrosor from '../../PaletaGrosor/PaletaGrosor';
 import './MenuLapiz.scss';
 
 const MenuLapiz = () => {
-	// useContext:
+	// CONTEXT:
 	const { state } = useContext(AppContext);
-	const { updateLapizColorGrosor, stateLapiz } = useContext(AppContextLapiz);
+	const { updateLapizColorGrosor } = useContext(AppContextLapiz);
 
 	// LOGICA:
 
-	// LOGICA END.
-
-	// useEffect:
+	// EFFECT:
 	useEffect(() => {
 		//console.log('ue MenuLapiz.jsx');
 		updateLapizColorGrosor(state.color, state.grosor);
@@ -29,7 +27,7 @@ const MenuLapiz = () => {
 	return (
 		<article className="article__menuLapiz">
 			{<PaletaGrosor title="LINEA" />}
-			{<PaletaColor tipo="linea" title="Color" />}
+			{<PaletaColor tipo="linea" title="COLOR" />}
 		</article>
 	);
 };

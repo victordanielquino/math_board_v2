@@ -1,16 +1,10 @@
 import React, { useEffect, useContext } from 'react';
 
 // CONTEXT:
-import AppContextBorrador from '../../context/AppContextBorrador';
-import AppContextCanvas from '../../context/AppContextCanvas';
-import AppContextCuadrado from '../../context/AppContextCuadrado';
-import AppContextLinea from '../../context/AppContextLinea';
-import AppContextLapiz from '../../context/AppContextLapiz';
-import AppContextPlano from '../../context/AppContextPlano';
-import AppContextText from '../../context/AppContextText';
-import AppContextCirculo from "../../context/AppContextCirculo";
-import AppContextTriangulo from "../../context/AppContextTriangulo";
+import AppContext from "../../context/AppContext";
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextImagen from "../../context/AppContextImagen";
+import AppContextFunction from "../../context/AppContextFunction";
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
@@ -23,37 +17,29 @@ import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
 import { u_imagenGraficaH, getBase64 } from "./UtilsImagen";
 
+import draw from '../Draw/Draw';
+
 const PaintImagen = (id_canvas) => {
     // useContext:
-    const { stateCanvas } = useContext(AppContextCanvas);
-    const { stateCuadrado } = useContext(AppContextCuadrado);
-    const { stateLinea } = useContext(AppContextLinea);
-    const { stateLapiz } = useContext(AppContextLapiz);
-    const { statePlano } = useContext(AppContextPlano);
-    const { stateText } = useContext(AppContextText);
-    const { stateTriangulo } = useContext(AppContextTriangulo);
-    const { stateCirculo } = useContext(AppContextCirculo);
-    const { stateImagen } = useContext(AppContextImagen);
+    const { state } = useContext(AppContext);
+    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateImagen, h_imageSetCanvas } = useContext(AppContextImagen);
+    const { stateFunction } = useContext(AppContextFunction);
 
     // LOGICA:
     let canvas = '';
     let context = '';
     const paint = async () => {
-        console.log('PaintImage.jsx');
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        try {
-            utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-            u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-            await u_imagenGraficaH(context, stateImagen.historiaImagen);
-            u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-            u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-            u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-            u_lineaGraficaH(context, stateLinea.historiaLinea);
-            u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-            u_textGraficaH(context, stateText.historiaText);
-        } catch (e) {
-            console.log(e.message);
+        if (stateImagen.active || stateFunction.active){
+            console.log('PaintImage.jsx');
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            try {
+                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+                await draw(context, state.historia, state.canvas, stateCanvas);
+            } catch (e) {
+                console.log(e.message);
+            }
         }
     }
 
@@ -64,8 +50,15 @@ const PaintImagen = (id_canvas) => {
     }, [stateImagen.active]);
 
     useEffect(async () => {
-        stateImagen.historiaImagen.length > 0 ? await paint():'';
-    }, [stateImagen.historiaImagen]);
+        state.historia.length > 0 ? await paint():'';
+    }, [state.historia]);
+
+    useEffect(() => {
+        h_imageSetCanvas(state.canvas);
+        if (stateImagen.active || stateFunction.active) {
+            paint();
+        }
+    }, [state.canvas]);
 }
 
 export default PaintImagen;

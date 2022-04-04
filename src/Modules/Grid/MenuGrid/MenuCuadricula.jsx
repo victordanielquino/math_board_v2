@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 
 // context
-import AppContextCanvas from '../../../context/AppContextCanvas';
+import AppContextGrid from '../../../context/AppContextGrid';
 
 // styles:
 import './MenuCuadricula.scss';
@@ -12,7 +12,7 @@ import iconCuadriculaNone from '../../../assets/icons/lineaNone.svg';
 const MenuCuadricula = () => {
 	// useContext:
 	const { stateCanvas, updateTipoCuadricula, updateCuadriculaWidth } =
-		useContext(AppContextCanvas);
+		useContext(AppContextGrid);
 
 	// LOGICA:
 	const arrayIconCuadricula = [

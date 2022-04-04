@@ -6,12 +6,25 @@ import AppContext from '../../context/AppContext';
 // styles:
 import './PaletaColor.scss';
 import iconLineaNone from '../../assets/icons/lineaNone.svg';
+import {Paper} from "@mui/material";
+
+import {makeStyles} from "@mui/styles";
+import { styled } from '@mui/material/styles';
+const useStyle = makeStyles(theme => ({
+	// offset: theme.mixins.toolbar
+	paperColor: {
+		display: 'flex',
+		justifyContent: "space-between",
+		width: '200px'
+	}
+}));
 
 const PaletaColor = (value) => {
 	// useContext:
 	const { state, updateColor, updateColorFondo } = useContext(AppContext);
 
 	// LOGICA:
+	const classes = useStyle();
 	const arrayPaletaColor = [
 		{ colorLine: 'white', id: `colorNone-${value.tipo}` },
 		{ colorLine: 'black', id: `colorBlack-${value.tipo}` },

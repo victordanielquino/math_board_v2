@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 // CONTEXT:
 import AppContext from "../../context/AppContext";
 import AppContextMover from '../../context/AppContextMover';
-import AppContextCanvas from '../../context/AppContextCanvas';
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
 import AppContextLapiz from '../../context/AppContextLapiz';
@@ -74,36 +74,27 @@ import {
 	u_imagenMover,
 	u_imagenUpdateZise
 } from "../Image/UtilsImagen";
+import draw from '../Draw/Draw'
 
 const PaintMover = (id_canvas) => {
 	// useContext
 	const { state } = useContext(AppContext);
-	const { stateMover, setSelectElmObj } = useContext(AppContextMover);
-	const { stateCanvas } = useContext(AppContextCanvas);
-	const { stateCuadrado } = useContext(AppContextCuadrado);
-	const { stateLinea } = useContext(AppContextLinea);
-	const { stateLapiz } = useContext(AppContextLapiz);
-	const { statePlano } = useContext(AppContextPlano);
-	const { stateText } = useContext(AppContextText);
-	const { stateCirculo } = useContext(AppContextCirculo);
-	const { stateTriangulo } = useContext(AppContextTriangulo);
-	const { stateImagen } = useContext(AppContextImagen);
+	const { stateMover, setSelectElmObj, h_moveSetCanvas } = useContext(AppContextMover);
+	const { stateCanvas } = useContext(AppContextGrid);
 
 	// LOGICA:
 	const paint = async () => {
-		console.log('PaintMover.jsx');
-		try {
-			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-			await u_imagenGraficaH(context, stateImagen.historiaImagen);
-			u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-			u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-			u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-			u_lineaGraficaH(context, stateLinea.historiaLinea);
-			u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-			u_textGraficaH(context, stateText.historiaText);
-		} catch (e) {
-			console.log('error: PaintMover.jsx')
+		if (stateMover.active) {
+			console.log('PaintMover.jsx');
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			try {
+				//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+				await draw(context, state.historia, state.canvas, stateCanvas);
+			} catch (e) {
+				console.log('error: PaintMover.jsx')
+			}
+
 		}
 	};
 	const mover = {
@@ -185,7 +176,106 @@ const PaintMover = (id_canvas) => {
 		let sw = false;
 		mover.selectElm = false;
 		elmSelectMove = {};
-		for(let elem of prioridad_objetos){
+		for (let i = state.historia.length -1; i >= 0 && !sw; i--) {
+			let elm = state.historia[i];
+			console.log(elm.canvas, ' - ', stateMover.canvas);
+			if (elm.canvas === state.canvas && elm.visible){
+				console.log('elm:', elm)
+				let array = [elm];
+				switch (elm.types) {
+					case 'square':
+						cuadradoSelect = u_cuadradoOpera(context, cuadradoSelect, array, mouse);
+						if (cuadradoSelect){
+							sw = true;
+							await paint();
+							u_cuadradoBordeSegmentado(context, cuadradoSelect);
+							mouse.click = true;
+							elmSelectMove = cuadradoSelect;
+						}
+						break;
+					case 'circle':
+						circuloSelect = u_circuloOpera(context, circuloSelect, array, mouse);
+						if (circuloSelect){
+							sw = true;
+							await paint();
+							u_circuloBordeSegmentado(context, circuloSelect);
+							mouse.click = true;
+							elmSelectMove = circuloSelect;
+						}
+						break;
+					case 'triangle':
+						trianguloSelect = u_trianguloOpera(context, trianguloSelect, array, mouse);
+						if (trianguloSelect){
+							sw = true;
+							await paint();
+							u_trianguloBordeSegmentado(context, trianguloSelect);
+							mouse.click = true;
+							elmSelectMove = trianguloSelect;
+						}
+						break;
+					case 'image':
+						imagenSelect = u_imagenOpera(imagenSelect, array, mouse);
+						if (imagenSelect){
+							sw = true;
+							await paint();
+							u_imagenBordeSegmentado(context, imagenSelect);
+							mouse.click = true;
+							elmSelectMove = imagenSelect;
+						}
+						break;
+					case 'plano':
+						planoSelect = u_planoOpera(context, planoSelect, array, mouse);
+						if (planoSelect){
+							sw = true;
+							await paint();
+							u_planoBordeSegmentado(context, planoSelect);
+							mouse.click = true;
+							elmSelectMove = planoSelect;
+						}
+						break;
+					case 'pencil':
+						lapizSelect = u_lapizOpera(lapizSelect, array, mouse);
+						if (lapizSelect){
+							sw = true;
+							await paint();
+							u_lapizBordeSegmentado(context, lapizSelect);
+							mouse.click = true;
+							elmSelectMove = lapizSelect;
+						}
+						break;
+					case 'line':
+						lineaSelect = u_lineaOpera(lineaSelect, array, mouse);
+						if (lineaSelect){
+							sw = true;
+							await paint();
+							u_lineaBordeSegmentado(context, lineaSelect);
+							mouse.click = true;
+							elmSelectMove = lineaSelect;
+						}
+						break;
+					case 'text':
+						textSelect = u_textOpera(textSelect, array, mouse);
+						if (textSelect){
+							sw = true;
+							await paint();
+							u_textBordeSegmentado(context, textSelect);
+							mouse.click = true;
+							elmSelectMove = textSelect;
+						}
+						break;
+					default:
+						console.log('no se encontro el type:', elm.types);
+				}
+				if(sw) {
+					console.log('elm select types:', elm.types);
+					mouse.elementSelect = elm.types;
+					mover.selectElm = true;
+					break; // cierra el for
+				}
+			}
+		}
+		!sw ? console.log('no elem select!!!!'): '';
+		/*for(let elem of prioridad_objetos){
 			switch (elem) {
 				case 'triangulo':
 					trianguloSelect = u_trianguloOpera(context, trianguloSelect, stateTriangulo.historiaTriangulo, mouse);
@@ -276,8 +366,8 @@ const PaintMover = (id_canvas) => {
 				mover.selectElm = true;
 				break; // cierra el for
 			}
-		}
-		if (mouse.elementSelect != '' && !sw) {
+		}*/
+		if (mouse.elementSelect !== '' && !sw) {
 			paint();
 			mouse.elementSelect = '';
 		}
@@ -288,6 +378,7 @@ const PaintMover = (id_canvas) => {
 		setSelectElmObj(mover.selectElm, elmSelectMove);
 		//setElmSelect(mover.selectElm);
 	};
+
 	// 2:
 	const mouseMoveMover = async (e) => {
 		if (mouse.click){
@@ -302,7 +393,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'cuadrado':
+				case 'square':
 					//if (mouse.cuadrado_mover || mouse.cuadrado_mover_pts) {
 					if (cuadradoSelect.edit) {
 						mouse.cuadrado_mover
@@ -313,7 +404,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'linea':
+				case 'line':
 					//if (mouse.linea_mover || mouse.linea_mover_pts) {
 					if (lineaSelect.edit) {
 						mouse.linea_mover
@@ -324,7 +415,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'lapiz':
+				case 'pencil':
 					//if (mouse.lapiz_mover) {
 					if (lapizSelect.edit) {
 						lapizSelect = u_lapizMover(lapizSelect, mouse);
@@ -344,7 +435,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'circulo':
+				case 'circle':
 					//if(mouse.circulo_mover || mouse.circulo_mover_pts){
 					if (circuloSelect.edit) {
 						mouse.circulo_mover
@@ -355,7 +446,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'triangulo':
+				case 'triangle':
 					//if (mouse.triangulo_mover || mouse.triangulo_mover_pts) {
 					if (trianguloSelect.edit) {
 						mouse.triangulo_mover
@@ -366,7 +457,7 @@ const PaintMover = (id_canvas) => {
 					}
 					//}
 					break;
-				case 'imagen':
+				case 'image':
 					if (imagenSelect.edit) {
 						mouse.imagen_mover
 							? imagenSelect = u_imagenMover(imagenSelect, mouse)
@@ -419,7 +510,6 @@ const PaintMover = (id_canvas) => {
 		}
 		mouse.imagen_mover_pts = false;
 		mouse.imagen_pto = '';
-
 	};
 	const update_canvasMoverDatos = () => {
 		canvasMoverDatos.top = canvas.getBoundingClientRect().top;
@@ -449,27 +539,14 @@ const PaintMover = (id_canvas) => {
 			canvas.removeEventListener('mousemove', mouseMoveMover);
 			canvas.removeEventListener('mouseup', mouseUpMover);
 		};
-	}, [stateMover.active]);
+	}, [stateMover.active, stateMover.canvas]);
 
-	/*useEffect(() => {
-		console.log('ue 2')
-		if (stateMover.selectElm){
-			setSelectElmObj(false, {});
+	useEffect(() => {
+		h_moveSetCanvas(state.canvas);
+		if (stateMover.active) {
+			paint();
 		}
-		paint();
-	}, [state.active])*/
-
-	/*useEffect(() => {
-		console.log('se inicio Patin mover...');
-		paint();
-	}, [stateMover.active])*/
-
-	/*useEffect(() => {
-		console.log('useEffect, [stateMover.selectElm]')
-		paint();
-	}, [stateMover.selectElm])*/
-	// RENDER:
-	// return console.log('paint mover');
+	}, [state.canvas]);
 };
 
 export default PaintMover;

@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 
 // CONTEXT:
-import AppContextBorrador from '../../context/AppContextBorrador';
-import AppContextCanvas from '../../context/AppContextCanvas';
+import AppContext from "../../context/AppContext";
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
 import AppContextLapiz from '../../context/AppContextLapiz';
@@ -23,16 +23,19 @@ import { u_circuloGraficaH, u_circuloGrafica } from "./UtilsCirculo";
 import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
 import { u_imagenGraficaH } from "../Image/UtilsImagen";
 
+import draw from '../Draw/Draw'
+
 const PaintCirculo = (id_canvas) => {
     // useContext:
-    const { stateCanvas } = useContext(AppContextCanvas);
+    const { state, h_addH } = useContext(AppContext);
+    const { stateCanvas } = useContext(AppContextGrid);
     const { stateCuadrado } = useContext(AppContextCuadrado);
     const { stateLinea } = useContext(AppContextLinea);
     const { stateLapiz } = useContext(AppContextLapiz);
     const { statePlano } = useContext(AppContextPlano);
     const { stateText } = useContext(AppContextText);
     const { stateTriangulo } = useContext(AppContextTriangulo);
-    const { stateCirculo, s_circuloAddHId } = useContext(AppContextCirculo);
+    const { stateCirculo, s_circuloAddHId, h_circleSetCanvas } = useContext(AppContextCirculo);
     const { stateImagen } = useContext(AppContextImagen);
 
     // LOGICA:
@@ -42,15 +45,8 @@ const PaintCirculo = (id_canvas) => {
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-                await u_imagenGraficaH(context, stateImagen.historiaImagen);
-                u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-                u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-                u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-                u_lineaGraficaH(context, stateLinea.historiaLinea);
-                u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-                u_textGraficaH(context, stateText.historiaText);
+                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+                await draw(context, state.historia, state.canvas, stateCanvas);
             } catch (e) {
                 console.log(e.message);
             }
@@ -76,7 +72,9 @@ const PaintCirculo = (id_canvas) => {
         radioX: stateCirculo.radioX,
         radioY: stateCirculo.radioY,
         h: stateCirculo.h,
-        k: stateCirculo.k
+        k: stateCirculo.k,
+        types: 'circle',
+        canvas: stateCirculo.canvas,
     };
     const mouse = {
         click: false,
@@ -137,36 +135,52 @@ const PaintCirculo = (id_canvas) => {
             circulo.k = mouse.pos.y;
             //paint();
             //u_circuloGrafica(context, circulo);
-            s_circuloAddHId(circulo, stateCirculo.id + 1);
+            //s_circuloAddHId(circulo, stateCirculo.id + 1);
+            circulo.id = state.id;
+            h_addH(circulo);
         }
         mouseReinicia();
     };
+    const eventDraw = () => {
+        console.log('ue PaintTCirculo.jsx');
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
+        update_canvasCirculoDatos();
+        console.log('historia: ',state.historia);
+        if (state.historia.length > 0) {
+            paint();
+        }
+    }
     // LOGICA END.
 
     // useEffect:
     useEffect(() => {
         if (stateCirculo.active) {
-            console.log('ue PaintTCirculo.jsx');
-            canvas = document.getElementById(id_canvas);
-            context = canvas.getContext('2d');
-            if (stateCirculo.active) {
-                update_canvasCirculoDatos();
-                canvas.addEventListener('mousedown', mouseDownCirculo);
-                canvas.addEventListener('mousemove', mouseMoveCirculo);
-                canvas.addEventListener('mouseup', mouseUpCirculo);
-            }
+            eventDraw();
+            canvas.addEventListener('mousedown', mouseDownCirculo);
+            canvas.addEventListener('mousemove', mouseMoveCirculo);
+            canvas.addEventListener('mouseup', mouseUpCirculo);
+
             return () => {
                 canvas.removeEventListener('mousedown', mouseDownCirculo);
                 canvas.removeEventListener('mousemove', mouseMoveCirculo);
                 canvas.removeEventListener('mouseup', mouseUpCirculo);
             };
         }
-    }, [stateCirculo]);
+    }, [stateCirculo, state.historia]);
+
     useEffect(() => {
         if (stateCirculo.active){
             paint();
         }
     }, [stateCirculo.historiaCirculo]);
+
+    useEffect(() => {
+        h_circleSetCanvas(state.canvas);
+        if (stateCirculo.active) {
+            paint();
+        }
+    }, [state.canvas]);
 }
 
 export default PaintCirculo;

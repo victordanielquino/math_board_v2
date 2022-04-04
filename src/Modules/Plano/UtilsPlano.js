@@ -195,6 +195,63 @@ const uPlano_graficaCuadradoConEjes = (context, plano) => {
 		uPlano_graficaNumeros(context, plano, array_x, array_y, array_x_num, array_y_num);
 	}
 };
+const u_planoDraw = (context, plano) => {
+	if (plano.visible) {
+		context.strokeStyle = plano.bordeColor; // bordeColor
+		context.fillStyle = plano.fondoColor; // fondoColor
+		context.lineWidth = plano.bordeGrosor; // bordeGrosor
+		context.setLineDash([0, 0]); // lineas no segmentadas
+		// CONTORNO DEL PLANO
+		context.beginPath();
+		context.moveTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
+		context.lineTo(plano.x_fin, plano.y_ini); // (x_fin, y_ini)
+		context.lineTo(plano.x_fin, plano.y_fin); // (x_fin, y_fin)
+		context.lineTo(plano.x_ini, plano.y_fin); // (x_ini, y_fin)
+		context.lineTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
+		plano.fondoEstado ? context.fill() : ''; // fondoColor = true
+		plano.bordeEstado ? context.stroke() : ''; // bordeColor = true
+		context.closePath();
+		// CONTORNO DEL PLANO END
+		// EJE X:
+		let array_x = [];
+		let array_x_num = [];
+
+		for (let i = plano.h - plano.width_cuadricula; i > plano.x_ini; i = i - plano.width_cuadricula) {
+			array_x.push(i);
+		}
+		let l = array_x.length * (-1);
+		for (let i = plano.h + plano.width_cuadricula; i < plano.x_fin; i = i + plano.width_cuadricula) {
+			array_x.push(i);
+		}
+		array_x.push(plano.h);
+		array_x.sort(function(a,b) {return a -b});
+		for(let i = 0; i < array_x.length; i++){
+			array_x_num.push(l);
+			l++;
+		}
+		// EJE Y:
+		let array_y = [];
+		let array_y_num = [];
+		for (let i = plano.k - plano.width_cuadricula; i > plano.y_ini; i = i - plano.width_cuadricula) {
+			array_y.push(i);
+		}
+		l = array_y.length * (-1);
+		for (let i = plano.k + plano.width_cuadricula; i < plano.y_fin; i = i + plano.width_cuadricula) {
+			array_y.push(i);
+		}
+		array_y.push(plano.k);
+		array_y.sort(function(a,b) {return a -b});
+		for(let i = 0; i < array_y.length; i++){
+			array_y_num.push(l);
+			l++;
+		}
+		utilsPlano_graficaCuadricula(context, plano, array_x, array_y);
+		ejeCordenadaX(context, plano);
+		ejeCordenadaY(context, plano);
+		utilsPlano_graficaTriangulo(context, plano);
+		uPlano_graficaNumeros(context, plano, array_x, array_y, array_x_num, array_y_num);
+	}
+};
 
 // GRAFICA PLANOS - HISORIA:
 const uPlano_graficaCuadradoHistoria = (context, array) => {
@@ -228,6 +285,9 @@ const u_planoGetId = (array, x, y) => {
 	});
 	resp !== '' ? id = resp.id:'';
 	return id;
+};
+const u_planoClickTrue = (plano, x, y) => {
+	return (plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin)
 };
 // PLANO: GRAFICA PLANO
 const u_planoGraficaH = (context, array) => {
@@ -479,5 +539,7 @@ export {
 	u_planoUpdateZise,
 	u_planoOpera,
 	u_planoBordeSegmentado,
-	u_planoGetId
+	u_planoGetId,
+	u_planoDraw,
+	u_planoClickTrue
 };

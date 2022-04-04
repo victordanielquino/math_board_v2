@@ -5,6 +5,7 @@ const initialStateLapiz = {
 	color: 'black',
 	grosor: 4,
 	historiaLapiz: [],
+	canvas: '',
 };
 
 const useLapiz = () => {
@@ -50,6 +51,12 @@ const useLapiz = () => {
 			historiaLapiz: newHistoria,
 		});
 	};
+	const h_lapizSetCanvas = (canvas) => {
+		setStateLapiz({
+			...stateLapiz,
+			canvas: canvas,
+		});
+	}
 
 	return {
 		stateLapiz,
@@ -59,6 +66,7 @@ const useLapiz = () => {
 		updateLapizColorGrosor,
 		s_lapizAddHId,
 		h_lapizSetH,
+		h_lapizSetCanvas
 	};
 };
 

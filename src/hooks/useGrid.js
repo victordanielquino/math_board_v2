@@ -10,9 +10,10 @@ const initialStateCanvas = {
 	lineaColor: '#d5dbdb',
 	lineaGrosor: 1,
 	tipoCuadricula: 'cuadricula', // cuadricula, linea, ninguno
+	canvas: '',
 };
 
-const useCanvas = () => {
+const useGrid = () => {
 	const [stateCanvas, setStateCanvas] = useState(initialStateCanvas);
 
 	const updateCuadriculaActive = (valor) => {
@@ -40,6 +41,12 @@ const useCanvas = () => {
 			tipoCuadricula: valor,
 		});
 	};
+	const h_gridSetCanvas = (value) => {
+		setStateCanvas({
+			...stateCanvas,
+			canvas: value,
+		});
+	};
 
 	return {
 		stateCanvas,
@@ -47,7 +54,8 @@ const useCanvas = () => {
 		updateCuadriculaWidth,
 		update_width_height,
 		updateTipoCuadricula,
+		h_gridSetCanvas,
 	};
 };
 
-export default useCanvas;
+export default useGrid;

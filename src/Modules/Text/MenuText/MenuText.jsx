@@ -103,14 +103,15 @@ const MenuText = () => {
 							onChange={handleFormat}
 							aria-label="text formatting"
 							size='small'
+							color='primary'
 						>
-							<ToggleButton value="bold" aria-label="bold" size='small'>
+							<ToggleButton value="bold" aria-label="bold" size='small' style={{ height: '2.5em'}}>
 								<FormatBoldIcon fontSize='small' />
 							</ToggleButton>
-							<ToggleButton value="italic" aria-label="italic" size='small'>
+							<ToggleButton value="italic" aria-label="italic" size='small'  style={{ height: '2.5em'}}>
 								<FormatItalicIcon fontSize='small' />
 							</ToggleButton>
-							<ToggleButton value="underlined" aria-label="underlined" size='small'>
+							<ToggleButton value="underlined" aria-label="underlined" size='small' style={{ height: '2.5em'}}>
 								<FormatUnderlinedIcon fontSize='small' />
 							</ToggleButton>
 						</ToggleButtonGroup>
@@ -123,6 +124,7 @@ const MenuText = () => {
 							inputProps={{ 'aria-label': 'Without label' }}
 							size='small'
 							id="demo-simple-select-error"
+							style={{ height: '1.8em'}}
 						>
 							{textTypografiaArray.map(elm => (<MenuItem key={elm.name} value={elm.typografia}>{elm.name}</MenuItem>))}
 						</Select>
@@ -134,6 +136,7 @@ const MenuText = () => {
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
 							size='small'
+							style={{ height: '1.8em'}}
 						>
 							{textSizeArray.map((size) => ( <MenuItem key={size} value={size}>{size}</MenuItem>))}
 						</Select>

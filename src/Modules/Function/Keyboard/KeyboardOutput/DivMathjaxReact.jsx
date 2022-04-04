@@ -1,21 +1,19 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { MathComponent } from "mathjax-react";
-//import "katex/dist/katex.min.css";
-
-const useStyles  = makeStyles(theme => ({
-    container: {
-        background: props => props.background,
-        color: props => props.color,
-        margin: '0.5em',
-        padding: '0 5px',
-        //outline: '1px solid red',
-    },
-}));
-
 import AppContextFunction from "../../../../context/AppContextFunction";
 import {makeStyles} from "@mui/styles";
 
-const DivMathjaxReact = ({color, background}) => {
+const useStyles  = makeStyles(theme => ({
+    container: {
+        //outline: '1px solid red',
+        padding: '0 5px',
+        //margin: '10px 5px',
+        background: props => props.background,
+        color: props => props.color,
+    },
+}));
+
+const DivMathjaxReact = ({color, background, divImgRef}) => {
     // ejemplos: https://codesandbox.io/s/bq3k1?file=/src/App.js:393-445
 
     // CONTEXT:
@@ -91,7 +89,7 @@ const DivMathjaxReact = ({color, background}) => {
         return arrayNew;
     }
     const changeErrorSuccess = () => {
-        console.log('ok');
+        //console.log('ok');
     }
     const updateDiv = () => {
         if (stateFunction.text.length > 0) {
@@ -108,7 +106,7 @@ const DivMathjaxReact = ({color, background}) => {
                 idx = array.indexOf(')', idx + 1);
             }
             // CORCHETES:
-            idx = array.indexOf('[');
+            /*idx = array.indexOf('[');
             while (idx !== -1) {
                 array[idx] = ' \\left[ ';
                 idx = array.indexOf('[', idx + 1);
@@ -117,7 +115,7 @@ const DivMathjaxReact = ({color, background}) => {
             while (idx !== -1) {
                 array[idx] = ' \\right] ';
                 idx = array.indexOf(']', idx + 1);
-            }
+            }*/
             // FRACCION:
             idx = array.indexOf('/');
             while (idx !== -1) {
@@ -180,18 +178,20 @@ const DivMathjaxReact = ({color, background}) => {
     }, [stateFunction.text]);
 
     return (
-        <div className={classes.container} id='divImagen'>
-            {/*<MathComponent
+        <div>
+            <div className={classes.container} ref={divImgRef}>
+                {/*<MathComponent
                 tex={String.raw`\sum_0^1 x^2\ dx \frac{1}{2} \sqrt[4]{\frac{n}{n+1}} \div(a)+(b) ±`}
                 onError={(e) => console.log('error', e)}
                 onSuccess={() => console.log('ok')}
             />*/}
-            <MathComponent
-                tex={tex}
-                onError={(e) => changeErrorSuccess('red', e)}
-                onSuccess={() => changeErrorSuccess()}
-                style="heigth: 50px"
-            />
+                <MathComponent
+                    tex={tex}
+                    onError={(e) => changeErrorSuccess('red', e)}
+                    onSuccess={() => changeErrorSuccess()}
+
+                />
+            </div>
         </div>
     )
 }

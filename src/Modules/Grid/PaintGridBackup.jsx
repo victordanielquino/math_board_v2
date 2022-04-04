@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 
 // CONTEXT:
-import AppContextCanvas from '../../context/AppContextCanvas';
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
 import AppContextLapiz from '../../context/AppContextLapiz';
@@ -22,9 +22,9 @@ import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
 import { u_imagenGraficaH } from "../Image/UtilsImagen";
 
-const PaintCuadricula = (canvasId) => {
+const PaintGrid = (canvasId) => {
 	// useContext:
-	const { stateCanvas } = useContext(AppContextCanvas);
+	const { stateCanvas } = useContext(AppContextGrid);
 	const { stateCuadrado } = useContext(AppContextCuadrado);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
@@ -37,6 +37,7 @@ const PaintCuadricula = (canvasId) => {
 	// LOGICA:
 	let context = '';
 	const paint = async () => {
+		console.log('PaintGrid.jsx');
 		try {
 			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
@@ -66,4 +67,4 @@ const PaintCuadricula = (canvasId) => {
 };
 //const saludar = () => console.log('hola daniel');
 
-export default PaintCuadricula;
+export default PaintGrid;

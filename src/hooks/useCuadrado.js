@@ -13,6 +13,7 @@ const initialStateCuadrado = {
 	width: 10,
 	height: 10,
 	historiaCuadrado: [],
+	canvas: '',
 };
 
 const useCuadrado = () => {
@@ -113,6 +114,12 @@ const useCuadrado = () => {
 			historiaCuadrado: newHistoria,
 		});
 	};
+	const h_squareSetCanvas = (valor) => {
+		setStateCuadrado({
+			...stateCuadrado,
+			canvas: valor,
+		});
+	};
 
 	return {
 		stateCuadrado,
@@ -128,7 +135,8 @@ const useCuadrado = () => {
 		update_cuadradoH, // new
 		s_cuadradoAddH,
 		s_cuadradoAddHId,
-		h_cuadradoSetH
+		h_cuadradoSetH,
+		h_squareSetCanvas,
 	};
 };
 

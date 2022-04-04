@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 
 // CONTEXT:
-import AppContextCanvas from '../../context/AppContextCanvas';
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
 import AppContextLapiz from '../../context/AppContextLapiz';
@@ -22,7 +22,7 @@ import {
 
 const PaintPlano = (id_canvas) => {
 	// useContext:
-	const { stateCanvas } = useContext(AppContextCanvas);
+	const { stateCanvas } = useContext(AppContextGrid);
 	const { stateCuadrado } = useContext(AppContextCuadrado);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);

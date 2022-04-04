@@ -55,7 +55,7 @@ const Key = ({
 	}
 	const classes = useStyles(propsBtn);
 	const handleClick = (key) => {
-		console.log(key);
+		//console.log(key);
 		let c = 0;
 		switch (key) {
 			case '√{}':
@@ -84,6 +84,9 @@ const Key = ({
 				break;
 			case '*10^{n}':
 				c = 6;
+				break;
+			case 'log_{a}{b}':
+				c = 5;
 				break;
 		}
 		let array = Array.from(stateFunction.text);

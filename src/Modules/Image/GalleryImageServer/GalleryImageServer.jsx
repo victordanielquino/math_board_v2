@@ -17,6 +17,8 @@ import {
 import Paper from '@mui/material/Paper';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+import AppContext from "../../../context/AppContext";
 import AppContextImagen from "../../../context/AppContextImagen";
 
 import { firestoreGetDocs } from '../../../firebase/services/firestore.services';
@@ -44,11 +46,11 @@ const useStyles  = makeStyles({
     imageContainer: {
         // outline: '1px solid green',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         padding: '0px',
-        flexDirection: 'column',
     },
     image: {
         // outline: '1px solid red',
@@ -80,11 +82,14 @@ const useStyles  = makeStyles({
 
 const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
     // CONTEXT:
+    const { state, h_addH } = useContext(AppContext);
     const { s_imagenAddHId, stateImagen } = useContext(AppContextImagen);
+
     // USESTATE:
     const [errorImage, setErrorImage] = useState(false);
     const [errorImageMessage, setErrorImageMessage] = useState('');
     const [imagePreviewSrc, setImagePreviewSrc] = useState(imageDownload);
+
     // PAGINACION:
     const [docs, setDocs] = useState([]);   // documentos recibidos de firestore
     const [arrayDocs, setArrayDocs] = useState([]); // documetos llevados a un array
@@ -123,6 +128,8 @@ const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
         y_fin: 400,
         dataImagen:[],
         dataUse: false,
+        canvas: stateImagen.canvas,
+        types: 'image',
     };
     const downloadDocs = () => {
         setLoadingDocs(true);
@@ -223,7 +230,9 @@ const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
             imageNew.fileAutor = file.autorFile;
             imageNew.x_fin = imageNew.x_ini + elm.clientWidth;
             imageNew.y_fin = imageNew.y_ini + elm.clientHeight;
-            s_imagenAddHId(imageNew, stateImagen.id + 1);
+            //s_imagenAddHId(imageNew, stateImagen.id + 1);
+            imageNew.id = state.id;
+            h_addH(imageNew);
             setLoadingDownload(false);
             setOpen(false);
         }

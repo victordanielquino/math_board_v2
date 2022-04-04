@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 // CONTEXT:
-import AppContextCanvas from '../../context/AppContextCanvas';
+import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
 import AppContextLinea from '../../context/AppContextLinea';
 import AppContextLapiz from '../../context/AppContextLapiz';
@@ -14,28 +14,32 @@ import AppContextImagen from "../../context/AppContextImagen";
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
 import { u_lineaGraficaH } from '../Line/UtilsLinea';
-import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
+import {u_lapizGraficaH, u_pencilDraw} from '../Pencil/UtilsLapiz';
 import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../Text/UtilsText';
+import {u_textGrafica, u_textGraficaH} from '../Text/UtilsText';
 import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
 import { u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
 import {
 	u_cuadradoGrafica,
 	u_cuadradoGraficaH,
 	u_cuadradoValidaPosicion,
+	u_squareDraw,
 } from './UtilsCuadrado';
 import { u_imagenGraficaH } from "../Image/UtilsImagen";
+import AppContext from "../../context/AppContext";
+import draw from '../Draw/Draw';
 
 const PaintCuadrado = (id_canvas) => {
 	// useContext:
-	const { stateCanvas } = useContext(AppContextCanvas);
+	const { state, h_addH } = useContext(AppContext);
+	const { stateCanvas } = useContext(AppContextGrid);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
 	const { stateCirculo } = useContext(AppContextCirculo);
 	const { stateTriangulo } = useContext(AppContextTriangulo);
-	const { stateCuadrado, s_cuadradoAddHId } = useContext(AppContextCuadrado);
+	const { stateCuadrado, s_cuadradoAddHId, h_squareSetCanvas } = useContext(AppContextCuadrado);
 	const { stateImagen } = useContext(AppContextImagen);
 
 	// LOGICA:
@@ -44,15 +48,8 @@ const PaintCuadrado = (id_canvas) => {
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
 		try {
-			utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-			u_planoGraficaH(context, statePlano.historiaPlano); // plano cartesiano
-			await u_imagenGraficaH(context, stateImagen.historiaImagen);
-			u_cuadradoGraficaH(context, stateCuadrado.historiaCuadrado);
-			u_circuloGraficaH(context, stateCirculo.historiaCirculo);
-			u_trianguloGraficaH(context, stateTriangulo.historiaTriangulo);
-			u_lineaGraficaH(context, stateLinea.historiaLinea);
-			u_lapizGraficaH(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
-			u_textGraficaH(context, stateText.historiaText);
+			//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+			await draw(context, state.historia, state.canvas, stateCanvas);
 		} catch (e) {
 			console.log(e.message);
 		}
@@ -72,6 +69,8 @@ const PaintCuadrado = (id_canvas) => {
 		y_ini: 0,
 		x_fin: 0,
 		y_fin: 0,
+		canvas: stateCuadrado.canvas,
+		types: 'square',
 	};
 	const mouse = {
 		click: false,
@@ -119,14 +118,16 @@ const PaintCuadrado = (id_canvas) => {
 			cuadrado.x_fin = mouse.pos.x;
 			cuadrado.y_fin = mouse.pos.y;
 			await paint();
-			u_cuadradoGrafica(context, cuadrado);
+			u_squareDraw(context, cuadrado);
 		}
 	};
 	// 3
 	const mouseUpCuadrado = () => {
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			cuadrado = u_cuadradoValidaPosicion(cuadrado);
-			s_cuadradoAddHId(cuadrado);
+			//s_cuadradoAddHId(cuadrado);
+			cuadrado.id = state.id;
+			h_addH(cuadrado);
 		}
 		mouseReinicia();
 	};
@@ -136,29 +137,34 @@ const PaintCuadrado = (id_canvas) => {
 		canvasCuadradoDatos.width = canvas.getBoundingClientRect().width;
 		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
 	};
-	// LOGICA END.
+	const eventDraw = () => {
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
+		update_canvasCuadradoDatos();
+		if (state.historia.length > 0) paint();
+	}
 
 	// useEffect:
 	useEffect(() => {
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
 		if (stateCuadrado.active) {
-			update_canvasCuadradoDatos();
+			eventDraw();
 			canvas.addEventListener('mousedown', mouseDownCuadrado);
 			canvas.addEventListener('mousemove', mouseMoveCuadrado);
 			canvas.addEventListener('mouseup', mouseUpCuadrado);
+			return () => {
+				canvas.removeEventListener('mousedown', mouseDownCuadrado);
+				canvas.removeEventListener('mousemove', mouseMoveCuadrado);
+				canvas.removeEventListener('mouseup', mouseUpCuadrado);
+			};
+
 		}
-		return () => {
-			canvas.removeEventListener('mousedown', mouseDownCuadrado);
-			canvas.removeEventListener('mousemove', mouseMoveCuadrado);
-			canvas.removeEventListener('mouseup', mouseUpCuadrado);
-		};
-	}, [stateCuadrado]);
+	}, [stateCuadrado, state.historia]);
 
 	useEffect(async () => {
 		stateCuadrado.historiaCuadrado.length > 0 ? await paint():'';
 		//await paint();
 	}, [stateCuadrado.historiaCuadrado]);
+
 	useEffect(() => {
 		if (stateCuadrado.active){
 			console.log('stateCuadrado: active');
@@ -167,6 +173,13 @@ const PaintCuadrado = (id_canvas) => {
 			console.log('no active');
 		}
 	}, [stateCuadrado.active]);
+
+	useEffect(() => {
+		h_squareSetCanvas(state.canvas);
+		if (stateCuadrado.active) {
+			paint();
+		}
+	}, [state.canvas]);
 };
 
 export default PaintCuadrado;

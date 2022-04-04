@@ -8,6 +8,7 @@ const initialStateImagen = {
     x_fin: 0,
     y_fin: 0,
     historiaImagen: [],
+    canvas: '',
 };
 
 const useImagen = () => {
@@ -32,11 +33,19 @@ const useImagen = () => {
             historiaImagen: newHistoria,
         });
     };
+    const h_imageSetCanvas = (value) => {
+        setStateImagen({
+            ...stateImagen,
+            canvas: value,
+        });
+    };
+
     return {
         stateImagen,
         s_imagenUpdateActive,
         s_imagenAddHId,
-        h_imagenSetH
+        h_imagenSetH,
+        h_imageSetCanvas
     }
 }
 

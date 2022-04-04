@@ -12,6 +12,7 @@ const initialStatePlano = {
 	color_cuadricula: '#abb2b9',
 	width_cuadricula: 30,
 	historiaPlano: [],
+	canvas: '',
 };
 
 const usePlano = () => {
@@ -60,6 +61,12 @@ const usePlano = () => {
 			historiaPlano: newHistoria,
 		});
 	};
+	const h_planoSetCanvas = (value) => {
+		setStatePlano({
+			...statePlano,
+			canvas: value,
+		});
+	};
 
 	return {
 		statePlano,
@@ -69,7 +76,8 @@ const usePlano = () => {
 		s_planoUpdateXmin,
 		s_planoUpdateYmax,
 		s_planoUpdateWidthCuadricula,
-		h_planoSetH
+		h_planoSetH,
+		h_planoSetCanvas
 	};
 };
 

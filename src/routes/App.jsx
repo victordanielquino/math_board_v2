@@ -7,7 +7,7 @@ import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextBorrador from '../context/AppContextBorrador';
 import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextMover from '../context/AppContextMover';
-import AppContextCanvas from '../context/AppContextCanvas';
+import AppContextGrid from '../context/AppContextGrid';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextPlano from '../context/AppContextPlano';
 import AppContextText from '../context/AppContextText';
@@ -15,6 +15,7 @@ import AppContextCirculo from "../context/AppContextCirculo";
 import AppContextTriangulo from "../context/AppContextTriangulo";
 import AppContextImagen from "../context/AppContextImagen";
 import AppContextFunction from '../context/AppContextFunction';
+import AppContextSesion from "../context/AppContextSesion";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -22,7 +23,7 @@ import useMover from '../hooks/useMover';
 import useLapiz from '../hooks/useLapiz';
 import useBorrador from '../hooks/useBorrador';
 import useCuadrado from '../hooks/useCuadrado';
-import useCanvas from '../hooks/useCanvas';
+import useGrid from '../hooks/useGrid';
 import useLinea from '../hooks/useLinea';
 import usePlano from '../hooks/usePlano';
 import useText from '../hooks/useText';
@@ -32,8 +33,9 @@ import useImagen from "../hooks/useImagen";
 import useFunction from "../hooks/useFunction";
 
 import Layout from '../Layout/Layout';
-import Home from '../pages/Home';
+import Home from '../Layout/Home/Home';
 import '../styles/global.css';
+import useSesion from "../hooks/useSesion";
 
 const App = () => {
 	const initialState = useInitialState();
@@ -41,7 +43,7 @@ const App = () => {
 	const initialStateLapiz = useLapiz();
 	const initialStateBorrador = useBorrador();
 	const initialStateCuadrado = useCuadrado();
-	const initialStateCanvas = useCanvas();
+	const initialStateCanvas = useGrid();
 	const initialStateLinea = useLinea();
 	const initialStatePlano = usePlano();
 	const initialStateText = useText();
@@ -49,11 +51,12 @@ const App = () => {
 	const initialStateTriangulo = useTriangulo();
 	const initialStateImagen = useImagen();
 	const initialStateFunction = useFunction();
+	const initialStateSesion = useSesion();
 
 	return (
 		<AppContext.Provider value={initialState}>
 			<AppContextMover.Provider value={initialStateMover}>
-			<AppContextCanvas.Provider value={initialStateCanvas}>
+			<AppContextGrid.Provider value={initialStateCanvas}>
 
 					<AppContextLapiz.Provider value={initialStateLapiz}>
 						<AppContextBorrador.Provider value={initialStateBorrador}>
@@ -65,13 +68,15 @@ const App = () => {
 												<AppContextTriangulo.Provider value={initialStateTriangulo}>
 													<AppContextImagen.Provider value={initialStateImagen}>
 														<AppContextFunction.Provider value={initialStateFunction}>
-															<BrowserRouter>
-																<Layout>
-																	{/* <Routes>
-																	<Route exact path="/" element={<Home />} />
-																</Routes> */}
-																</Layout>
-															</BrowserRouter>
+															<AppContextSesion.Provider value={initialStateSesion}>
+																<BrowserRouter>
+																	<Layout>
+																		{/*<Routes>
+																		<Route exact path="/" element={<Home />} />
+																	</Routes>*/}
+																	</Layout>
+																</BrowserRouter>
+															</AppContextSesion.Provider>
 														</AppContextFunction.Provider>
 													</AppContextImagen.Provider>
 												</AppContextTriangulo.Provider>
@@ -83,7 +88,7 @@ const App = () => {
 						</AppContextBorrador.Provider>
 					</AppContextLapiz.Provider>
 
-			</AppContextCanvas.Provider>
+			</AppContextGrid.Provider>
 			</AppContextMover.Provider>
 		</AppContext.Provider>
 	);

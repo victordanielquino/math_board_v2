@@ -155,7 +155,7 @@ const MenuLinea = () => {
 				<Button variant={variantSegmentFalse} color='success' size='small' onClick={() => handleBtnSegmentLine(false)}><HorizontalRuleIcon fontSize='small'/></Button>
 				<Button variant={variantSegmentTrue} color='success' size='small' onClick={() => handleBtnSegmentLine(true)}><MoreHorizIcon fontSize='small'/></Button>
 			</div>
-			{<PaletaColor tipo="linea" title="Color" />}
+			{<PaletaColor tipo="linea" title="COLOR" />}
 		</article>
 	);
 };

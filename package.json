@@ -41,9 +41,14 @@
 		"core-js": "3.19.1",
 		"equation-editor-react": "0.0.10",
 		"firebase": "^9.6.6",
+		"html-to-pdfmake": "^2.3.10",
 		"html2canvas": "^1.4.1",
+		"jspdf": "^2.5.1",
+		"jspdf-autotable": "^3.5.23",
+		"jspdf-react": "^1.0.11",
 		"math-input": "^3.0.0",
 		"mathjax-react": "^1.0.6",
+		"pdfmake": "^0.2.5",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"react-latex": "^2.0.0",
@@ -51,6 +56,7 @@
 		"react-mathjax": "^1.0.1",
 		"react-mathjax3": "0.0.3",
 		"react-router-dom": "6.0.0",
+		"react-to-print": "^2.14.5",
 		"reactfire": "^4.2.1"
 	},
 	"browserslist": "> 0.25%, not dead, not ie 11"

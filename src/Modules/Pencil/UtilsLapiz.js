@@ -1,8 +1,20 @@
 // LAPIZ: GRAFICA
-import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "../Circle/UtilsCirculo";
-
+const u_pencilDraw = (context, lapiz) => {
+	context.lineWidth = lapiz.grosor;
+	context.strokeStyle = lapiz.color;
+	context.setLineDash([0, 0]);
+	context.beginPath();
+	let sw = true;
+	lapiz.historiaLinea.forEach((element) => {
+		sw ? context.moveTo(element[0], element[1]) : '';
+		sw = false;
+		context.lineTo(element[2], element[3]);
+	});
+	context.stroke();
+	context.closePath();
+};
 const utilsLapiz_graficaLapiz = (context, lapiz) => {
-	if (lapiz.visible) {
+	if (lapiz.visible && lapiz) {
 		context.lineWidth = lapiz.grosor;
 		context.strokeStyle = lapiz.color;
 		context.setLineDash([0, 0]);
@@ -30,6 +42,9 @@ const u_getLapizId = (array, x, y) => {
 			: '';
 	});
 	return id;
+};
+const u_pencilClickTrue = (pencil, x, y) => {
+	return (pencil.x_min < x && x < pencil.x_may && pencil.y_min < y && y < pencil.y_may);
 };
 // LAPIZ: GET
 const u_lapizGet = (array, x, y) => {
@@ -168,5 +183,7 @@ export {
 	u_lapizSegmentado,
 	u_lapizMover,
 	u_lapizOpera,
-	u_lapizBordeSegmentado
+	u_lapizBordeSegmentado,
+	u_pencilDraw,
+	u_pencilClickTrue,
 };

@@ -3,6 +3,7 @@ const initialStateMover = {
 	active: false,
 	selectElm: false,
 	obj: {},
+	canvas: '',
 };
 
 const useMover = () => {
@@ -33,6 +34,12 @@ const useMover = () => {
 			obj: obj,
 		});
 	}
+	const h_moveSetCanvas = (value) => {
+		setStateMover({
+			...stateMover,
+			canvas: value,
+		});
+	}
 
 	return {
 		stateMover,
@@ -40,6 +47,7 @@ const useMover = () => {
 		setSelectElm,
 		setObj,
 		setSelectElmObj,
+		h_moveSetCanvas
 	};
 };
 

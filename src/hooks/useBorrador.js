@@ -4,6 +4,7 @@ const initialStateBorrador = {
 	color: 'white',
 	grosor: 10,
 	historialBorrador: [],
+	canvas: '',
 };
 
 const useBorrador = () => {
@@ -27,12 +28,19 @@ const useBorrador = () => {
 			grosor: valor,
 		});
 	};
+	const h_eraserSetCanvas = (value) => {
+		setStateBorrador({
+			...stateBorrador,
+			canvas: value,
+		});
+	};
 
 	return {
 		stateBorrador,
 		updateBorradorActive,
 		updateBorradorColor,
 		updateBorradorGrosor,
+		h_eraserSetCanvas,
 	};
 };
 

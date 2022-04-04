@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
 
-import Modal from '../../../components/Modal/Modal';
 import AddImageLocal from "../AddImageLocal/AddImageLocal";
 import AddImageServer from "../AddImageServer/AddImageServer";
 import GalleryImageServer from "../GalleryImageServer/GalleryImageServer";
@@ -8,8 +7,9 @@ import ModalUI from "../../../components/ModalUI/ModalUI";
 
 // UTILS:
 import './MenuImagen.scss';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import CollectionsIcon from '@mui/icons-material/Collections';
+import HomeIcon from '@mui/icons-material/Home';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import {Button} from "@mui/material";
 
 const MenuImagen = () => {
@@ -61,20 +61,19 @@ const MenuImagen = () => {
                     <Button
                         variant="outlined"
                         size='small'
-                        startIcon={<CreateNewFolderIcon/>}
+                        startIcon={<HomeIcon/>}
                         onClick={() => handleAddImageLocal()}
                     >ADD IMAGE LOCAL</Button>
                     <Button
                         variant="outlined"
                         size='small'
-                        startIcon={<CreateNewFolderIcon/>}
-                        //onClick={() => openModalImageDrag()}
+                        startIcon={<FileUploadIcon/>}
                         onClick={() => handleAddImageServer()}
                     >ADD IMAGE ON THE SERVER</Button>
                     <Button
                         variant="outlined"
                         size='small'
-                        startIcon={<CollectionsIcon/>}
+                        startIcon={<FileDownloadIcon/>}
                         onClick={() => handleGalleryImageServer()}
                     >GALLERY ON THE SERVER</Button>
                 </div>

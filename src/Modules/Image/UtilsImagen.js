@@ -53,6 +53,15 @@ const u_imagenGrafica = (context, objImagen) => {
     }
     return newPromise;
 };
+const u_imageDraw = (context, objImagen) => {
+    let newPromise = '';
+    if (objImagen.visible){
+        (objImagen.dataUse)
+            ? newPromise = drawImageData(context, objImagen)
+            : newPromise = drawImageGoogle(context, objImagen);
+    }
+    return newPromise;
+};
 const u_convertImageBase64 = async(url)=>{
     console.log('getBase64')
     let data = {
@@ -97,6 +106,9 @@ const u_imagenGetId = (array, x, y) => {
     });
     resp !== '' ? id = resp.id:'';
     return id;
+};
+const u_imageClickTrue = (imagen, x, y) => {
+    return (imagen.visible && imagen.edit && (imagen.x_ini < x && x < imagen.x_fin && imagen.y_ini < y && y < imagen.y_fin));
 };
 // IMAGEN: SI SE HIZO CLICK SOBRE UNA IMAGEN, PODREMOS MOVER
 const u_imagenClickSobreImagen = (imagenSelect, mouse) => {
@@ -286,5 +298,7 @@ export {
     u_putImageData,
     u_imagenGetId,
     u_imagenDeleteById,
-    u_convertImageBase64
+    u_convertImageBase64,
+    u_imageDraw,
+    u_imageClickTrue
 }

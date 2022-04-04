@@ -79,6 +79,9 @@ const u_cuadradoGetId = (array, x, y) => {
 	resp !== '' ? id = resp.id:'';
 	return id;
 };
+const u_squareClickTrue = (elem, x, y) => {
+	return (elem.x_ini < x && x < elem.x_fin && elem.y_ini < y && y < elem.y_fin);
+};
 // CUADRADO: DELETE POR ID
 const u_cuadradoDeleteById = (array, id) => {
 	/*console.log('id:', cuadradoId);
@@ -108,6 +111,23 @@ const u_cuadradoValidaPosicion = (cuadrado) => {
 };
 // CUADRADO: GRAFICA
 const u_cuadradoGrafica = (context, cuadrado) => {
+	context.strokeStyle = cuadrado.bordeColor; // bordeColor
+	context.fillStyle = cuadrado.fondoColor; // fondoColor
+	context.lineWidth = cuadrado.bordeGrosor; // bordeGrosor
+	context.setLineDash([0, 0]); // lineas no segmentadas
+
+	context.beginPath();
+	context.moveTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
+	context.lineTo(cuadrado.x_fin, cuadrado.y_ini); // (x_fin, y_ini)
+	context.lineTo(cuadrado.x_fin, cuadrado.y_fin); // (x_fin, y_fin)
+	context.lineTo(cuadrado.x_ini, cuadrado.y_fin); // (x_ini, y_fin)
+	context.lineTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
+
+	cuadrado.fondoEstado ? context.fill() : ''; // fondoColor = true
+	cuadrado.bordeEstado ? context.stroke() : ''; // bordeColor = true
+	context.closePath();
+};
+const u_squareDraw = (context, cuadrado) => {
 	context.strokeStyle = cuadrado.bordeColor; // bordeColor
 	context.fillStyle = cuadrado.fondoColor; // fondoColor
 	context.lineWidth = cuadrado.bordeGrosor; // bordeGrosor
@@ -368,5 +388,7 @@ export {
 	u_cuadradoOpera,
 	u_cuadradoBordeSegmentado,
 	u_cuadradoDeleteById,
-	u_cuadradoGetId
+	u_cuadradoGetId,
+	u_squareDraw,
+	u_squareClickTrue
 };

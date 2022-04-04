@@ -28,13 +28,6 @@ const MenuCuadrado = () => {
 
 	// useEffect:
 	useEffect(() => {
-		// solo 1 vez al cargar el componente:
-	}, []);
-	useEffect(() => {
-		// solo cuando se modifica [stateCuadrado]:
-	}, [stateCuadrado]);
-
-	useEffect(() => {
 		// se ejecuta cada vez que se modifica el state.color
 		updateCuadradoBorde_ColorEstado(state.color, state.color != 'white');
 	}, [state.color]);
@@ -63,8 +56,8 @@ const MenuCuadrado = () => {
 	return (
 		<article className="article__menuCuadrado">
 			{<PaletaGrosor title="BORDE" />}
-			{<PaletaColorBorde tipo="linea" title="Borde" />}
-			{<PaletaColorFondo tipo="fondo" title="Fondo" />}
+			{<PaletaColorBorde tipo="linea" title="BORDE" />}
+			{<PaletaColorFondo tipo="fondo" title="FONDO" />}
 		</article>
 	);
 };

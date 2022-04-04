@@ -4,8 +4,8 @@ import React, { useEffect, useContext } from 'react';
 import AppContextLapiz from '../../context/AppContextLapiz';
 
 // UTILS:
-import {u_lapizGraficaH, u_lapizGraficaLinea} from './UtilsLapiz';
-import AppContextCanvas from "../../context/AppContextCanvas";
+import AppContext from "../../context/AppContext";
+import AppContextGrid from "../../context/AppContextGrid";
 import AppContextLinea from "../../context/AppContextLinea";
 import AppContextPlano from "../../context/AppContextPlano";
 import AppContextText from "../../context/AppContextText";
@@ -13,19 +13,27 @@ import AppContextCirculo from "../../context/AppContextCirculo";
 import AppContextTriangulo from "../../context/AppContextTriangulo";
 import AppContextCuadrado from "../../context/AppContextCuadrado";
 import AppContextImagen from "../../context/AppContextImagen";
+
+import {u_lapizGraficaH, u_lapizGraficaLinea, u_pencilDraw} from './UtilsLapiz';
 import {utilsCuadricula_graficaCuadricula} from "../Grid/UtilsCuadricula";
 import {u_planoGraficaH} from "../Plano/UtilsPlano";
 import {u_imagenGraficaH} from "../Image/UtilsImagen";
-import {u_cuadradoGraficaH} from "../Square/UtilsCuadrado";
+import {u_cuadradoGraficaH, u_squareDraw} from "../Square/UtilsCuadrado";
 import {u_circuloGraficaH} from "../Circle/UtilsCirculo";
 import {u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
 import {u_lineaGraficaH} from "../Line/UtilsLinea";
-import {u_textGraficaH} from "../Text/UtilsText";
+import {u_textGrafica, u_textGraficaH} from "../Text/UtilsText";
+
+import draw from '../Draw/Draw'
 
 const PaintLapiz = (id_canvas) => {
 	// useContext:
-	const { stateLapiz, s_lapizAddHId } = useContext(AppContextLapiz);
-	const { stateCanvas } = useContext(AppContextCanvas);
+	const {
+		state,
+		h_addH,
+	} = useContext(AppContext);
+	const { stateLapiz, s_lapizAddHId, h_lapizSetCanvas } = useContext(AppContextLapiz);
+	const { stateCanvas } = useContext(AppContextGrid);
 	const { stateLinea } = useContext(AppContextLinea);
 	const { statePlano } = useContext(AppContextPlano);
 	const { stateText } = useContext(AppContextText);
@@ -36,6 +44,19 @@ const PaintLapiz = (id_canvas) => {
 
 	// LOGICA:
 	const paint = async () => {
+		if (stateLapiz.active){
+			console.log('PaintLapiz.jsx');
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			try {
+				//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+				await draw(context, state.historia, state.canvas, stateCanvas);
+			} catch (e) {
+				console.log(e.message);
+			}
+		}
+	}
+	const paint_ = async () => {
 		console.log('PaintLapiz.jsx');
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
@@ -66,6 +87,8 @@ const PaintLapiz = (id_canvas) => {
 		x_may: 0,
 		y_min: 2000,
 		y_may: 0,
+		canvas: stateLapiz.canvas,
+		types: 'pencil',
 	};
 	let linea = {
 		grosor: stateLapiz.grosor,
@@ -119,8 +142,10 @@ const PaintLapiz = (id_canvas) => {
 	};
 	// 3
 	const mouseUpLapiz = (e) => {
-		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
+		if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
 			s_lapizAddHId(lapizNew, stateLapiz.id + 1);
+			lapizNew.id = state.id;
+			h_addH(lapizNew);
 		}
 		mouse.click = false;
 	};
@@ -149,23 +174,31 @@ const PaintLapiz = (id_canvas) => {
 	}, [stateLapiz.active]);
 
 	useEffect(() => {
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
+		if (stateLapiz.active){
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
 
-		if (stateLapiz.active) {
-			update_canvasLapizDatos();
-			canvas.addEventListener('mousedown', mouseDownLapiz);
-			canvas.addEventListener('mousemove', mouseMoveLapiz);
-			canvas.addEventListener('mouseup', mouseUpLapiz);
+			if (stateLapiz.active) {
+				update_canvasLapizDatos();
+				canvas.addEventListener('mousedown', mouseDownLapiz);
+				canvas.addEventListener('mousemove', mouseMoveLapiz);
+				canvas.addEventListener('mouseup', mouseUpLapiz);
+			}
+			return () => {
+				//canvasLapiz.removeEventListener('click', saludar);
+				canvas.removeEventListener('mousedown', mouseDownLapiz);
+				canvas.removeEventListener('mousemove', mouseMoveLapiz);
+				canvas.removeEventListener('mouseup', mouseUpLapiz);
+			};
 		}
-		return () => {
-			//canvasLapiz.removeEventListener('click', saludar);
-			canvas.removeEventListener('mousedown', mouseDownLapiz);
-			canvas.removeEventListener('mousemove', mouseMoveLapiz);
-			canvas.removeEventListener('mouseup', mouseUpLapiz);
-		};
 	}, [stateLapiz]);
-	// return console.log('hola soy lapiz');
+
+	useEffect(() => {
+		h_lapizSetCanvas(state.canvas);
+		if (stateLapiz.active) {
+			paint();
+		}
+	}, [state.canvas]);
 };
 
 export default PaintLapiz;

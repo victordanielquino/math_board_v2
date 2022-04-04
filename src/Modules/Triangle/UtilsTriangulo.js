@@ -15,6 +15,22 @@ const u_trianguloGrafica = (context, triangulo) => {
     triangulo.bordeEstado ? context.stroke() : ''; // bordeColor = true
     context.closePath();
 };
+const u_triangleDraw = (context, triangulo) => {
+    context.strokeStyle = triangulo.bordeColor; // bordeColor
+    context.fillStyle = triangulo.fondoColor; // fondoColor
+    context.lineWidth = triangulo.bordeGrosor; // bordeGrosor
+    context.setLineDash([0, 0]); // lineas no segmentadas
+
+    context.beginPath();
+    context.moveTo(triangulo.x1, triangulo.y1); // (x_ini, y_ini)
+    context.lineTo(triangulo.x2, triangulo.y2); // (x_fin, y_ini)
+    context.lineTo(triangulo.x3, triangulo.y3); // (x_fin, y_fin)
+    context.lineTo(triangulo.x1, triangulo.y1); // (x_ini, y_fin)
+
+    triangulo.fondoEstado ? context.fill() : ''; // fondoColor = true
+    triangulo.bordeEstado ? context.stroke() : ''; // bordeColor = true
+    context.closePath();
+};
 // TRIANGULO: GRAFICA HISTORIA
 const u_trianguloGraficaH = (context, array) => {
     array.forEach((element) => u_trianguloGrafica(context, element));
@@ -110,7 +126,7 @@ const u_trianguloGetClick = (context, array, x, y) => {
     //resp ? u_trianguloBordeSegmentado(context, resp):'';
     return resp;
 };
-// CIRCULO: GET - ID
+// TRIANGLE: GET - ID
 const u_trianguloGetId = (array, x, y) => {
     let resp = '';
     let id =  -1;
@@ -137,6 +153,22 @@ const u_trianguloGetId = (array, x, y) => {
     //resp ? u_trianguloBordeSegmentado(context, resp):'';
     resp !== '' ? id = resp.id:'';
     return id;
+};
+const u_triangleClickTrue = (triangulo, x, y) => {
+    let p0 = { x: x, y: y };
+    let p1 = { x: triangulo.x1, y:triangulo.y1 };
+    let p2 = { x: triangulo.x2, y:triangulo.y2 };
+    let p3 = { x: triangulo.x3, y:triangulo.y3 };
+    return ((
+            u_trianguloProductoCruz_UxV(p0, p1, p2) < 0 &&
+            u_trianguloProductoCruz_UxV(p0, p2, p3) < 0 &&
+            u_trianguloProductoCruz_UxV(p0, p3, p1) < 0
+        ) ||
+        (
+            u_trianguloProductoCruz_UxV(p0, p1, p2) > 0 &&
+            u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
+            u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
+        ));
 };
 // TRIANGULO: DELETE POR ID
 const u_trianguloDeleteById = (array, id) => {
@@ -248,5 +280,7 @@ export {
     u_trianguloUpdateZise,
     u_trianguloGrafica,
     u_trianguloGetId,
-    u_trianguloDeleteById
+    u_trianguloDeleteById,
+    u_triangleDraw,
+    u_triangleClickTrue
 }

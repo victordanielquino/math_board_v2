@@ -7,6 +7,9 @@ const initialState = {
 	colorFondo: 'yellow',
 	grosor: 2,
 	elmSelect: false,
+	canvas: '',
+	historia: [],
+	id: 0,
 };
 const useInitialState = () => {
 	const [state, setState] = useState(initialState);
@@ -122,6 +125,30 @@ const useInitialState = () => {
 			activePrev: optionIconPrev,
 		});
 	}
+	const h_setCanvas = (canvas) => {
+		setState({
+			...state,
+			canvas: canvas,
+		});
+	}
+	const h_addH = (elm) => {
+		setState({
+			...state,
+			historia: [...state.historia, elm],
+			id: state.id + 1,
+		});
+	};
+	const h_deleteHId = (indexIn) => {
+		let newArray = [];
+		state.historia.forEach((elm, index) => {
+			index !== indexIn
+				? newArray.push(elm):'';
+		});
+		setState({
+			...state,
+			historia: newArray,
+		})
+	}
 
 
 	return {
@@ -132,6 +159,9 @@ const useInitialState = () => {
 		updateGrosor,
 		setElmSelect,
 		s_setActiveActivePrev,
+		h_setCanvas,
+		h_addH,
+		h_deleteHId,
 	};
 };
 

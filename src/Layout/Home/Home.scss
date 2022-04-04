@@ -1,0 +1,25 @@
+@import '../../styles/vars';
+.home {
+	//outline: 1px solid red;
+	// border: 1px solid red;
+	//width: 100%;
+	//height: 500px;
+	//padding: 10px 10px 10px 0;
+	// background-color: violet;
+	margin: 5px;
+	display: flex;
+	flex-direction: column;
+	//align-items: flex-end;
+	justify-content: flex-end;
+	&__pizarras {
+		margin-left: 48px;
+		margin-bottom: 5px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__canvas {
+		display: flex;
+		justify-content: flex-end;
+	}
+}

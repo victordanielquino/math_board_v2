@@ -18,6 +18,7 @@ const initialStateText = {
 	fontFocus: false,
 	textSelect: {},
 	historiaText: [],
+	canvas: '',
 };
 
 const useText = () => {
@@ -141,6 +142,12 @@ const useText = () => {
 			textSelect: {},
 		});
 	}
+	const h_textSetCanvas = (canvas) => {
+		setStateText({
+			...stateText,
+			canvas: canvas,
+		});
+	}
 
 	return {
 		stateText,
@@ -160,7 +167,8 @@ const useText = () => {
 		h_textAddHIdFocus,
 		h_textSetReset,
 		h_textSetH,
-		h_textDeleteId
+		h_textDeleteId,
+		h_textSetCanvas
 	};
 };
 

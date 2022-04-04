@@ -1,15 +1,30 @@
 import React, {useContext, useEffect, useState} from 'react';
 
-import AppContext from "../../../context/AppContext";
 import AppContextMover from "../../../context/AppContextMover";
 
 import GppGoodIcon from '@mui/icons-material/GppGood';
 import GppBadIcon from '@mui/icons-material/GppBad';
-import {Button} from "@mui/material";
+import {Button, Typography} from "@mui/material";
+import {makeStyles} from "@mui/styles";
+
+import './MenuMover.scss';
+
+const useStyles  = makeStyles({
+	container: {
+		borderRadius: '10px',
+		borderBottom: '1px solid var(--very-light-pink)',
+		backgroundColor: 'white',
+		display: 'flex',
+		padding: '5px',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		width: '250px',
+		color: 'black',
+	}
+});
 
 const MenuMover = () => {
 	// CONTEXT:
-	const { state } = useContext(AppContext);
 	const { stateMover } = useContext(AppContextMover);
 
 	// STATE:
@@ -17,6 +32,12 @@ const MenuMover = () => {
 	const [variantEditYes, setVariantEditYes] = useState('outlined');
 
 	// LOGICA:
+	const props = {
+		/*fontSize: '1em',
+        height: 30,
+        width: 30,*/
+	}
+	const classes = useStyles(props);
 	const handleEdit = (boolean) => {
 		if(stateMover.selectElm) {
 			switch (boolean) {
@@ -76,7 +97,8 @@ const MenuMover = () => {
 
 	return (
 		<div>
-			<div className='article__menuLinea__btns'>
+			<div className={classes.container}>
+				<Typography variant='h6' color='primary' >Editar:</Typography>
 				<Button variant={variantEditNot} onClick={() => handleEdit(false)} color='error' size='small'><GppGoodIcon fontSize='small'/></Button>
 				<Button variant={variantEditYes} onClick={() => handleEdit(true)} color='success' size='small'><GppBadIcon fontSize='small'/></Button>
 			</div>

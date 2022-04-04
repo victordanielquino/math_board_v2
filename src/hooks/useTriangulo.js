@@ -14,6 +14,7 @@ const initialStateTriangulo = {
     x3: 0,
     y3: 0,
     historiaTriangulo: [],
+    canvas: '',
 };
 const useTriangulo = () => {
     const [stateTriangulo, setStateTriangulo] = useState(initialStateTriangulo);
@@ -78,6 +79,12 @@ const useTriangulo = () => {
             historiaTriangulo: newHistoria,
         });
     };
+    const h_triangleSetCanvas = (value) => {
+        setStateTriangulo({
+            ...stateTriangulo,
+            canvas: value,
+        });
+    };
 
     return {
         stateTriangulo,
@@ -87,7 +94,8 @@ const useTriangulo = () => {
         s_trianguloUpdateBordeGrosor,
         s_trianguloUpdateAll,
         s_trianguloAddHId,
-        h_trianguloSetH
+        h_trianguloSetH,
+        h_triangleSetCanvas
     }
 }
 export default useTriangulo;

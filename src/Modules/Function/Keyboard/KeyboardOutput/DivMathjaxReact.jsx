@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { MathComponent } from "mathjax-react";
-import AppContextFunction from "../../../../context/AppContextFunction";
-import {makeStyles} from "@mui/styles";
+import {MathComponent}                          from "mathjax-react";
+import AppContextFunction                       from "../../../../context/AppContextFunction";
+import {makeStyles}                             from "@mui/styles";
 
 const useStyles  = makeStyles(theme => ({
     container: {
@@ -13,7 +13,7 @@ const useStyles  = makeStyles(theme => ({
     },
 }));
 
-const DivMathjaxReact = ({color, background, divImgRef}) => {
+const DivMathjaxReact = ({color, background, divImgRef = ''}) => {
     // ejemplos: https://codesandbox.io/s/bq3k1?file=/src/App.js:393-445
 
     // CONTEXT:

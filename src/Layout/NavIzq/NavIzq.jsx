@@ -185,7 +185,7 @@ const NavIzq = () => {
 		<nav className="navIzq__nav" style={{height: navHeight+'px'}}>
 			<ButtonGroup orientation='vertical'>
 				{awesomeIcons.map((elem) => (
-					<Button key={`key-${elem.name}`} onClick={() => handleSelect(elem.name)} size='small' variant={select === elem.name ? 'contained':'outlined'} className={classes.awesomeIcon} style={{fontSize:elem.fontSize, padding:'5px 0'}}>
+					<Button key={`key-${elem.name}`} onClick={() => handleSelect(elem.name)} size='small' variant={select === elem.name ? 'contained':'outlined'} className={classes.awesomeIcon} style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}>
 						{elem.icon}
 					</Button>
 				))}

@@ -3,6 +3,7 @@ import {Button, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import CalculateIcon from '@mui/icons-material/Calculate';
 import ModalUI from '../../../components/ModalUI/ModalUI';
+import Calculadora from '../Calculadora';
 
 const useStyles  = makeStyles({
     container: {
@@ -35,7 +36,7 @@ const MenuCalculadora = () => {
                 >Open</Button>
             </div>
             <ModalUI open={open} setOpen={setOpen} title='Calculadora' booleanFooter={false}>
-                saludos
+                <Calculadora/>
             </ModalUI>
         </>
     );

@@ -56,6 +56,9 @@ import DivMathjaxReact             from "../Function/Keyboard/KeyboardOutput/Div
 import AppContextFunction          from "../../context/AppContextFunction";
 import { formatInput, pressIgual } from "./CalculadoraUtils";
 import {convierteDecimal_GMS}      from "../../utils/math";
+import draw                        from "../Draw/Draw";
+import AppContext                  from "../../context/AppContext";
+import AppContextCalculator        from "../../context/AppContextCalculator";
 
 const useStyles  = makeStyles({
     container: {
@@ -102,6 +105,7 @@ const useStyles  = makeStyles({
 const Calculadora = () => {
     // CONTEXT:
     const { stateFunction, h_functionSetTextPositionCursor } = useContext(AppContextFunction);
+
     // STATE:
     const [input, setInput] = useState('');
     const [ansValue, setAnsValue] = useState(0);

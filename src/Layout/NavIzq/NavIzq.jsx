@@ -20,10 +20,10 @@ import AppContextText from '../../context/AppContextText';
 import AppContextCirculo from "../../context/AppContextCirculo";
 import AppContextTriangulo from "../../context/AppContextTriangulo";
 import AppContextImagen from "../../context/AppContextImagen";
-import AppContextFunction from "../../context/AppContextFunction";
+import AppContextFunction   from "../../context/AppContextFunction";
+import AppContextCalculator from "../../context/AppContextCalculator";
 
 import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
-import Calculadora from "../../Modules/Calculator/Calculadora";
 
 import './NavIzq.scss';
 import moverIcon from '../../assets/icons/move1.svg';
@@ -75,6 +75,7 @@ const NavIzq = () => {
 	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
 	const { s_imagenUpdateActive } = useContext(AppContextImagen);
 	const { s_functionSetActive } = useContext(AppContextFunction);
+	const { h_calculatorSetActive } = useContext(AppContextCalculator);
 
 	// STATE:
 	const [navHeight, setNavHeight] = useState(window.innerHeight - 112);
@@ -146,8 +147,7 @@ const NavIzq = () => {
 				setToggleKeyboard(boolean);
 				break;
 			case 'calculadoraIcon':
-				//s_functionSetActive(boolean);
-				//setToggleCalculadora(boolean);
+				h_calculatorSetActive(boolean);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');

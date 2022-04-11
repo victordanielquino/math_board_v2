@@ -15,7 +15,8 @@ import AppContextCirculo from "../context/AppContextCirculo";
 import AppContextTriangulo from "../context/AppContextTriangulo";
 import AppContextImagen from "../context/AppContextImagen";
 import AppContextFunction from '../context/AppContextFunction';
-import AppContextSesion from "../context/AppContextSesion";
+import AppContextSesion     from "../context/AppContextSesion";
+import AppContextCalculator from "../context/AppContextCalculator";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -32,10 +33,11 @@ import useTriangulo from "../hooks/useTriangulo";
 import useImagen from "../hooks/useImagen";
 import useFunction from "../hooks/useFunction";
 
-import Layout from '../Layout/Layout';
-import Home from '../Layout/Home/Home';
+import Layout        from '../Layout/Layout';
+import Home          from '../Layout/Home/Home';
 import '../styles/global.css';
-import useSesion from "../hooks/useSesion";
+import useSesion     from "../hooks/useSesion";
+import useCalculator from "../hooks/useCalculator";
 
 const App = () => {
 	const initialState = useInitialState();
@@ -52,6 +54,7 @@ const App = () => {
 	const initialStateImagen = useImagen();
 	const initialStateFunction = useFunction();
 	const initialStateSesion = useSesion();
+	const initialStateCalculator = useCalculator();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -69,13 +72,15 @@ const App = () => {
 													<AppContextImagen.Provider value={initialStateImagen}>
 														<AppContextFunction.Provider value={initialStateFunction}>
 															<AppContextSesion.Provider value={initialStateSesion}>
-																<BrowserRouter>
-																	<Layout>
-																		{/*<Routes>
-																		<Route exact path="/" element={<Home />} />
-																	</Routes>*/}
-																	</Layout>
-																</BrowserRouter>
+																<AppContextCalculator.Provider value={initialStateCalculator}>
+																	<BrowserRouter>
+																		<Layout>
+																			{/*<Routes>
+																				<Route exact path="/" element={<Home />} />
+																			</Routes>*/}
+																		</Layout>
+																	</BrowserRouter>
+																</AppContextCalculator.Provider>
 															</AppContextSesion.Provider>
 														</AppContextFunction.Provider>
 													</AppContextImagen.Provider>

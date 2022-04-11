@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Button, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import CalculateIcon from '@mui/icons-material/Calculate';
-import ModalUI from '../../../components/ModalUI/ModalUI';
-import Calculadora from '../Calculadora';
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, Typography}                     from "@mui/material";
+import {makeStyles}                             from "@mui/styles";
+import CalculateIcon                            from '@mui/icons-material/Calculate';
+import ModalUI                                  from '../../../components/ModalUI/ModalUI';
+import Calculadora                              from '../Calculadora';
 
 const useStyles  = makeStyles({
     container: {
@@ -19,9 +19,11 @@ const useStyles  = makeStyles({
 const MenuCalculadora = () => {
     // STATE:
     const [open, setOpen] = useState(false)
+
     // LOGICA:
     const props = {}
     const classes = useStyles(props);
+
     return (
         <>
             <div className={classes.container}>

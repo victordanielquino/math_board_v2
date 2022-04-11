@@ -17,7 +17,8 @@ import PaintPlano from '../../Modules/Plano/PaintPlano';
 import PaintCirculo from '../../Modules/Circle/PaintCirculo';
 import PaintTriangulo from '../../Modules/Triangle/PaintTriangulo';
 import PaintImagen from "../../Modules/Image/PaintImagen";
-import PaintText from "../../Modules/Text/PaintText";
+import PaintText       from "../../Modules/Text/PaintText";
+import PaintCalculator from "../../Modules/Calculator/PaintCalculator";
 
 const Canvas = ({canvasRef}) => {
 	// CONTEXT:
@@ -39,6 +40,7 @@ const Canvas = ({canvasRef}) => {
 	PaintTriangulo('canvas-1');
 	PaintImagen('canvas-1');
 	PaintText('canvas-1');
+	PaintCalculator('canvas-1');
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 60);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 115);
 

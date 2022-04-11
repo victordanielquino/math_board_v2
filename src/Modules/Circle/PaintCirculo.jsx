@@ -3,40 +3,15 @@ import React, { useEffect, useContext } from 'react';
 // CONTEXT:
 import AppContext from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
-import AppContextCuadrado from '../../context/AppContextCuadrado';
-import AppContextLinea from '../../context/AppContextLinea';
-import AppContextLapiz from '../../context/AppContextLapiz';
-import AppContextPlano from '../../context/AppContextPlano';
-import AppContextText from '../../context/AppContextText';
 import AppContextCirculo from "../../context/AppContextCirculo";
-import AppContextTriangulo from "../../context/AppContextTriangulo";
-import AppContextImagen from "../../context/AppContextImagen";
 
-// utils:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
-import { u_cuadradoGraficaH } from '../Square/UtilsCuadrado';
-import { u_lineaGraficaH } from '../Line/UtilsLinea';
-import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
-import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../Text/UtilsText';
-import { u_circuloGraficaH, u_circuloGrafica } from "./UtilsCirculo";
-import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
-import { u_imagenGraficaH } from "../Image/UtilsImagen";
-
-import draw from '../Draw/Draw'
+import draw from '../Draw/Draw';
 
 const PaintCirculo = (id_canvas) => {
     // useContext:
     const { state, h_addH } = useContext(AppContext);
     const { stateCanvas } = useContext(AppContextGrid);
-    const { stateCuadrado } = useContext(AppContextCuadrado);
-    const { stateLinea } = useContext(AppContextLinea);
-    const { stateLapiz } = useContext(AppContextLapiz);
-    const { statePlano } = useContext(AppContextPlano);
-    const { stateText } = useContext(AppContextText);
-    const { stateTriangulo } = useContext(AppContextTriangulo);
-    const { stateCirculo, s_circuloAddHId, h_circleSetCanvas } = useContext(AppContextCirculo);
-    const { stateImagen } = useContext(AppContextImagen);
+    const { stateCirculo, h_circleSetCanvas } = useContext(AppContextCirculo);
 
     // LOGICA:
     const paint = async () => {

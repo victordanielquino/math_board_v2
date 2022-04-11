@@ -1,46 +1,22 @@
 import React, { useContext, useEffect } from 'react';
 
 // CONTEXT:
+import AppContext from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCuadrado from '../../context/AppContextCuadrado';
-import AppContextLinea from '../../context/AppContextLinea';
-import AppContextLapiz from '../../context/AppContextLapiz';
-import AppContextPlano from '../../context/AppContextPlano';
-import AppContextText from '../../context/AppContextText';
-import AppContextCirculo from "../../context/AppContextCirculo";
-import AppContextTriangulo from "../../context/AppContextTriangulo";
-import AppContextImagen from "../../context/AppContextImagen";
 
 // utils:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
-import { u_lineaGraficaH } from '../Line/UtilsLinea';
-import {u_lapizGraficaH, u_pencilDraw} from '../Pencil/UtilsLapiz';
-import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import {u_textGrafica, u_textGraficaH} from '../Text/UtilsText';
-import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
-import { u_trianguloGraficaH} from "../Triangle/UtilsTriangulo";
 import {
-	u_cuadradoGrafica,
-	u_cuadradoGraficaH,
 	u_cuadradoValidaPosicion,
 	u_squareDraw,
 } from './UtilsCuadrado';
-import { u_imagenGraficaH } from "../Image/UtilsImagen";
-import AppContext from "../../context/AppContext";
 import draw from '../Draw/Draw';
 
 const PaintCuadrado = (id_canvas) => {
-	// useContext:
+	// CONTEXT:
 	const { state, h_addH } = useContext(AppContext);
 	const { stateCanvas } = useContext(AppContextGrid);
-	const { stateLinea } = useContext(AppContextLinea);
-	const { stateLapiz } = useContext(AppContextLapiz);
-	const { statePlano } = useContext(AppContextPlano);
-	const { stateText } = useContext(AppContextText);
-	const { stateCirculo } = useContext(AppContextCirculo);
-	const { stateTriangulo } = useContext(AppContextTriangulo);
-	const { stateCuadrado, s_cuadradoAddHId, h_squareSetCanvas } = useContext(AppContextCuadrado);
-	const { stateImagen } = useContext(AppContextImagen);
+	const { stateCuadrado, h_squareSetCanvas } = useContext(AppContextCuadrado);
 
 	// LOGICA:
 	const paint = async () => {
@@ -48,7 +24,6 @@ const PaintCuadrado = (id_canvas) => {
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
 		try {
-			//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
 			await draw(context, state.historia, state.canvas, stateCanvas);
 		} catch (e) {
 			console.log(e.message);
@@ -138,6 +113,7 @@ const PaintCuadrado = (id_canvas) => {
 		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
 	};
 	const eventDraw = () => {
+		console.log('ue PaintTCuadrado.jsx');
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
 		update_canvasCuadradoDatos();
@@ -159,11 +135,6 @@ const PaintCuadrado = (id_canvas) => {
 
 		}
 	}, [stateCuadrado, state.historia]);
-
-	useEffect(async () => {
-		stateCuadrado.historiaCuadrado.length > 0 ? await paint():'';
-		//await paint();
-	}, [stateCuadrado.historiaCuadrado]);
 
 	useEffect(() => {
 		if (stateCuadrado.active){

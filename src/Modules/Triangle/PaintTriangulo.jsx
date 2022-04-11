@@ -1,14 +1,15 @@
 import React, { useEffect, useContext } from 'react';
 
 // CONTEXT:
+import AppContext                          from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
 import AppContextTriangulo from "../../context/AppContextTriangulo";
 
 // utils:
-import draw from "../Draw/Draw";
-import AppContext from "../../context/AppContext";
-
-
+import draw                        from "../Draw/Draw";
+import { u_lineDraw }              from "../Line/UtilsLinea";
+import {u_triangleDraw}            from "./UtilsTriangulo";
+import {u_squareDrawBorderSegment} from "../Square/UtilsCuadrado";
 
 const PaintTriangulo = (id_canvas) => {
     // useContext:
@@ -51,6 +52,12 @@ const PaintTriangulo = (id_canvas) => {
         canvas: stateTriangulo.canvas,
         types: 'triangle',
     };
+    const square = {
+        x_ini: 0,
+        y_ini: 0,
+        x_fin: 0,
+        y_fin: 0,
+    };
     const mouse = {
         click: false,
         move: false,
@@ -91,22 +98,44 @@ const PaintTriangulo = (id_canvas) => {
     let mouseDownTriangulo = (e) => {
         mouse.click = true;
         captura_Pos_Posprev(e);
+        square.x_ini = mouse.pos.x;
+        square.y_ini = mouse.pos.y;
     };
     // 2
-    let mouseMoveTriangulo = (e) => {
+    let mouseMoveTriangulo = async (e) => {
+        if (mouse.click) {
+            mouse.move = true;
+            captura_Pos_Posprev(e);
+
+            square.x_fin = mouse.pos.x;
+            square.y_fin = mouse.pos.y;
+
+            triangulo.x1 = square.x_ini + (square.x_fin-square.x_ini)/2;
+            triangulo.y1 = square.y_ini;
+
+            triangulo.x2 = square.x_ini;
+            triangulo.y2 = square.y_fin;
+
+            triangulo.x3 = square.x_fin;
+            triangulo.y3 = square.y_fin;
+
+            await paint();
+            u_triangleDraw(context, triangulo);
+            u_squareDrawBorderSegment(context, square)
+        }
     };
     // 3
     let mouseUpTriangulo = async (e) => {
         captura_Pos_Posprev(e);
         if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            triangulo.x1 = mouse.pos.x;
+            /*triangulo.x1 = mouse.pos.x;
             triangulo.y1 = mouse.pos.y - 50;
 
             triangulo.x2 = mouse.pos.x - 50;
             triangulo.y2 = mouse.pos.y + 50;
 
             triangulo.x3 = mouse.pos.x + 50;
-            triangulo.y3 = mouse.pos.y + 50;
+            triangulo.y3 = mouse.pos.y + 50;*/
 
             //await paint();
             //u_trianguloGrafica(context, triangulo);

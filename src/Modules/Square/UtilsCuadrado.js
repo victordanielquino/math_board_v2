@@ -371,6 +371,20 @@ const u_cuadradoOpera = (context, cuadradoSelect, array, mouse) => {
 	}
 	return cuadradoSelect;
 }
+const u_squareDrawBorderSegment = (context, cuadrado) => {
+	context.strokeStyle = 'red'; // bordeColor
+	context.lineWidth = 1; // bordeGrosor
+	context.setLineDash([10, 5]); // lineas no segmentadas
+
+	context.beginPath();
+	context.moveTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
+	context.lineTo(cuadrado.x_fin, cuadrado.y_ini); // (x_fin, y_ini)
+	context.lineTo(cuadrado.x_fin, cuadrado.y_fin); // (x_fin, y_fin)
+	context.lineTo(cuadrado.x_ini, cuadrado.y_fin); // (x_ini, y_fin)
+	context.lineTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
+	context.stroke(); // bordeColor = true
+	context.closePath();
+};
 export {
 	utilsCuadrado_graficaCuadrado,
 	utilsCuadrado_graficaCuadradoHistoria,
@@ -390,5 +404,6 @@ export {
 	u_cuadradoDeleteById,
 	u_cuadradoGetId,
 	u_squareDraw,
-	u_squareClickTrue
+	u_squareClickTrue,
+	u_squareDrawBorderSegment
 };

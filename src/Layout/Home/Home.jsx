@@ -102,39 +102,42 @@ const Home = () => {
 	}, [mathBoardSelect]);
 
 	return (
-		<div className="home">
-			<div className='home__pizarras'>
-				<ButtonGroup size="small" aria-label="small button group">
-					{arrayBtns.map((elm, index) => (
-						<Paper variant='outlined' color='primary' className={classes.paperBoradSelect} key={`key-paper-${elm.title}`}>
-							<ButtonGroup variant="text" aria-label="text button group" size='inherit' key={`key-btnGroup-${elm.title}`}>
-								<Button size='small' variant={elm.variant} className={classes.btnBoardSelect}  key={`key-btnTxt-${elm.title}`} onClick={() => handleSelect(index, elm)}>{elm.title}</Button>
-								<Button size='small' variant={elm.variant}  key={`key-btnDis-${elm.title}`} onClick={() => handleOnRemove(index, elm)}><CloseIcon fontSize='small'  key={`key-btnClosed-${elm.title}`}/></Button>
-							</ButtonGroup>
-						</Paper>
-					))}
-					<IconButton aria-label="delete" size="small" color='primary' onClick={() => handleOnAdd()}>
-						<AddIcon fontSize="small" />
-					</IconButton>
-				</ButtonGroup>
-				<ButtonGroup size="small" aria-label="small button group">
-					<Button variant="outlined" color='primary' size='small' onClick={() => handlePdf()}>
-						<PictureAsPdfIcon />
-					</Button>
-					<Button variant="outlined" color='primary' size='small' onClick={() => handlePhotoCamera()}>
-						<PhotoCamera />
-					</Button>
-					{/*<ReactToPrint
-						trigger={() => <button>Print this out!</button>}
-						content={() => canvasRef.current}
-					/>*/}
-				</ButtonGroup>
+		<>
+			<div className="home">
+				<div className='home__pizarras'>
+					<ButtonGroup size="small" aria-label="small button group">
+						{arrayBtns.map((elm, index) => (
+							<Paper variant='outlined' color='primary' className={classes.paperBoradSelect} key={`key-paper-${elm.title}`}>
+								<ButtonGroup variant="text" aria-label="text button group" size='inherit' key={`key-btnGroup-${elm.title}`}>
+									<Button size='small' variant={elm.variant} className={classes.btnBoardSelect}  key={`key-btnTxt-${elm.title}`} onClick={() => handleSelect(index, elm)}>{elm.title}</Button>
+									<Button size='small' variant={elm.variant}  key={`key-btnDis-${elm.title}`} onClick={() => handleOnRemove(index, elm)}><CloseIcon fontSize='small'  key={`key-btnClosed-${elm.title}`}/></Button>
+								</ButtonGroup>
+							</Paper>
+						))}
+						<IconButton aria-label="delete" size="small" color='primary' onClick={() => handleOnAdd()}>
+							<AddIcon fontSize="small" />
+						</IconButton>
+					</ButtonGroup>
+					<ButtonGroup size="small" aria-label="small button group">
+						<Button variant="outlined" color='primary' size='small' onClick={() => handlePdf()}>
+							<PictureAsPdfIcon />
+						</Button>
+						<Button variant="outlined" color='primary' size='small' onClick={() => handlePhotoCamera()}>
+							<PhotoCamera />
+						</Button>
+						{/*<ReactToPrint
+							trigger={() => <button>Print this out!</button>}
+							content={() => canvasRef.current}
+						/>*/}
+					</ButtonGroup>
+				</div>
+				<div className='home__canvas'>
+					<Canvas canvasRef={canvasRef} />
+				</div>
+				<PdfCanvas toggleModal={toggleModalPdf} setToggleModal={setToggleModalPdf} canvasRef={canvasRef}/>
 			</div>
-			<div className='home__canvas'>
-				<Canvas canvasRef={canvasRef} />
-			</div>
-			<PdfCanvas toggleModal={toggleModalPdf} setToggleModal={setToggleModalPdf} canvasRef={canvasRef}/>
-		</div>
+			<NavIzq />
+		</>
 	);
 };
 

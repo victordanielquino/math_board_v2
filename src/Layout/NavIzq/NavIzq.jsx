@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
-	faBell, faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare, faSlash, faCircle, faImage, faChartLine, faEraser, faGrip, faFlorinSign, faSquareRootVariable, faTableCellsLarge, faCalculator
+	faBell, faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare, faSlash, faCircle, faImage, faChartLine,
+	faEraser, faGrip, faFlorinSign, faSquareRootVariable, faTableCellsLarge, faCalculator, faScissors, faShapes
 } from '@fortawesome/free-solid-svg-icons'; // fa-regular
 import {} from '@fortawesome/free-brands-svg-icons'; // fa-brands
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';

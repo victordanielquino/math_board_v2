@@ -14,7 +14,7 @@ const PaintLinea = (id_canvas) => {
 	// useContext:
 	const { state, h_addH } = useContext(AppContext);
 	const { stateCanvas } = useContext(AppContextGrid);
-	const { stateLinea, s_lineaAddHId, h_lineSetCanvas } = useContext(AppContextLinea);
+	const { stateLinea, h_lineSetCanvas } = useContext(AppContextLinea);
 
 	// LOGICA:
 	const paint = async () => {

@@ -1,5 +1,6 @@
 // LINEA:
 import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "../Circle/UtilsCirculo";
+import {potencia, raiz}                                                                         from "../../utils/math";
 
 // DISTANCIA ENTRE 2 PUNTOS
 const distancia_p1_p2 = (x1, y1, x2, y2) => {
@@ -864,6 +865,16 @@ const u_lineClickTrue = (line, x, y) => {
 	}
 	return resp !== '';
 };
+const distanciaEntredosPtos = (line) => {
+	let x1 = line.x_ini;
+	let y1 = line.y_ini;
+	let x2 = line.x_fin;
+	let y2 = line.y_fin;
+	let d = potencia(x2-x1, 2) + potencia(y2-y1, 2);
+	d = raiz(d);
+	return d;
+}
+
 export {
 	u_lineaDeleteById,
 	u_lineaGetId,
@@ -877,5 +888,6 @@ export {
 	u_lineaBordeSegmentado,
 	u_lineaVector,
 	u_lineDraw,
-	u_lineClickTrue
+	u_lineClickTrue,
+	distanciaEntredosPtos
 };

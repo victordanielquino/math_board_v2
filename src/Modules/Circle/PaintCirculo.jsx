@@ -5,7 +5,9 @@ import AppContext from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
 import AppContextCirculo from "../../context/AppContextCirculo";
 
-import draw from '../Draw/Draw';
+import draw                                from '../Draw/Draw';
+import {distanciaEntredosPtos, u_lineDraw} from "../Line/UtilsLinea";
+import { u_circleDraw }           from './UtilsCirculo';
 
 const PaintCirculo = (id_canvas) => {
     // useContext:
@@ -44,12 +46,27 @@ const PaintCirculo = (id_canvas) => {
         y_ini: 0,
         x_fin: 0,
         y_fin: 0,
-        radioX: stateCirculo.radioX,
-        radioY: stateCirculo.radioY,
-        h: stateCirculo.h,
-        k: stateCirculo.k,
+        // radioX: stateCirculo.radioX,
+        // radioY: stateCirculo.radioY,
+        // h: stateCirculo.h,
+        // k: stateCirculo.k,
+        radioX: 0,
+        radioY: 0,
+        h: 0,
+        k: 0,
         types: 'circle',
         canvas: stateCirculo.canvas,
+    };
+    const radio = {
+        visible: true,
+        grosor: 1,
+        color: 'red',
+        segment: true,
+        x_ini: 0,
+        y_ini: 0,
+        x_fin: 0,
+        y_fin: 0,
+        type: 'line'
     };
     const mouse = {
         click: false,
@@ -64,12 +81,6 @@ const PaintCirculo = (id_canvas) => {
         mouse.pos_prev.x = 0;
         mouse.pos.y = 0;
         mouse.pos_prev.y = 0;
-    };
-    const update_canvasCirculoDatos = () => {
-        canvasCirculoDatos.top = canvas.getBoundingClientRect().top;
-        canvasCirculoDatos.left = canvas.getBoundingClientRect().left;
-        canvasCirculoDatos.width = canvas.getBoundingClientRect().width;
-        canvasCirculoDatos.height = canvas.getBoundingClientRect().height;
     };
     const captura_Pos_Posprev = (e) => {
         const x = e.clientX;
@@ -89,42 +100,54 @@ const PaintCirculo = (id_canvas) => {
     };
     // 1
     let mouseDownCirculo = (e) => {
-        //console.log('1')
         mouse.click = true;
         captura_Pos_Posprev(e);
+        radio.x_ini = mouse.pos.x;
+        radio.y_ini = mouse.pos.y;
+        circulo.h = mouse.pos.x;
+        circulo.k = mouse.pos.y;
     };
     // 2
-    let mouseMoveCirculo = (e) => {
+    let mouseMoveCirculo = async (e) => {
+        if (mouse.click) {
+            mouse.move = true;
+            captura_Pos_Posprev(e);
+
+            radio.x_fin = mouse.pos.x;
+            radio.y_fin = mouse.pos.y;
+            let d = distanciaEntredosPtos(radio);
+            circulo.radioX = d;
+            circulo.radioY = d;
+            await paint();
+            u_circleDraw(context, circulo);
+            u_lineDraw(context, radio); // utilsPaint_graficaLinea
+        }
     };
     // 3
     let mouseUpCirculo = (e) => {
         captura_Pos_Posprev(e);
         if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            //console.log('3')
-            //console.log(canvas);
-            circulo.x_ini = mouse.pos.x - circulo.radioX;
-            circulo.y_ini = mouse.pos.y - circulo.radioY;
-            circulo.x_fin = mouse.pos.x + circulo.radioX;
-            circulo.y_fin = mouse.pos.y + circulo.radioY;
-            circulo.h = mouse.pos.x;
-            circulo.k = mouse.pos.y;
-            //paint();
-            //u_circuloGrafica(context, circulo);
-            //s_circuloAddHId(circulo, stateCirculo.id + 1);
+            circulo.x_ini = circulo.h - circulo.radioX;
+            circulo.y_ini = circulo.k - circulo.radioY;
+            circulo.x_fin = circulo.h + circulo.radioX;
+            circulo.y_fin = circulo.k + circulo.radioY;
             circulo.id = state.id;
             h_addH(circulo);
         }
         mouseReinicia();
+    };
+    const update_canvasCirculoDatos = () => {
+        canvasCirculoDatos.top = canvas.getBoundingClientRect().top;
+        canvasCirculoDatos.left = canvas.getBoundingClientRect().left;
+        canvasCirculoDatos.width = canvas.getBoundingClientRect().width;
+        canvasCirculoDatos.height = canvas.getBoundingClientRect().height;
     };
     const eventDraw = () => {
         console.log('ue PaintTCirculo.jsx');
         canvas = document.getElementById(id_canvas);
         context = canvas.getContext('2d');
         update_canvasCirculoDatos();
-        console.log('historia: ',state.historia);
-        if (state.historia.length > 0) {
-            paint();
-        }
+        if (state.historia.length > 0) paint();
     }
     // LOGICA END.
 
@@ -146,9 +169,12 @@ const PaintCirculo = (id_canvas) => {
 
     useEffect(() => {
         if (stateCirculo.active){
+            console.log('stateCirculo: active');
             paint();
+        } else {
+            console.log('no active');
         }
-    }, [stateCirculo.historiaCirculo]);
+    }, [stateCirculo.active]);
 
     useEffect(() => {
         h_circleSetCanvas(state.canvas);

@@ -6,7 +6,6 @@ import AppContextBorrador from '../../context/AppContextBorrador';
 import AppContextGrid from '../../context/AppContextGrid';
 
 // UTILS:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
 import {u_squareClickTrue} from '../Square/UtilsCuadrado';
 import {u_pencilClickTrue} from '../Pencil/UtilsLapiz';
 import {u_lineClickTrue,} from '../Line/UtilsLinea';

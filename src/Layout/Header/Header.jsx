@@ -18,6 +18,7 @@ import MenuTriangulo from "../../Modules/Triangle/MenuTriangle/MenuTriangulo";
 import MenuImagen from "../../Modules/Image/MenuImage/MenuImagen";
 import MenuFunction from "../../Modules/Function/MenuFunction/MenuFunction";
 import MenuCalculadora from "../../Modules/Calculator/MenuCalculadora/MenuCalculadora";
+import MenuGeometric   from "../../Modules/Geometric/MenuGeomtric/MenuGeometric";
 
 // context:
 import AppContext from '../../context/AppContext';
@@ -54,6 +55,7 @@ const Header = () => {
 	const [toggleMenuImagen, setToggleMenuImagen] = useState(false);
 	const [toggleMenuFunction, setToggleMenuFunction] = useState(false);
 	const [toggleMenuCalculadora, setToggleMenuCalculadora] = useState(false);
+	const [toggleMenuGeometric, setToggleMenuGeometric] = useState(false);
 
 	// LOGICA:
 	const classes = useStyle();
@@ -74,6 +76,7 @@ const Header = () => {
 		setToggleMenuImagen(false);
 		setToggleMenuFunction(false);
 		setToggleMenuCalculadora(false);
+		setToggleMenuGeometric(false);
 		switch (state.active) {
 			case 'homeIcon':
 				setToggleMenuHeader(true);
@@ -117,6 +120,9 @@ const Header = () => {
 			case 'calculadoraIcon':
 				setToggleMenuCalculadora(true);
 				break;
+			case 'geometricIcon':
+				setToggleMenuGeometric(true);
+				break;
 			default:
 				setToggleMenuHeader(true);
 				break;
@@ -145,6 +151,7 @@ const Header = () => {
 							{toggleMenuImagen && <MenuImagen />}
 							{toggleMenuFunction && <MenuFunction />}
 							{toggleMenuCalculadora && <MenuCalculadora />}
+							{toggleMenuGeometric && <MenuGeometric />}
 						</div>
 						<Typography  variant='h7' style={{ color: 'white'}}>
 							UMSA / INFORMÁTICA

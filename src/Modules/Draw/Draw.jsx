@@ -1,12 +1,13 @@
-import { u_squareDraw } from "../Square/UtilsCuadrado";
+import { u_squareDraw }                       from "../Square/UtilsCuadrado";
 import {u_textGrafica, u_textGraficaFontEdit} from "../Text/UtilsText";
-import { u_pencilDraw } from "../Pencil/UtilsLapiz";
-import { u_circleDraw } from "../Circle/UtilsCirculo";
-import { u_triangleDraw } from "../Triangle/UtilsTriangulo";
-import { u_imageDraw } from "../Image/UtilsImagen";
-import { u_planoDraw } from "../Plano/UtilsPlano";
-import { u_lineDraw } from "../Line/UtilsLinea";
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
+import { u_pencilDraw }                       from "../Pencil/UtilsLapiz";
+import { u_circleDraw }                       from "../Circle/UtilsCirculo";
+import { u_triangleDraw }                     from "../Triangle/UtilsTriangulo";
+import { u_imageDraw }                        from "../Image/UtilsImagen";
+import { u_planoDraw }                        from "../Plano/UtilsPlano";
+import { u_lineDraw }                         from "../Line/UtilsLinea";
+import { utilsCuadricula_graficaCuadricula }  from '../Grid/UtilsCuadricula';
+import {u_geometricDraw}                      from "../Geometric/UtilsGeometric";
 
 const Draw = async (context, array, canvas, stateCanvas, focusText= false) => {
     console.log('Draw.jsx');
@@ -48,6 +49,9 @@ const Draw = async (context, array, canvas, stateCanvas, focusText= false) => {
                             ? u_textGraficaFontEdit(context, elm, true)
                             : u_textGrafica(context, elm);
                     }
+                case 'geometric':
+                    (elm.visible && elm.canvas === canvas)
+                        ? u_geometricDraw(context, elm, false) : '';
                     break;
             }
         });

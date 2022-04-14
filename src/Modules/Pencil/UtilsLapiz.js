@@ -44,7 +44,7 @@ const u_getLapizId = (array, x, y) => {
 	return id;
 };
 const u_pencilClickTrue = (pencil, x, y) => {
-	return (pencil.x_min < x && x < pencil.x_may && pencil.y_min < y && y < pencil.y_may);
+	return (pencil.x_min -5 < x && x < pencil.x_may + 5 && pencil.y_min-5 < y && y < pencil.y_may+5);
 };
 // LAPIZ: GET
 const u_lapizGet = (array, x, y) => {
@@ -163,11 +163,11 @@ const u_lapizBordeSegmentado = (context, lapiz) => {
 	context.setLineDash([10, 4]); // lineas segmentadas
 
 	context.beginPath();
-	context.moveTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
-	context.lineTo(lapiz.x_may + 20, lapiz.y_min - 20); // (x_fin, y_ini)
-	context.lineTo(lapiz.x_may + 20, lapiz.y_may + 20); // (x_fin, y_fin)
-	context.lineTo(lapiz.x_min - 20, lapiz.y_may + 20); // (x_ini, y_fin)
-	context.lineTo(lapiz.x_min - 20, lapiz.y_min - 20); // (x_ini, y_ini)
+	context.moveTo(lapiz.x_min - 5, lapiz.y_min - 5); // (x_ini, y_ini)
+	context.lineTo(lapiz.x_may + 5, lapiz.y_min - 5); // (x_fin, y_ini)
+	context.lineTo(lapiz.x_may + 5, lapiz.y_may + 5); // (x_fin, y_fin)
+	context.lineTo(lapiz.x_min - 5, lapiz.y_may + 5); // (x_ini, y_fin)
+	context.lineTo(lapiz.x_min - 5, lapiz.y_min - 5); // (x_ini, y_ini)
 	context.stroke();
 	context.closePath();
 };

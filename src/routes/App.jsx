@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext}              from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // CONTEXT:
@@ -17,6 +17,7 @@ import AppContextImagen from "../context/AppContextImagen";
 import AppContextFunction from '../context/AppContextFunction';
 import AppContextSesion     from "../context/AppContextSesion";
 import AppContextCalculator from "../context/AppContextCalculator";
+import AppContextGeometric  from "../context/AppContextGeometric";
 
 // HOOKS:
 import useInitialState from '../hooks/useInitialState';
@@ -32,12 +33,13 @@ import useCirculo from "../hooks/useCirculo";
 import useTriangulo from "../hooks/useTriangulo";
 import useImagen from "../hooks/useImagen";
 import useFunction from "../hooks/useFunction";
+import useSesion     from "../hooks/useSesion";
+import useCalculator from "../hooks/useCalculator";
+import useGeometric  from "../hooks/useGeometric";
 
 import Layout        from '../Layout/Layout';
 import Home          from '../Layout/Home/Home';
 import '../styles/global.css';
-import useSesion     from "../hooks/useSesion";
-import useCalculator from "../hooks/useCalculator";
 
 const App = () => {
 	const initialState = useInitialState();
@@ -55,6 +57,7 @@ const App = () => {
 	const initialStateFunction = useFunction();
 	const initialStateSesion = useSesion();
 	const initialStateCalculator = useCalculator();
+	const initialStateGeometric = useGeometric();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -73,13 +76,15 @@ const App = () => {
 														<AppContextFunction.Provider value={initialStateFunction}>
 															<AppContextSesion.Provider value={initialStateSesion}>
 																<AppContextCalculator.Provider value={initialStateCalculator}>
-																	<BrowserRouter>
-																		<Layout>
-																			{/*<Routes>
+																	<AppContextGeometric.Provider value={initialStateGeometric}>
+																		<BrowserRouter>
+																			<Layout>
+																				{/*<Routes>
 																				<Route exact path="/" element={<Home />} />
 																			</Routes>*/}
-																		</Layout>
-																	</BrowserRouter>
+																			</Layout>
+																		</BrowserRouter>
+																	</AppContextGeometric.Provider>
 																</AppContextCalculator.Provider>
 															</AppContextSesion.Provider>
 														</AppContextFunction.Provider>

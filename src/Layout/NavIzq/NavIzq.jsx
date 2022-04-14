@@ -23,6 +23,7 @@ import AppContextTriangulo from "../../context/AppContextTriangulo";
 import AppContextImagen from "../../context/AppContextImagen";
 import AppContextFunction   from "../../context/AppContextFunction";
 import AppContextCalculator from "../../context/AppContextCalculator";
+import AppContextGeometric                                    from "../../context/AppContextGeometric";
 
 import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
 
@@ -38,17 +39,17 @@ import zoomInIcon from '../../assets/icons/zoom-in.svg';
 import zoomOutIcon from '../../assets/icons/zoom-out.svg';
 import cuadradoIcon from '../../assets/icons/square.svg';
 import lineaIcon from '../../assets/icons/linea.svg';
-import sumatoriaIcon from '../../assets/icons/sumatoria1.svg';
-import imagenIcon from '../../assets/icons/image1.svg';
-import circuloIcon from '../../assets/icons/circle.svg';
-import cuadriculaIcon from '../../assets/icons/cuadricula.svg';
-import keyboardIcon from '../../assets/icons/keyboard1.svg';
-import trianguloIcon from '../../assets/icons/triangle.svg';
-import functionIcon from '../../assets/icons/function1.svg';
+import sumatoriaIcon                                          from '../../assets/icons/sumatoria1.svg';
+import imagenIcon                                             from '../../assets/icons/image1.svg';
+import circuloIcon                                            from '../../assets/icons/circle.svg';
+import cuadriculaIcon                                         from '../../assets/icons/cuadricula.svg';
+import keyboardIcon                                           from '../../assets/icons/keyboard1.svg';
+import trianguloIcon                                          from '../../assets/icons/triangle.svg';
+import functionIcon                                           from '../../assets/icons/function1.svg';
 import {Button, ButtonGroup, ToggleButton, ToggleButtonGroup} from "@mui/material";
-import {createTheme} from "@mui/material/styles";
-import {blue} from "@mui/material/colors";
-import {makeStyles} from "@mui/styles";
+import {createTheme}                                          from "@mui/material/styles";
+import {blue}                                                 from "@mui/material/colors";
+import {makeStyles}                                           from "@mui/styles";
 
 const theme = createTheme({
 	palette: {
@@ -77,12 +78,12 @@ const NavIzq = () => {
 	const { s_imagenUpdateActive } = useContext(AppContextImagen);
 	const { s_functionSetActive } = useContext(AppContextFunction);
 	const { h_calculatorSetActive } = useContext(AppContextCalculator);
+	const { h_geometricSetActive } = useContext(AppContextGeometric);
 
 	// STATE:
 	const [navHeight, setNavHeight] = useState(window.innerHeight - 112);
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
 	const [select, setSelect] = useState('homeIcon');
-	const [toggleCalculadora, setToggleCalculadora] = useState(false);
 
 	const awesomeIcons = [
 		{ fontSize:'1.4em', type:'awesome', name: 'homeIcon', icon: <FontAwesomeIcon icon={faHouse} style={{}}/> },
@@ -93,6 +94,7 @@ const NavIzq = () => {
 		{ fontSize:'1.4em', type:'mui', name: 'cuadradoIcon', icon: <CheckBoxOutlineBlankIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/>  },
 		{ fontSize:'1.4em', type:'mui', name: 'circuloIcon', icon: <PanoramaFishEyeIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
 		{ fontSize:'1.4em', type:'mui', name: 'trianguloIcon', icon: <ChangeHistoryIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
+		{ fontSize:'1.2em', type:'awesome', name: 'geometricIcon', icon:<FontAwesomeIcon icon={faShapes} style={{}}/>  },
 		{ fontSize:'1.5em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
@@ -150,6 +152,9 @@ const NavIzq = () => {
 			case 'calculadoraIcon':
 				h_calculatorSetActive(boolean);
 				break;
+			case 'geometricIcon':
+				h_geometricSetActive(boolean);
+				break;
 			default:
 				console.log('Opcion no registrada!!!');
 				break;
@@ -186,7 +191,13 @@ const NavIzq = () => {
 		<nav className="navIzq__nav" style={{height: navHeight+'px'}}>
 			<ButtonGroup orientation='vertical'>
 				{awesomeIcons.map((elem) => (
-					<Button key={`key-${elem.name}`} onClick={() => handleSelect(elem.name)} size='small' variant={select === elem.name ? 'contained':'outlined'} className={classes.awesomeIcon} style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}>
+					<Button
+						key={`key-${elem.name}`}
+						onClick={() => handleSelect(elem.name)}
+						size='small'
+						variant={select === elem.name ? 'contained':'outlined'}
+						className={classes.awesomeIcon}
+						style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}>
 						{elem.icon}
 					</Button>
 				))}

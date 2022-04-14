@@ -55,12 +55,30 @@ const u_circleDrawWithRadio = (context, circulo) => {
     context.strokeStyle = circulo.bordeColor;
     context.fillStyle = circulo.fondoColor;
 
-    context.setLineDash([0, 0]);
+    circulo.segment
+        ? context.setLineDash([10, 5])
+        : context.setLineDash([0, 0]);
     context.beginPath();
     context.arc(circulo.h, circulo.k, circulo.radio, 0, 2*Math.PI, true);
-    //context.ellipse(circulo.h, circulo.k, circulo.radioX, circulo.radioY, 0, 0, 2*Math.PI);
     (circulo.fondoColor != 'white') ? context.fill(): '';
     (circulo.bordeColor != 'white') ? context.stroke(): '';
+    context.closePath();
+
+    context.beginPath();
+    context.moveTo(circulo.h, circulo.k);
+    context.lineTo(circulo.radioX, circulo.radioY);
+    context.stroke();
+    context.closePath();
+}
+const u_circleDrawRadio = (context, p1, p2) => {
+    context.lineWidth = 1;
+    context.strokeStyle = 'red';
+    context.setLineDash([10, 5]);
+
+    context.beginPath();
+    context.moveTo(p1.x, p1.y);
+    context.lineTo(p2.x, p2.y);
+    context.stroke();
     context.closePath();
 }
 // CIRCULO: GRAFICA ARRAY DE CIRCULOS
@@ -316,5 +334,6 @@ export {
     u_circuloDeleteById,
     u_circleDraw,
     u_circcleClickTrue,
-    u_circleDrawWithRadio
+    u_circleDrawWithRadio,
+    u_circleDrawRadio
 }

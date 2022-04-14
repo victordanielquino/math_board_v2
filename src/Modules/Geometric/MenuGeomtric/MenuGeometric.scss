@@ -1,0 +1,28 @@
+@import '../../../styles/vars';
+.article__menuCirculo {
+  border-radius: 10px;
+  border-bottom: 1px solid var(--very-light-pink);
+  background-color: white;
+  display: flex;
+  padding: 5px 10px;
+  justify-content: space-between;
+  width: 100%;
+  color: black;
+
+  &__radio {
+    border-bottom: 1px solid var(--very-light-pink);
+    background-color: var(--greiTipo0_1);
+    border-radius: 10px;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    padding: 5px 20px;
+    width: 150px;
+    input {
+      width: 25px;
+    }
+    .text {
+      text-align: center;
+    }
+  }
+}

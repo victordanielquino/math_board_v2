@@ -8,17 +8,18 @@ import './Canvas.scss';
 
 // components:
 import PaintMover from '../../Modules/Move/PaintMover';
-import PainLapiz from '../../Modules/Pencil/PaintLapiz';
-import PaintBorrador from '../../Modules/Eraser/PaintBorrador';
-import PaintLinea from '../../Modules/Line/PaintLinea';
-import PaintCuadrado from '../../Modules/Square/PaintCuadrado';
-import PaintGrid from '../../Modules/Grid/PaintGrid';
-import PaintPlano from '../../Modules/Plano/PaintPlano';
-import PaintCirculo from '../../Modules/Circle/PaintCirculo';
-import PaintTriangulo from '../../Modules/Triangle/PaintTriangulo';
-import PaintImagen from "../../Modules/Image/PaintImagen";
+import PainLapiz       from '../../Modules/Pencil/PaintLapiz';
+import PaintBorrador   from '../../Modules/Eraser/PaintBorrador';
+import PaintLinea      from '../../Modules/Line/PaintLinea';
+import PaintCuadrado   from '../../Modules/Square/PaintCuadrado';
+import PaintGrid       from '../../Modules/Grid/PaintGrid';
+import PaintPlano      from '../../Modules/Plano/PaintPlano';
+import PaintCirculo    from '../../Modules/Circle/PaintCirculo';
+import PaintTriangulo  from '../../Modules/Triangle/PaintTriangulo';
+import PaintImagen     from "../../Modules/Image/PaintImagen";
 import PaintText       from "../../Modules/Text/PaintText";
 import PaintCalculator from "../../Modules/Calculator/PaintCalculator";
+import PaintGeometric  from "../../Modules/Geometric/PaintGeometric";
 
 const Canvas = ({canvasRef}) => {
 	// CONTEXT:
@@ -41,6 +42,8 @@ const Canvas = ({canvasRef}) => {
 	PaintImagen('canvas-1');
 	PaintText('canvas-1');
 	PaintCalculator('canvas-1');
+	PaintGeometric('canvas-1');
+
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 60);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 115);
 

@@ -9,9 +9,9 @@ const initialStateText = {
 	fontAlign: 'start',	// startr, end
 	fontBaseline: 'top', // top, bottom
 	fontColor: 'black',
-	fontBold: '',
-	fontItalic: '',
-	fontUnderL: '',
+	fontBold: '', // bold
+	fontItalic: '', // italic
+	fontUnderL: '', // underL
 	fontTypografia: 'helvatica',
 	fontSize: 20,
 	fontText: 'new text',
@@ -131,15 +131,32 @@ const useText = () => {
 		setStateText({
 			...stateText,
 			active: false,
-			fontColor: 'black',
-			fontBold: '',
-			fontItalic: '',
-			fontUnderL: '',
-			fontTypografia: 'helvatica',
-			fontSize: 30,
-			fontText: 'new text',
+			//fontColor: 'black',
+			//fontBold: '',
+			//fontItalic: '',
+			//fontUnderL: '',
+			//fontTypografia: 'helvatica',
+			//fontSize: 20,
+			fontText: '',
 			fontFocus: false,
 			textSelect: {},
+		});
+	}
+	const h_textSetAllTextselect = (color, bold, italic, underL, typografi, size) => {
+		setStateText({
+			...stateText,
+			fontColor: color,
+			fontBold: bold,
+			fontItalic: italic,
+			fontUnderL: underL,
+			fontTypografia: typografi,
+			fontSize: size,
+		});
+	}
+	const h_textSetTextselect = (text) => {
+		setStateText({
+			...stateText,
+			textSelect: text
 		});
 	}
 	const h_textSetCanvas = (canvas) => {
@@ -168,7 +185,9 @@ const useText = () => {
 		h_textSetReset,
 		h_textSetH,
 		h_textDeleteId,
-		h_textSetCanvas
+		h_textSetCanvas,
+		h_textSetTextselect,
+		h_textSetAllTextselect
 	};
 };
 

@@ -131,8 +131,8 @@ const PaintGeometric = (id_canvas) => {
     let mouseUpGeometric = (e) => {
         captura_Pos_Posprev(e);
         if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            //geometricFig.id = state.id;
-            //h_addH(geometricFig);
+            geometricFig.id = state.id;
+            h_addH(geometricFig);
         }
         mouseReinicia();
     };

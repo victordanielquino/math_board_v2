@@ -149,6 +149,17 @@ const useInitialState = () => {
 			historia: newArray,
 		})
 	}
+	const h_deleteById = (id) => {
+		let newArray = [];
+		state.historia.forEach((elm) => {
+			elm.id !== id
+				? newArray.push(elm):'';
+		});
+		setState({
+			...state,
+			historia: newArray,
+		})
+	}
 
 
 	return {
@@ -162,6 +173,7 @@ const useInitialState = () => {
 		h_setCanvas,
 		h_addH,
 		h_deleteHId,
+		h_deleteById
 	};
 };
 

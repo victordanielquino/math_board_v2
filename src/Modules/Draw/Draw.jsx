@@ -49,6 +49,7 @@ const Draw = async (context, array, canvas, stateCanvas, focusText= false) => {
                             ? u_textGraficaFontEdit(context, elm, true)
                             : u_textGrafica(context, elm);
                     }
+                    break;
                 case 'geometric':
                     (elm.visible && elm.canvas === canvas)
                         ? u_geometricDraw(context, elm, false) : '';

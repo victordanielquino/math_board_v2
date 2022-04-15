@@ -6,8 +6,8 @@ import './MenuText.scss';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import { FormControl, MenuItem, Select, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import SortByAlphaIcon                                                                       from '@mui/icons-material/SortByAlpha';
+import {Button, ButtonGroup, FormControl, MenuItem, Select, ToggleButton, ToggleButtonGroup} from "@mui/material";
 
 const MenuText = () => {
 	// CONTEXT:
@@ -22,15 +22,6 @@ const MenuText = () => {
 	} = useContext(AppContextText);
 
 	// STATE:
-	const [formats, setFormats] = useState([]);
-	const [textColor, setTextColor] = useState('black');
-	const [textBold, setTextBold] = useState('');
-	const [textItalic, setTextItalic] = useState('');
-	const [textUnderL, setTextUnderL] = useState('');
-	const [textTypografia, setTextTipografia] = useState('helvatica');
-	const [textZise, setTextZise] = useState(10);
-
-
 
 	// LOGICA
 	const textSizeArray = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 40, 50, 60];
@@ -41,84 +32,85 @@ const MenuText = () => {
 		{ typografia: 'sans-serif', name: 'Sans-serif'},
 	]
 	const handleChangeText = (event) => {
-		setTextTipografia(event.target.value);
 		h_textSetTypografia(event.target.value);
 	};
 	const handleChangeZise = (event) => {
-		console.log('setSize')
-		setTextZise(event.target.value);
 		h_textSetSize(event.target.value);
 	};
-	const handleFormat = (event, newFormatsArray) => {
-		setFormats(newFormatsArray);
-	};
 	const handleColors = (color) => {
-		textColor !== color ? setTextColor(color):'';
-		textColor !== color ? h_textSetColor(color):'';
+		h_textSetColor(color);
 	}
-
-	// LOGICA END
-	useEffect(() => {
-		let bold = '';
-		let italic = '';
-		let underL = '';
-		formats.indexOf('bold') > -1 ? bold = 'bold':'';
-		formats.indexOf('italic') > -1 ? italic = 'italic':'';
-		formats.indexOf('underlined') > -1 ? underL = 'underlined':'';
-		setTextBold(bold);
-		setTextItalic(italic);
-		setTextUnderL(underL);
-	}, [formats]);
-
-	useEffect(() => {
-		h_textSetBold(textBold);
-	}, [textBold]);
-
-	useEffect(() => {
-		h_textSetItalic(textItalic);
-	}, [textItalic]);
-
-	useEffect(() => {
-		h_textSetUnderL(textUnderL);
-	}, [textUnderL]);
-
-	useEffect(() => {
-		setTextZise(stateText.fontSize)
-		console.log('udate size:',stateText)
-	}, [stateText.fontSize])
+	const handleFormats = (value) => {
+		switch (value) {
+			case 'bold':
+				stateText.fontBold === 'bold' ? h_textSetBold('') : h_textSetBold('bold');
+				break;
+			case 'italic':
+				stateText.fontItalic === 'italic' ? h_textSetItalic('') : h_textSetItalic('italic');
+				break;
+			case 'underlined':
+				stateText.fontUnderL === 'underlined' ? h_textSetUnderL('') : h_textSetUnderL('underlined');
+				break;
+		}
+	}
 
 	return (
 		<>
 			<article className="article__menuText">
 				<div className='article__menuText__div'>
 					<div className='article__menuText__div__selectorColor'>
-						<div className='article__menuText__div__selectorColor__black' onClick={() => handleColors('black')} style={textColor === 'black' ? {backgroundColor:'black'} : {backgroundColor:'white'} }/>
-						<div className='article__menuText__div__selectorColor__red' onClick={() => handleColors('red')} style={textColor === 'red' ? {backgroundColor:'red'} : {backgroundColor:'white'} }/>
-						<div className='article__menuText__div__selectorColor__blue' onClick={() => handleColors('blue')} style={textColor === 'blue' ? {backgroundColor:'blue'} : {backgroundColor:'white'} }/>
-						<div className='article__menuText__div__selectorColor__green' onClick={() => handleColors('green')} style={textColor === 'green' ? {backgroundColor:'green'} : {backgroundColor:'white'} }/>
+						<div
+							className='article__menuText__div__selectorColor__black'
+							onClick={() => handleColors('black')}
+							style={stateText.fontColor === 'black' ? {backgroundColor:'black'} : {backgroundColor:'white'} }/>
+						<div
+							className='article__menuText__div__selectorColor__red'
+							onClick={() => handleColors('red')}
+							style={stateText.fontColor === 'red' ? {backgroundColor:'red'} : {backgroundColor:'white'} }/>
+						<div
+							className='article__menuText__div__selectorColor__blue'
+							onClick={() => handleColors('blue')}
+							style={stateText.fontColor === 'blue' ? {backgroundColor:'blue'} : {backgroundColor:'white'} }/>
+						<div
+							className='article__menuText__div__selectorColor__green'
+							onClick={() => handleColors('green')}
+							style={stateText.fontColor === 'green' ? {backgroundColor:'green'} : {backgroundColor:'white'} }/>
 					</div>
 					<FormControl sx={{ m: 0}}>
-						<ToggleButtonGroup
-							value={formats}
-							onChange={handleFormat}
+						<ButtonGroup
 							aria-label="text formatting"
 							size='small'
 							color='primary'
 						>
-							<ToggleButton value="bold" aria-label="bold" size='small' style={{ height: '2.5em'}}>
+							<Button
+								size='small'
+								style={{ height: '2.5em', marginRight:'2px'}}
+								variant={stateText.fontBold === 'bold' ? 'contained': 'outlined'}
+								onClick={() => handleFormats('bold')}
+							>
 								<FormatBoldIcon fontSize='small' />
-							</ToggleButton>
-							<ToggleButton value="italic" aria-label="italic" size='small'  style={{ height: '2.5em'}}>
+							</Button>
+							<Button
+								size='small'
+								style={{ height: '2.5em', marginRight:'2px'}}
+								variant={stateText.fontItalic === 'italic' ? 'contained': 'outlined'}
+								onClick={() => handleFormats('italic')}
+							>
 								<FormatItalicIcon fontSize='small' />
-							</ToggleButton>
-							<ToggleButton value="underlined" aria-label="underlined" size='small' style={{ height: '2.5em'}}>
+							</Button>
+							<Button
+								size='small'
+								style={{ height: '2.5em', marginRight:'2px'}}
+								variant={stateText.fontUnderL === 'underlined' ? 'contained': 'outlined'}
+								onClick={() => handleFormats('underlined')}
+							>
 								<FormatUnderlinedIcon fontSize='small' />
-							</ToggleButton>
-						</ToggleButtonGroup>
+							</Button>
+						</ButtonGroup>
 					</FormControl>
 					<FormControl sx={{ m: 0, minWidth: 150 }} size='small'>
 						<Select
-							value={textTypografia}
+							value={stateText.fontTypografia}
 							onChange={handleChangeText}
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
@@ -131,7 +123,7 @@ const MenuText = () => {
 					</FormControl>
 					<FormControl sx={{ m: 0 }} size='small'>
 						<Select
-							value={textZise}
+							value={stateText.fontSize}
 							onChange={handleChangeZise}
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}

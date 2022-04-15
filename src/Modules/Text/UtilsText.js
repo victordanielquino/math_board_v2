@@ -55,6 +55,17 @@ const u_textGrafica = (context, text) => {
 	context.fillText(text.fontText, text.x_ini, text.y_ini); //texto con método stroke
 	context.closePath();
 
+	// UNDERLINE:
+	if(text.fontUnderL === 'underlined'){
+		context.beginPath(); //iniciar ruta
+		context.lineWidth = 2;
+		context.strokeStyle = text.fontColor;
+		context.moveTo(text.x_ini, text.y_fin+1);
+		context.lineTo(text.x_fin, text.y_fin+1);
+		context.stroke();
+		context.closePath();
+	}
+
 	/*let dimensiones = context.measureText(text.fontText);
 	text.x_fin = text.x_ini + dimensiones.width;
 	text.y_fin = text.y_ini + text.fontSize;*/

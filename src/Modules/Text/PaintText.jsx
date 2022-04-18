@@ -7,8 +7,8 @@ import AppContextGrid from "../../context/AppContextGrid";
 // UTILS:
 import AppContext      from "../../context/AppContext";
 import draw            from '../Draw/Draw';
-import {isObjectEmpty} from "../../utils/utils";
-import {u_textMover}   from "./UtilsText";
+import {isObjectEmpty}                    from "../../utils/utils";
+import {u_textLineAnimation, u_textMover} from "./UtilsText";
 
 const PaintText = (id_canvas) => {
     // CONTEXT:
@@ -25,7 +25,11 @@ const PaintText = (id_canvas) => {
         h_textSetTextselect,
         h_textSetAllTextselect
     } = useContext(AppContextText);
+
     // STATE:
+    const [count, setCount] = useState(0);
+    const [intervalId, setIntervalId] = useState(0);
+    const [toggleAnimation, setToggleAnimation] = useState(0);
 
     // LOGICA
     const paint = async () => {
@@ -41,6 +45,10 @@ const PaintText = (id_canvas) => {
         } else {
             console.log('PaintText.jsx false');
         }
+    }
+    const paintAnimation = (color) => {
+        if (stateText.active)
+            u_textLineAnimation(context, stateText.textSelect, color);
     }
     let text = {
         id: stateText.id,
@@ -90,6 +98,7 @@ const PaintText = (id_canvas) => {
     const mouseDownText = (e) => {
         mouse.click = true;
         captura_Pos_Posprev(e);
+        //handleClick();
     };
     // 2
     const mouseMoveText = (e) => {
@@ -187,6 +196,19 @@ const PaintText = (id_canvas) => {
             paint();
         }*/
     }
+    let color = 'white';
+    const beginInterval = () => {
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
+        let auxAnimation = setInterval(() => {
+            paintAnimation(color);
+            color === 'white' ? color = 'black': color = 'white';
+        }, 500);
+        setToggleAnimation(auxAnimation);
+    }
+    const stopInterval = () => {
+        clearInterval(toggleAnimation);
+    }
 
     // EFECT:
     useEffect( () => {
@@ -214,7 +236,8 @@ const PaintText = (id_canvas) => {
 
     useEffect(() => {
         paint();
-    }, [stateText.textSelect])
+        (!isObjectEmpty(stateText.textSelect)) ? beginInterval() : stopInterval();
+    }, [stateText.textSelect]);
 
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
@@ -259,6 +282,11 @@ const PaintText = (id_canvas) => {
     }, [stateText.fontSize]);
 
     useEffect(() => {
+        // INICIA O DETIENE ANIMACION AL CAMBIAR DE PIZARRA
+        (!isObjectEmpty(stateText.textSelect) && stateText.canvas === stateText.textSelect.canvas)
+            ? beginInterval()
+            : stopInterval();
+        // ACTUALIZA LOS DATOS DEL MENU DEL TEXTO AL CAMBIAR DE PIZARRAS
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas && stateText.active) {
             h_textSetAllTextselect(
                 stateText.textSelect.fontColor,

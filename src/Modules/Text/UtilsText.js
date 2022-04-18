@@ -1,6 +1,18 @@
 // TEXTO: GRAFICA
 import {u_circuloBuscaPtoClickParaRedimencionar, u_circuloClickSobreCirculo, u_circuloGetClick} from "../Circle/UtilsCirculo";
 
+const u_textLineAnimation = (context, text, colorLineAnimation) => {
+	// Linea:
+	context.lineWidth = 2;
+	context.strokeStyle = colorLineAnimation;
+	context.setLineDash([0, 0]);
+	context.beginPath();
+	context.moveTo(text.x_fin+3, text.y_ini-3);
+	context.lineTo(text.x_fin+3, text.y_fin+3);
+	context.stroke();
+	context.closePath();
+}
+
 const u_textGraficaFontEdit = (context, text, boolean) => {
 	context.fillStyle = text.fontColor; //color de relleno
 	context.textAlign = text.fontAlign;
@@ -14,7 +26,7 @@ const u_textGraficaFontEdit = (context, text, boolean) => {
 	text.x_fin = text.x_ini + dimensiones.width;
 	text.y_fin = text.y_ini + text.fontSize;
 
-	// UNDERLINE:
+	// UNDERLINE: Texto Sub-rayado
 	if(text.fontUnderL === 'underlined'){
 		context.beginPath(); //iniciar ruta
 		context.lineWidth = 2;
@@ -34,6 +46,14 @@ const u_textGraficaFontEdit = (context, text, boolean) => {
 		context.lineWidth = 3;
 		//context.strokeRect(text.x_ini - 10,text.y_ini - 10,text.x_fin - text.x_ini + 20,text.y_fin - text.y_ini + 20);
 		context.strokeRect(text.x_ini - 15,text.y_ini - 15,text.x_fin - text.x_ini + 30,text.y_fin - text.y_ini + 30);
+		context.stroke();
+		context.closePath();
+
+		context.beginPath();
+		context.setLineDash([0, 0]);
+		context.strokeStyle="rgba(174, 214, 241,0.3)";
+		context.lineWidth = 10;
+		context.strokeRect(text.x_ini - 10,text.y_ini - 10,text.x_fin - text.x_ini + 20,text.y_fin - text.y_ini + 20);
 		context.stroke();
 		context.closePath();
 
@@ -160,5 +180,6 @@ export {
 	u_textBordeSegmentado,
 	u_textGraficaFontEdit,
 	u_textGraficaH2,
-	u_textClickTrue
+	u_textClickTrue,
+	u_textLineAnimation,
 };

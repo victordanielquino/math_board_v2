@@ -8,6 +8,7 @@ import {} from '@fortawesome/free-brands-svg-icons'; // fa-brands
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import PentagonIcon from '@mui/icons-material/Pentagon';
 
 import AppContext from '../../context/AppContext';
 import AppContextMover from '../../context/AppContextMover';
@@ -28,6 +29,7 @@ import AppContextGeometric                                    from "../../contex
 import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
 
 import './NavIzq.scss';
+import pentagon from '../../assets/icons/pentagon.svg';
 import moverIcon from '../../assets/icons/move1.svg';
 import lapizIcon from '../../assets/icons/pen1.svg';
 import borradorIcon from '../../assets/icons/eraser1.svg';
@@ -94,7 +96,7 @@ const NavIzq = () => {
 		{ fontSize:'1.4em', type:'mui', name: 'cuadradoIcon', icon: <CheckBoxOutlineBlankIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/>  },
 		{ fontSize:'1.4em', type:'mui', name: 'circuloIcon', icon: <PanoramaFishEyeIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
 		{ fontSize:'1.4em', type:'mui', name: 'trianguloIcon', icon: <ChangeHistoryIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.2em', type:'awesome', name: 'geometricIcon', icon:<FontAwesomeIcon icon={faShapes} style={{}}/>  },
+		{ fontSize:'1.4em', type:'mui', name: 'geometricIcon', icon: <PentagonIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
@@ -197,7 +199,8 @@ const NavIzq = () => {
 						size='small'
 						variant={select === elem.name ? 'contained':'outlined'}
 						className={classes.awesomeIcon}
-						style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}>
+						style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}
+					>
 						{elem.icon}
 					</Button>
 				))}

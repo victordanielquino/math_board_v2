@@ -65,15 +65,21 @@ import {
 	u_textMover,
 	u_textOpera,
 	u_textBordeSegmentado,
-} from '../Text/UtilsText';
+}                         from '../Text/UtilsText';
 import {
 	u_imagenGraficaH,
 	u_imagenOpera,
 	u_imagenBordeSegmentado,
 	u_imagenMover,
 	u_imagenUpdateZise
-} from "../Image/UtilsImagen";
-import draw from '../Draw/Draw'
+}                         from "../Image/UtilsImagen";
+import draw                                                                 from '../Draw/Draw'
+import {
+	u_geometricDrawBorderSegment,
+	u_geometricMove,
+	u_geometricOpera, u_geometricResize,
+	u_geomtricGetClick
+} from "../Geometric/UtilsGeometric";
 
 const PaintMover = (id_canvas) => {
 	// useContext
@@ -110,6 +116,7 @@ const PaintMover = (id_canvas) => {
 	let trianguloSelect = {};
 	let imagenSelect = {};
 	let elmSelectMove = {};
+	let geometricSelect = {};
 
 	const mouse = {
 		pos: { x: 0, y: 0 },
@@ -150,6 +157,11 @@ const PaintMover = (id_canvas) => {
 		imagen_mover_pts: false,
 		imagen_seleccionar_pts:false,
 		imagen_pto: '',
+		// GEOMETRIC:
+		geometric_mover: false,
+		geometric_mover_pts: false,
+		geometric_selection_pts: false,
+		geometric_pto: '',
 	};
 	const canvasMoverDatos = {
 		top: 0,
@@ -258,6 +270,17 @@ const PaintMover = (id_canvas) => {
 							elmSelectMove = textSelect;
 						}
 						break;
+					case 'geometric':
+						geometricSelect = u_geometricOpera(geometricSelect, elm, mouse);
+						console.log('geometric:', geometricSelect);
+						if (geometricSelect){
+							sw = true;
+							await paint();
+							u_geometricDrawBorderSegment(context, geometricSelect);
+							mouse.click = true;
+							elmSelectMove = geometricSelect;
+						}
+						break;
 					default:
 						console.log('no se encontro el type:', elm.types);
 				}
@@ -299,17 +322,6 @@ const PaintMover = (id_canvas) => {
 							: mouse.cuadrado_mover_pts ? cuadradoSelect = u_cuadradoUpdateZise(cuadradoSelect, mouse):'';
 						await paint();
 						u_cuadradoBordeSegmentado(context, cuadradoSelect);
-					}
-					//}
-					break;
-				case 'line':
-					//if (mouse.linea_mover || mouse.linea_mover_pts) {
-					if (lineaSelect.edit) {
-						mouse.linea_mover
-							? lineaSelect = u_lineaMover(lineaSelect, mouse)
-							: mouse.linea_mover_pts ? lineaSelect = u_lineaUpdateZise(lineaSelect, mouse):'';
-						await paint();
-						u_lineaBordeSegmentado(context, lineaSelect);
 					}
 					//}
 					break;
@@ -364,6 +376,26 @@ const PaintMover = (id_canvas) => {
 						u_imagenBordeSegmentado(context, imagenSelect);
 					}
 					break;
+				case 'line':
+					//if (mouse.linea_mover || mouse.linea_mover_pts) {
+					if (lineaSelect.edit) {
+						mouse.linea_mover
+							? lineaSelect = u_lineaMover(lineaSelect, mouse)
+							: mouse.linea_mover_pts ? lineaSelect = u_lineaUpdateZise(lineaSelect, mouse):'';
+						await paint();
+						u_lineaBordeSegmentado(context, lineaSelect);
+					}
+					//}
+					break;
+				case 'geometric':
+					if (geometricSelect.edit) {
+						mouse.geometric_mover
+							? geometricSelect = u_geometricMove(geometricSelect, mouse)
+							: mouse.geometric_mover_pts ? geometricSelect = u_geometricResize(geometricSelect, mouse) : '';
+						await paint();
+						u_geometricDrawBorderSegment(context, geometricSelect);
+					}
+					break;
 				default:
 					break;
 			}
@@ -408,6 +440,10 @@ const PaintMover = (id_canvas) => {
 		}
 		mouse.imagen_mover_pts = false;
 		mouse.imagen_pto = '';
+		// GEOMETRIC:
+		mouse.geometric_mover = false;
+		mouse.geometric_mover_pts = false;
+		mouse.geometric_pto = '';
 	};
 	const update_canvasMoverDatos = () => {
 		canvasMoverDatos.top = canvas.getBoundingClientRect().top;
@@ -415,29 +451,31 @@ const PaintMover = (id_canvas) => {
 		canvasMoverDatos.width = canvas.getBoundingClientRect().width;
 		canvasMoverDatos.height = canvas.getBoundingClientRect().height;
 	};
-	// LOGICA END.
-
-	// useEffect:
-	useEffect( () => {
-		console.log('ue PaintMover.jsx')
+	const eventDraw = () => {
+		console.log('ue PaintMove.jsx');
 		if (stateMover.selectElm){
 			setSelectElmObj(false, {});
 		}
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
-		paint();
+		update_canvasMoverDatos();
+		if (state.historia.length > 0) paint();
+	}
+
+	// useEffect:
+	useEffect( () => {
 		if (stateMover.active) {
-			update_canvasMoverDatos();
+			eventDraw();
 			canvas.addEventListener('mousedown', mouseDownMover);
 			canvas.addEventListener('mousemove', mouseMoveMover);
 			canvas.addEventListener('mouseup', mouseUpMover);
+			return () => {
+				canvas.removeEventListener('mousedown', mouseDownMover);
+				canvas.removeEventListener('mousemove', mouseMoveMover);
+				canvas.removeEventListener('mouseup', mouseUpMover);
+			};
 		}
-		return () => {
-			canvas.removeEventListener('mousedown', mouseDownMover);
-			canvas.removeEventListener('mousemove', mouseMoveMover);
-			canvas.removeEventListener('mouseup', mouseUpMover);
-		};
-	}, [stateMover.active, stateMover.canvas]);
+	}, [stateMover.active, stateMover.canvas, state.historia]);
 
 	useEffect(() => {
 		h_moveSetCanvas(state.canvas);

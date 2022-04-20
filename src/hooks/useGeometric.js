@@ -2,11 +2,11 @@ import { useState } from 'react';
 const initialStateGeometric = {
     active: false,
     bordeEstado: true, // si tendra borde
-    bordeGrosor: 5,
+    bordeGrosor: 3,
     bordeColor: 'yellow',
     fondoEstado: true, // si tendra fondo
     fondoColor: 'black',
-    vertices: 3,
+    vertices: 5,
     canvas: '',
 };
 

@@ -1,18 +1,19 @@
 import {multiplicacion, potencia, raiz, tanX} from "./math";
 
-export const distanciaEntreDosPtos = (p1, p2) => {
+export const u_distanciaEntreDosPtos = (p1, p2) => {
     let d = potencia(p2.x - p1.x, 2) + potencia(p2.y - p1.y, 2);
     d = raiz(d);
     return d;
 }
 
 export const rectaQuePasaPorDosPtos = (p1, p2) => {
-    // p1(x1, y1), p2(x2, y2)
+    // p1(x, y), p2(x, y)
     // ecuacion: ax + by +c = 0
     let recta = { a:0, b:0, c:0 };
     recta.a = p2.y - p1.y;
     recta.b = p1.x - p2.x;
-    recta.c = p1.y * (p1.x - p2.x) - p1.x * (p1.y - p2.y);
+    //recta.c = p1.y * (p1.x - p2.x) - p1.x * (p1.y - p2.y);
+    recta.c = p2.x * p1.y - p1.x * p2.y;
     recta.p1 = p1;
     recta.p2 = p2;
     return recta;

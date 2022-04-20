@@ -326,12 +326,13 @@ const u_cuadradoBordeSegmentado = (context, cuadrado) => {
 	context.lineWidth = 1; // borde grosor de linea
 	context.setLineDash([10, 4]); // lineas segmentadas
 
+	let margin = 5;
 	context.beginPath();
-	context.moveTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
-	context.lineTo(cuadrado.x_fin, cuadrado.y_ini); // (x_fin, y_ini)
-	context.lineTo(cuadrado.x_fin, cuadrado.y_fin); // (x_fin, y_fin)
-	context.lineTo(cuadrado.x_ini, cuadrado.y_fin); // (x_ini, y_fin)
-	context.lineTo(cuadrado.x_ini, cuadrado.y_ini); // (x_ini, y_ini)
+	context.moveTo(cuadrado.x_ini-margin, cuadrado.y_ini-margin); // (x_ini, y_ini)
+	context.lineTo(cuadrado.x_fin+margin, cuadrado.y_ini-margin); // (x_fin, y_ini)
+	context.lineTo(cuadrado.x_fin+margin, cuadrado.y_fin+margin); // (x_fin, y_fin)
+	context.lineTo(cuadrado.x_ini-margin, cuadrado.y_fin+margin); // (x_ini, y_fin)
+	context.lineTo(cuadrado.x_ini-margin, cuadrado.y_ini-margin); // (x_ini, y_ini)
 	context.stroke();
 	context.closePath();
 

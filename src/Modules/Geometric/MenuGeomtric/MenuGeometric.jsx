@@ -17,6 +17,7 @@ const MenuGeometric = () => {
 	// CONTEXT:
 	const { state } = useContext(AppContext);
 	const {
+		stateGeometric,
 		h_geometricSetAll,
 		h_geometricSetBordecolorBordeestado,
 		h_geometricSetFondocolorFondoestado,
@@ -29,7 +30,7 @@ const MenuGeometric = () => {
 
 	// LOGICA:
 	const handleVertices = (value) => {
-		(verticesRef.current.value > 3 && value === '-')
+		(verticesRef.current.value > 5 && value === '-')
 			? verticesRef.current.value = verticesRef.current.value - 1
 			: (value === '+') ? verticesRef.current.value = verticesRef.current.value - (-1):'';
 		h_geometricSetVertices(converInteger(verticesRef.current.value));
@@ -66,7 +67,7 @@ const MenuGeometric = () => {
 					<input
 						className="text"
 						type="text"
-						defaultValue="3"
+						defaultValue={stateGeometric.vertices}
 						ref={verticesRef}
 						//onChange={() => onChangeInputRadio()}
 						disabled

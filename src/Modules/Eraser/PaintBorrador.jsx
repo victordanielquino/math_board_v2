@@ -15,7 +15,8 @@ import {u_imageClickTrue} from "../Image/UtilsImagen";
 import {u_circcleClickTrue } from "../Circle/UtilsCirculo";
 import {u_triangleClickTrue } from "../Triangle/UtilsTriangulo";
 
-import draw from '../Draw/Draw';
+import draw                   from '../Draw/Draw';
+import {u_geometricClickTrue} from "../Geometric/UtilsGeometric";
 
 const PaintBorrador = (id_canvas) => {
 	// useContext:
@@ -70,6 +71,7 @@ const PaintBorrador = (id_canvas) => {
 					case 'square': (u_squareClickTrue(elm, mouse.pos.x, mouse.pos.y))? sw = true: ''; break;
 					case 'plano': (u_planoClickTrue(elm, mouse.pos.x, mouse.pos.y))? sw = true: ''; break;
 					case 'image': (u_imageClickTrue(elm, mouse.pos.x, mouse.pos.y))? sw = true: ''; break;
+					case 'geometric': (u_geometricClickTrue(elm, mouse.pos.x, mouse.pos.y))?  sw = true:''; break;
 					default: break;
 				}
 			}

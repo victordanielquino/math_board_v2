@@ -160,6 +160,12 @@ const useInitialState = () => {
 			historia: newArray,
 		})
 	}
+	const h_updateH = (newArray) => {
+		setState({
+			...state,
+			historia: newArray,
+		})
+	}
 
 
 	return {
@@ -173,7 +179,8 @@ const useInitialState = () => {
 		h_setCanvas,
 		h_addH,
 		h_deleteHId,
-		h_deleteById
+		h_deleteById,
+		h_updateH
 	};
 };
 

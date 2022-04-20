@@ -230,7 +230,6 @@ const PaintText = (id_canvas) => {
     useEffect( () => {
         if (stateText.active && state.historia.length > 0){
             h_textSetTextselect(state.historia[state.historia.length - 1]);
-            console.log(state.historia)
         }
     }, [state.historia]);
 

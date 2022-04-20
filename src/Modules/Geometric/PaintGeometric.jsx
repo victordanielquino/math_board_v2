@@ -11,9 +11,9 @@ import {u_circleDrawRadio, u_circleDrawWithRadio} from "../Circle/UtilsCirculo";
 import {
     interseccionEntreDosCircunferencias,
     rectaQuePasaPorDosPtos,
-    distanciaEntreDosPtos, anguloEntreDosRectasCaso1, interseccionRectaCircunferencia, circunferenciaConCentroRadio
+    u_distanciaEntreDosPtos, anguloEntreDosRectasCaso1, interseccionRectaCircunferencia, circunferenciaConCentroRadio
 }                                                  from '../../utils/geometriaAnalitica';
-import {searhcVertex, u_geometricDraw} from "./UtilsGeometric";
+import {u_searchVertex, u_geometricDraw} from "./UtilsGeometric";
 
 const PaintGeometric = (id_canvas) => {
     // CONTEXT:
@@ -90,6 +90,7 @@ const PaintGeometric = (id_canvas) => {
         types: 'geometric',
         canvas: stateGeometric.canvas,
         arrayVertex:[],
+        arrayVertexSegment:[],
         nroVertex: stateGeometric.vertices,
     };
     const canvasGeometricDatos = {
@@ -115,13 +116,18 @@ const PaintGeometric = (id_canvas) => {
             geometricFig.radioY_ = geometricFig.k - (mouse.pos.y - geometricFig.k);
             geometricFig.radioX = mouse.pos.x;
             geometricFig.radioY = mouse.pos.y;
-            geometricFig.radio = distanciaEntreDosPtos({x: geometricFig.h, y:geometricFig.k}, {x: geometricFig.radioX, y:geometricFig.radioY});
-            geometricFig.arrayVertex = searhcVertex(
+            geometricFig.radio = u_distanciaEntreDosPtos(
+                {x: geometricFig.h, y:geometricFig.k},
+                {x: geometricFig.radioX, y:geometricFig.radioY}
+            );
+            let resp = u_searchVertex(
                 stateGeometric.vertices,
                 {x: mouse.pos.x, y: mouse.pos.y},
                 {h:geometricFig.h, k:geometricFig.k},
                 geometricFig.radio
             );
+            geometricFig.arrayVertex = resp[0];
+            geometricFig.arrayVertexSegment = resp[1];
             // draw:
             await paint();
             u_geometricDraw(context, geometricFig, true);

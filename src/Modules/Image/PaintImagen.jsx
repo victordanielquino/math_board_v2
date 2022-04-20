@@ -7,15 +7,6 @@ import AppContextImagen from "../../context/AppContextImagen";
 import AppContextFunction from "../../context/AppContextFunction";
 
 // utils:
-import { utilsCuadricula_graficaCuadricula } from '../Grid/UtilsCuadricula';
-import { u_cuadradoGraficaH } from '../Square/UtilsCuadrado';
-import { u_lineaGraficaH } from '../Line/UtilsLinea';
-import { u_lapizGraficaH } from '../Pencil/UtilsLapiz';
-import { u_planoGraficaH } from '../Plano/UtilsPlano';
-import { u_textGraficaH } from '../Text/UtilsText';
-import { u_circuloGraficaH } from "../Circle/UtilsCirculo";
-import { u_trianguloGraficaH } from "../Triangle/UtilsTriangulo";
-import { u_imagenGraficaH, getBase64 } from "./UtilsImagen";
 
 import draw from '../Draw/Draw';
 

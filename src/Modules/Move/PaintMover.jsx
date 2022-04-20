@@ -453,6 +453,7 @@ const PaintMover = (id_canvas) => {
 	};
 	const eventDraw = () => {
 		console.log('ue PaintMove.jsx');
+		console.log(state.historia)
 		if (stateMover.selectElm){
 			setSelectElmObj(false, {});
 		}

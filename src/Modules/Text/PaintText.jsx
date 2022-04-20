@@ -115,6 +115,7 @@ const PaintText = (id_canvas) => {
             if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                 text.y_ini = text.y_ini - text.fontSize;
                 text.y_fin = text.y_fin - text.fontSize;
+                text.id = state.id;
                 h_addH(text);
             }
         } else {
@@ -123,6 +124,7 @@ const PaintText = (id_canvas) => {
                 if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                     text.y_ini = text.y_ini - text.fontSize;
                     text.y_fin = text.y_fin - text.fontSize;
+                    text.id = state.id;
                     h_addH(text);
                 }
             }

@@ -127,19 +127,11 @@ const PaintTriangulo = (id_canvas) => {
     // 3
     let mouseUpTriangulo = async (e) => {
         captura_Pos_Posprev(e);
-        if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            /*triangulo.x1 = mouse.pos.x;
-            triangulo.y1 = mouse.pos.y - 50;
-
-            triangulo.x2 = mouse.pos.x - 50;
-            triangulo.y2 = mouse.pos.y + 50;
-
-            triangulo.x3 = mouse.pos.x + 50;
-            triangulo.y3 = mouse.pos.y + 50;*/
-
-            //await paint();
-            //u_trianguloGrafica(context, triangulo);
-            //s_trianguloAddHId(triangulo, stateTriangulo.id + 1);
+        square.x_fin = mouse.pos.x;
+        square.y_fin = mouse.pos.y;
+        if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0
+            && square.x_ini !== square.x_fin && square.y_ini !== square.y_fin
+        ) {
             triangulo.id = state.id;
             h_addH(triangulo);
         }

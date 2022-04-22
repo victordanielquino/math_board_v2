@@ -5,13 +5,17 @@ import AppContext from "../../../context/AppContext";
 import AppContextGeometric from "../../../context/AppContextGeometric";
 
 // components:
-import PaletaGrosor     from '../../PaletaGrosor/PaletaGrosorSinTitle';
-import PaletaColorBorde from '../../PaletaColor/PaletaColor';
-import PaletaColorFondo from '../../PaletaColor/PaletaColor';
+import PaletaGrosor                      from '../../PaletaGrosor/PaletaGrosorSinTitle';
+import PaletaColorBorde                  from '../../PaletaColor/PaletaColor';
+import PaletaColorFondo                  from '../../PaletaColor/PaletaColor';
 
 // styles:
 import './MenuGeometric.scss';
-import {converInteger}  from "../../../utils/math";
+import {converInteger}                   from "../../../utils/math";
+import {Button, ButtonGroup, Typography} from "@mui/material";
+import RemoveIcon                        from "@mui/icons-material/Remove";
+import AddIcon                           from "@mui/icons-material/Add";
+import useStylesMenuGeometric            from "./MenuGeometricStyle";
 
 const MenuGeometric = () => {
 	// CONTEXT:
@@ -29,6 +33,8 @@ const MenuGeometric = () => {
 	const verticesRef = useRef(null);
 
 	// LOGICA:
+	const props = {}
+	const classes = useStylesMenuGeometric(props);
 	const handleVertices = (value) => {
 		(verticesRef.current.value > 5 && value === '-')
 			? verticesRef.current.value = verticesRef.current.value - 1
@@ -60,30 +66,45 @@ const MenuGeometric = () => {
 	}, []);
 
 	return (
-		<article className="article__menuCirculo">
-			<div className="article__menuCirculo__radio">
-				<span>VERTICES:</span>
-				<span>
-					<input
-						className="text"
-						type="text"
-						defaultValue={stateGeometric.vertices}
-						ref={verticesRef}
-						//onChange={() => onChangeInputRadio()}
+		<div style={{display:'flex'}}>
+			<article className={classes.article}>
+				<Typography color='primary'>
+					V:
+				</Typography>
+				<ButtonGroup style={{margin:'0 10px'}}>
+					<Button
+						variant='outlined'
+						size='small'
 						disabled
-					/>
-				</span>
-				<span>
-					<input type="button" value="-" onClick={() => handleVertices('-')} />
-				</span>
-				<span>
-					<input type="button" value="+" onClick={() => handleVertices('+')} />
-				</span>
-			</div>
-			{<PaletaGrosor title="BORDE" />}
-			{<PaletaColorBorde tipo="linea" title="Borde" />}
-			{<PaletaColorFondo tipo="fondo" title="Fondo" />}
-		</article>
+					>
+						<Typography color='primary'>
+							{stateGeometric.vertices}
+						</Typography>
+					</Button>
+				</ButtonGroup>
+				<ButtonGroup>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleVertices('-')}
+					>
+						<RemoveIcon fontSize='small'/>
+					</Button>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleVertices('+')}
+					>
+						<AddIcon fontSize='small'/>
+					</Button>
+				</ButtonGroup>
+			</article>
+			<article className="article__menuCirculo">
+				{<PaletaGrosor title="BORDE" />}
+				{<PaletaColorBorde tipo="linea" title="Borde" />}
+				{<PaletaColorFondo tipo="fondo" title="Fondo" />}
+			</article>
+		</div>
 	);
 };
 

@@ -7,8 +7,8 @@ import './Header.scss';
 import MenuHeader from './MenuHeader';
 import MenuPlano from '../../Modules/Plano/MenuPlano/MenuPlano';
 import MenuMover from '../../Modules/Move/MenuMove/MenuMover';
-import MenuLapiz from '../../Modules/Pencil/MenuPencil/MenuLapiz';
-import MenuBorrador from '../../Modules/Eraser/MenuEraser/MenuBorrador';
+import MenuLapiz    from '../../Modules/Pencil/MenuPencil/MenuLapiz';
+import MenuEraser   from '../../Modules/Eraser/MenuEraser/MenuEraser';
 import MenuCuadrado from '../../Modules/Square/MenuSquare/MenuCuadrado';
 import MenuCuadricula from '../../Modules/Grid/MenuGrid/MenuCuadricula';
 import MenuLinea from '../../Modules/Line/MenuLine/MenuLinea';
@@ -114,7 +114,7 @@ const Header = () => {
 				{toggleMenuPlano && <MenuPlano />}
 				{toggleMenuMover && <MenuMover />}
 				{toggleMenuLapiz && <MenuLapiz />}
-				{toggleMenuBorrador && <MenuBorrador />}
+				{toggleMenuBorrador && <MenuEraser />}
 				{toggleMenuCuadrado && <MenuCuadrado />}
 				{toggleMenuCuadricula && <MenuCuadricula />}
 				{toggleMenuLinea && <MenuLinea />}

@@ -32,8 +32,8 @@ const MenuPlano = () => {
 	return (
 		<>
 			<article className={classes.article}>
-				<Typography variant="h6" component="h2" color='primary'>
-					Width:
+				<Typography color='primary'>
+					WIDTH:
 				</Typography>
 				<ButtonGroup style={{margin:'0 10px'}}>
 					<Button

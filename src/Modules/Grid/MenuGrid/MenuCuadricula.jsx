@@ -4,10 +4,6 @@ import React, { useEffect, useContext } from 'react';
 import AppContextGrid from '../../../context/AppContextGrid';
 
 // styles:
-import './MenuCuadricula.scss';
-import iconCuadricula from '../../../assets/icons/cuadricula.svg';
-import iconCuadriculaSin from '../../../assets/icons/cuadriculaSin.svg';
-import iconCuadriculaNone from '../../../assets/icons/lineaNone.svg';
 
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -38,7 +34,7 @@ const MenuCuadricula = () => {
 		<div style={{display:'flex'}}>
 			<article className={classes.article}>
 				<Typography color='primary'>
-					Type grid:
+					TYPE GRID:
 				</Typography>;
 				<ButtonGroup>
 					<Button
@@ -66,7 +62,7 @@ const MenuCuadricula = () => {
 			</article>
 			<article className={classes.article}>
 				<Typography color='primary'>
-					Width:
+					WIDTH:
 				</Typography>;
 				<ButtonGroup>
 					<Button

@@ -1,6 +1,6 @@
 import {makeStyles} from "@mui/styles";
 
-const useStylesMenuGrid  = makeStyles({
+const useStylesMenuGeometric  = makeStyles({
     article: {
         //outline: '1px solid black',
         borderRadius: '10px',
@@ -8,7 +8,7 @@ const useStylesMenuGrid  = makeStyles({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems:'center',
-        padding: '5px 25px',
+        padding: '5px 10px',
         marginRight: '20px',
     },
     button: {
@@ -19,4 +19,4 @@ const useStylesMenuGrid  = makeStyles({
     }
 });
 
-export default useStylesMenuGrid;
+export default useStylesMenuGeometric;

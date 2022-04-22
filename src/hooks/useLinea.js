@@ -20,12 +20,10 @@ const useLinea = () => {
 		});
 	};
 	const updateLineaColor = (valor) => {
-		console.log('color util:', valor);
 		setStateLinea({
 			...stateLinea,
 			color: valor,
 		});
-		console.log('color:', stateLinea);
 	};
 	const h_lineaSetColor = (valor) => {
 		setStateLinea({
@@ -67,7 +65,6 @@ const useLinea = () => {
 		});
 	};
 	const h_lineaSetColorGrosor = (valor1, valor2) => {
-		console.log(valor1, valor2)
 		setStateLinea({
 			...stateLinea,
 			color: valor1,

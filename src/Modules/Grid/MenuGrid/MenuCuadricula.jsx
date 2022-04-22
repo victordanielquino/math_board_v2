@@ -9,84 +9,83 @@ import iconCuadricula from '../../../assets/icons/cuadricula.svg';
 import iconCuadriculaSin from '../../../assets/icons/cuadriculaSin.svg';
 import iconCuadriculaNone from '../../../assets/icons/lineaNone.svg';
 
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+import GridOnIcon                        from '@mui/icons-material/GridOn';
+import {Button, ButtonGroup, Typography} from "@mui/material";
+import DensitySmallIcon                  from '@mui/icons-material/DensitySmall';
+import BlurOffIcon           from '@mui/icons-material/BlurOff';
+import useStylesMenuGrid     from "./MenuGridStyle";
+
 const MenuCuadricula = () => {
 	// useContext:
-	const { stateCanvas, updateTipoCuadricula, updateCuadriculaWidth } =
-		useContext(AppContextGrid);
+	const { stateGrid, h_gridTipo, updateCuadriculaWidth } = useContext(AppContextGrid);
 
 	// LOGICA:
-	const arrayIconCuadricula = [
-		{
-			iconCuadricula: iconCuadricula,
-			tipo: 'cuadricula',
-			id: 'iconCuadricula',
-		},
-		{
-			iconCuadricula: iconCuadriculaSin,
-			tipo: 'linea',
-			id: 'iconCuadriculaSin',
-		},
-		{
-			iconCuadricula: iconCuadriculaNone,
-			tipo: 'ninguno',
-			id: 'iconCuadriculaNone',
-		},
-	];
-	const updatePaleta_tipoCuadricula = (tipo) => {
-		const array = document.querySelectorAll('.activeIconCuadricula');
-		for (let i = 0; i < array.length; i++) {
-			array[i].classList.remove('activeIconCuadricula');
-		}
-		let elem = arrayIconCuadricula.find((elem) => elem.tipo == tipo);
-		document.getElementById(elem.id).classList.add('activeIconCuadricula');
-	};
-	const handleCuadriculaTipo = (tipo) => {
-		updatePaleta_tipoCuadricula(tipo);
-		updateTipoCuadricula(tipo);
-	};
+	const props = {}
+	const classes = useStylesMenuGrid(props);
 	const handleBtnAncho = (op) => {
-		op == '-' && stateCanvas.cuadriculaWidth > 10
-			? updateCuadriculaWidth(stateCanvas.cuadriculaWidth - 10)
-			: '';
-		op == '+' ? updateCuadriculaWidth(stateCanvas.cuadriculaWidth + 10) : '';
+		op == '-' && stateGrid.cuadriculaWidth > 10
+			? updateCuadriculaWidth(stateGrid.cuadriculaWidth - 10) : '';
+		op == '+' ? updateCuadriculaWidth(stateGrid.cuadriculaWidth + 10) : '';
 	};
 	// LOGICA END.
 
 	// useEffect
-	useEffect(() => {
-		updatePaleta_tipoCuadricula(stateCanvas.tipoCuadricula);
-	}, []);
 
 	return (
-		<article className="article__menuCuadricula">
-			<div className="article__menuCuadricula__paletaTipo">
-				<div>
-					<span>Cuadricula: </span>
-				</div>
-				<div className="article__menuCuadricula__paletaTipo__icons">
-					{arrayIconCuadricula.map((elem) => (
-						<img
-							className="article__menuCuadricula__paletaTipo__icons__icon "
-							src={elem.iconCuadricula}
-							id={elem.id}
-							key={`key-${elem.id}`}
-							onClick={() => handleCuadriculaTipo(elem.tipo)}
-						/>
-					))}
-				</div>
-			</div>
-			<div className="article__menuCuadricula__paletaAncho">
-				<div>
-					<span>Tamaño: </span>
-				</div>
-				<div className="inputButton">
-					<input type="button" value="-" onClick={() => handleBtnAncho('-')} />
-				</div>
-				<div className="inputButton">
-					<input type="button" value="+" onClick={() => handleBtnAncho('+')} />
-				</div>
-			</div>
-		</article>
+		<div style={{display:'flex'}}>
+			<article className={classes.article}>
+				<Typography color='primary'>
+					Type grid:
+				</Typography>;
+				<ButtonGroup>
+					<Button
+						variant={stateGrid.tipoCuadricula === 'cuadricula' ? 'contained': 'outlined'}
+						size='small'
+						onClick={() => h_gridTipo('cuadricula')}
+					>
+						<GridOnIcon/>
+					</Button>
+					<Button
+						variant={stateGrid.tipoCuadricula === 'linea' ? 'contained': 'outlined'}
+						size='small'
+						onClick={() => h_gridTipo('linea')}
+					>
+						<DensitySmallIcon/>
+					</Button>
+					<Button
+						variant={stateGrid.tipoCuadricula === 'ninguno' ? 'contained': 'outlined'}
+						size='small'
+						onClick={() => h_gridTipo('ninguno')}
+					>
+						<BlurOffIcon/>
+					</Button>
+				</ButtonGroup>
+			</article>
+			<article className={classes.article}>
+				<Typography color='primary'>
+					Width:
+				</Typography>;
+				<ButtonGroup>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleBtnAncho('-')}
+					>
+						<RemoveIcon fontSize='small'/>
+					</Button>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleBtnAncho('+')}
+					>
+						<AddIcon fontSize='small'/>
+					</Button>
+				</ButtonGroup>
+			</article>
+		</div>
 	);
 };
 

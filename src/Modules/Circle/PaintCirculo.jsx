@@ -12,18 +12,16 @@ import { u_circleDraw }           from './UtilsCirculo';
 const PaintCirculo = (id_canvas) => {
     // useContext:
     const { state, h_addH } = useContext(AppContext);
-    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateGrid } = useContext(AppContextGrid);
     const { stateCirculo, h_circleSetCanvas } = useContext(AppContextCirculo);
 
     // LOGICA:
     const paint = async () => {
         if (stateCirculo.active){
-            console.log('PaintCirculo.jsx active');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                await draw(context, state.historia, state.canvas, stateCanvas);
+                await draw(context, state.historia, state.canvas, stateGrid);
             } catch (e) {
                 console.log(e.message);
             }
@@ -164,12 +162,7 @@ const PaintCirculo = (id_canvas) => {
     }, [stateCirculo, state.historia]);
 
     useEffect(() => {
-        if (stateCirculo.active){
-            console.log('stateCirculo: active');
-            paint();
-        } else {
-            console.log('no active');
-        }
+        if (stateCirculo.active) paint();
     }, [stateCirculo.active]);
 
     useEffect(() => {

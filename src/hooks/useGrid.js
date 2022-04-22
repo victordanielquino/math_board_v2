@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const initialStateCanvas = {
+const initialStateGrid = {
 	active: false,
 	id: 0,
 	width: 0,
@@ -14,46 +14,46 @@ const initialStateCanvas = {
 };
 
 const useGrid = () => {
-	const [stateCanvas, setStateCanvas] = useState(initialStateCanvas);
+	const [stateGrid, setStateGrid] = useState(initialStateGrid);
 
 	const updateCuadriculaActive = (valor) => {
-		setStateCanvas({
-			...stateCanvas,
+		setStateGrid({
+			...stateGrid,
 			active: valor,
 		});
 	};
 	const updateCuadriculaWidth = (valor) => {
-		setStateCanvas({
-			...stateCanvas,
+		setStateGrid({
+			...stateGrid,
 			cuadriculaWidth: valor,
 		});
 	};
 	const update_width_height = (width, height) => {
-		setStateCanvas({
-			...stateCanvas,
+		setStateGrid({
+			...stateGrid,
 			width: width,
 			height: height,
 		});
 	};
-	const updateTipoCuadricula = (valor) => {
-		setStateCanvas({
-			...stateCanvas,
+	const h_gridTipo = (valor) => {
+		setStateGrid({
+			...stateGrid,
 			tipoCuadricula: valor,
 		});
 	};
 	const h_gridSetCanvas = (value) => {
-		setStateCanvas({
-			...stateCanvas,
+		setStateGrid({
+			...stateGrid,
 			canvas: value,
 		});
 	};
 
 	return {
-		stateCanvas,
+		stateGrid,
 		updateCuadriculaActive,
 		updateCuadriculaWidth,
 		update_width_height,
-		updateTipoCuadricula,
+		h_gridTipo,
 		h_gridSetCanvas,
 	};
 };

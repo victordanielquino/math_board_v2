@@ -22,7 +22,7 @@ const PaintBorrador = (id_canvas) => {
 	// useContext:
 	const  { state, h_deleteHId } = useContext(AppContext);
 	const { stateBorrador, h_eraserSetCanvas } = useContext(AppContextBorrador);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 
 	// LOGICA:
 	const paint = async () => {
@@ -31,8 +31,8 @@ const PaintBorrador = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				//utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-				await draw(context, state.historia, stateBorrador.canvas, stateCanvas);
+				//utilsCuadricula_graficaCuadricula(context, stateGrid); // grafica cuadricula
+				await draw(context, state.historia, stateBorrador.canvas, stateGrid);
 			} catch (e) {
 				console.log('error: PaintBorrador.jsx',e.message);
 			}

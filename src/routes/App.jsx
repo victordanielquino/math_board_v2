@@ -37,9 +37,11 @@ import useSesion     from "../hooks/useSesion";
 import useCalculator from "../hooks/useCalculator";
 import useGeometric  from "../hooks/useGeometric";
 
-import Layout        from '../Layout/Layout';
-import Home          from '../Layout/Home/Home';
+import Layout            from '../Layout/Layout';
+import Home              from '../Layout/Home/Home';
 import '../styles/global.css';
+import useScissor        from "../hooks/useScissor";
+import AppContextScissor from "../context/AppContextScissor";
 
 const App = () => {
 	const initialState = useInitialState();
@@ -58,6 +60,7 @@ const App = () => {
 	const initialStateSesion = useSesion();
 	const initialStateCalculator = useCalculator();
 	const initialStateGeometric = useGeometric();
+	const initialStateScissor = useScissor();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -77,13 +80,15 @@ const App = () => {
 															<AppContextSesion.Provider value={initialStateSesion}>
 																<AppContextCalculator.Provider value={initialStateCalculator}>
 																	<AppContextGeometric.Provider value={initialStateGeometric}>
-																		<BrowserRouter>
-																			<Layout>
-																				{/*<Routes>
+																		<AppContextScissor.Provider value={initialStateScissor}>
+																			<BrowserRouter>
+																				<Layout>
+																					{/*<Routes>
 																				<Route exact path="/" element={<Home />} />
 																			</Routes>*/}
-																			</Layout>
-																		</BrowserRouter>
+																				</Layout>
+																			</BrowserRouter>
+																		</AppContextScissor.Provider>
 																	</AppContextGeometric.Provider>
 																</AppContextCalculator.Provider>
 															</AppContextSesion.Provider>

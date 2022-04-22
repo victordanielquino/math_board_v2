@@ -6,19 +6,13 @@ import AppContextGrid from '../../context/AppContextGrid';
 import AppContextGeometric from "../../context/AppContextGeometric";
 
 import draw                                       from '../Draw/Draw';
-import { u_lineDraw }                             from "../Line/UtilsLinea";
-import {u_circleDrawRadio, u_circleDrawWithRadio} from "../Circle/UtilsCirculo";
-import {
-    interseccionEntreDosCircunferencias,
-    rectaQuePasaPorDosPtos,
-    u_distanciaEntreDosPtos, anguloEntreDosRectasCaso1, interseccionRectaCircunferencia, circunferenciaConCentroRadio
-}                                                  from '../../utils/geometriaAnalitica';
+import { u_distanciaEntreDosPtos } from '../../utils/geometriaAnalitica';
 import {u_searchVertex, u_geometricDraw} from "./UtilsGeometric";
 
 const PaintGeometric = (id_canvas) => {
     // CONTEXT:
     const { state, h_addH } = useContext(AppContext);
-    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateGrid } = useContext(AppContextGrid);
     const { stateGeometric, h_geometricSetCanvas } = useContext(AppContextGeometric);
 
     // STATE:
@@ -28,12 +22,11 @@ const PaintGeometric = (id_canvas) => {
     // LOGICA:
     const paint = async () => {
         if (stateGeometric.active){
-            console.log('PaintGeometric.jsx active');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                await draw(context, state.historia, state.canvas, stateCanvas);
+                //utilsCuadricula_graficaCuadricula(context, stateGrid); // grafica cuadricula
+                await draw(context, state.historia, state.canvas, stateGrid);
             } catch (e) {
                 console.log(e.message);
             }
@@ -105,6 +98,10 @@ const PaintGeometric = (id_canvas) => {
         captura_Pos_Posprev(e);
         geometricFig.h = mouse.pos.x;
         geometricFig.k = mouse.pos.y;
+        geometricFig.radioX = mouse.pos.x;
+        geometricFig.radioY = mouse.pos.y;
+        geometricFig.radioX_ = mouse.pos.x;
+        geometricFig.radioY_ = mouse.pos.y;
     };
     // 2
     let mouseMoveGeometric = async (e) => {
@@ -137,8 +134,10 @@ const PaintGeometric = (id_canvas) => {
     let mouseUpGeometric = (e) => {
         captura_Pos_Posprev(e);
         if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
-            geometricFig.id = state.id;
-            h_addH(geometricFig);
+            if (geometricFig.h !== geometricFig.radioX && geometricFig.k !== geometricFig.radioY) {
+                geometricFig.id = state.id;
+                h_addH(geometricFig);
+            } else console.log('no valido')
         }
         mouseReinicia();
     };
@@ -149,7 +148,6 @@ const PaintGeometric = (id_canvas) => {
         canvasGeometricDatos.height = canvas.getBoundingClientRect().height;
     };
     const eventDraw = () => {
-        console.log('ue PaintTGeometric.jsx');
         canvas = document.getElementById(id_canvas);
         context = canvas.getContext('2d');
         update_canvasGeometricDatos();
@@ -173,12 +171,7 @@ const PaintGeometric = (id_canvas) => {
     }, [stateGeometric, state.historia]);
 
     useEffect(() => {
-        if (stateGeometric.active){
-            console.log('stateGeometric: active');
-            paint();
-        } else {
-            console.log('no active');
-        }
+        if (stateGeometric.active) paint();
     }, [stateGeometric.active]);
 
     useEffect(() => {

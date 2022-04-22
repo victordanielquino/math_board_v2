@@ -13,7 +13,7 @@ import draw from '../Draw/Draw';
 const PaintImagen = (id_canvas) => {
     // useContext:
     const { state } = useContext(AppContext);
-    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateGrid } = useContext(AppContextGrid);
     const { stateImagen, h_imageSetCanvas } = useContext(AppContextImagen);
     const { stateFunction } = useContext(AppContextFunction);
 
@@ -22,12 +22,10 @@ const PaintImagen = (id_canvas) => {
     let context = '';
     const paint = async () => {
         if (stateImagen.active || stateFunction.active){
-            console.log('PaintImage.jsx');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                await draw(context, state.historia, state.canvas, stateCanvas);
+                await draw(context, state.historia, state.canvas, stateGrid);
             } catch (e) {
                 console.log(e.message);
             }
@@ -36,7 +34,6 @@ const PaintImagen = (id_canvas) => {
 
     // useEffect:
     useEffect(() => {
-        console.log('ue PaintImage.jsx');
         stateImagen.active ? paint():'';
     }, [stateImagen.active]);
 

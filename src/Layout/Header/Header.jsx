@@ -15,10 +15,11 @@ import MenuLinea from '../../Modules/Line/MenuLine/MenuLinea';
 import MenuText from '../../Modules/Text/MenuText/MenuText';
 import MenuCirculo from "../../Modules/Circle/MenuCircle/MenuCirculo";
 import MenuTriangulo from "../../Modules/Triangle/MenuTriangle/MenuTriangulo";
-import MenuImagen from "../../Modules/Image/MenuImage/MenuImagen";
-import MenuFunction from "../../Modules/Function/MenuFunction/MenuFunction";
+import MenuImagen_   from "../../Modules/Image/MenuImage/MenuImagen";
+import MenuFunction  from "../../Modules/Function/MenuFunction/MenuFunction";
 import MenuCalculadora from "../../Modules/Calculator/MenuCalculadora/MenuCalculadora";
-import MenuGeometric   from "../../Modules/Geometric/MenuGeomtric/MenuGeometric";
+import MenuGeometric from "../../Modules/Geometric/MenuGeomtric/MenuGeometric";
+import MenuScissor   from "../../Modules/Scissor/MenuScissor/MenuScissor";
 
 // context:
 import AppContext from '../../context/AppContext';
@@ -56,6 +57,7 @@ const Header = () => {
 	const [toggleMenuFunction, setToggleMenuFunction] = useState(false);
 	const [toggleMenuCalculadora, setToggleMenuCalculadora] = useState(false);
 	const [toggleMenuGeometric, setToggleMenuGeometric] = useState(false);
+	const [toggleMenuScissor, setToggleMenuScissor] = useState(false);
 
 	// LOGICA:
 	const classes = useStyle();
@@ -77,6 +79,7 @@ const Header = () => {
 		setToggleMenuFunction(false);
 		setToggleMenuCalculadora(false);
 		setToggleMenuGeometric(false);
+		setToggleMenuScissor(false);
 		switch (state.active) {
 			case 'homeIcon':
 				setToggleMenuHeader(true);
@@ -123,6 +126,9 @@ const Header = () => {
 			case 'geometricIcon':
 				setToggleMenuGeometric(true);
 				break;
+			case 'scissorIcon':
+				setToggleMenuScissor(true);
+				break;
 			default:
 				setToggleMenuHeader(true);
 				break;
@@ -148,10 +154,11 @@ const Header = () => {
 							{toggleMenuText && <MenuText />}
 							{toggleMenuCirculo && <MenuCirculo />}
 							{toggleMenuTriangulo && <MenuTriangulo />}
-							{toggleMenuImagen && <MenuImagen />}
+							{toggleMenuImagen && <MenuImagen_ />}
 							{toggleMenuFunction && <MenuFunction />}
 							{toggleMenuCalculadora && <MenuCalculadora />}
 							{toggleMenuGeometric && <MenuGeometric />}
+							{toggleMenuScissor && <MenuScissor/>}
 						</div>
 						<Typography  variant='h7' style={{ color: 'white'}}>
 							UMSA / INFORMÁTICA

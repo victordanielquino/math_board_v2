@@ -14,18 +14,16 @@ import {u_squareDrawBorderSegment} from "../Square/UtilsCuadrado";
 const PaintTriangulo = (id_canvas) => {
     // useContext:
     const { state, h_addH } = useContext(AppContext);
-    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateGrid } = useContext(AppContextGrid);
     const { stateTriangulo, h_triangleSetCanvas } = useContext(AppContextTriangulo);
 
     // LOGICA:
     const paint = async () => {
         if (stateTriangulo.active){
-            console.log('PaintTriangulo.jsx');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                //utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-                await draw(context, state.historia, state.canvas, stateCanvas);
+                await draw(context, state.historia, state.canvas, stateGrid);
             } catch (e) {
                 console.log(e.message);
             }
@@ -148,12 +146,7 @@ const PaintTriangulo = (id_canvas) => {
 
     // useEffect:
     useEffect(() => {
-        if (stateTriangulo.active){
-            console.log('stateTriangulo: active');
-            paint();
-        } else {
-            console.log('no active');
-        }
+        if (stateTriangulo.active) paint();
     }, [stateTriangulo.active]);
 
     useEffect(() => {

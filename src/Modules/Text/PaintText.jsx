@@ -17,7 +17,7 @@ const PaintText = (id_canvas) => {
         h_addH,
         h_deleteById
     } = useContext(AppContext);
-    const { stateCanvas } = useContext(AppContextGrid);
+    const { stateGrid } = useContext(AppContextGrid);
     const {
         stateText,
         h_textSetReset,
@@ -34,16 +34,13 @@ const PaintText = (id_canvas) => {
     // LOGICA
     const paint = async () => {
         if (stateText.active){
-            console.log('PaintText.jsx');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
-                await draw(context, state.historia, state.canvas, stateCanvas, !isObjectEmpty(stateText.textSelect));
+                await draw(context, state.historia, state.canvas, stateGrid, !isObjectEmpty(stateText.textSelect));
             } catch (e) {
                 console.log(e);
             }
-        } else {
-            console.log('PaintText.jsx false');
         }
     }
     const paintAnimation = (color) => {

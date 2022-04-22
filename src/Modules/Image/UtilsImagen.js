@@ -15,7 +15,6 @@ const u_imagenGraficaSinPromesa = (context, objImagen) => {
         imagen.src = objImagen.fileSrc;
         imagen.addEventListener('load', () => {
             context.drawImage(imagen, objImagen.x_ini, objImagen.y_ini, objImagen.x_fin - objImagen.x_ini, objImagen.y_fin - objImagen.y_ini);
-            console.log('hola....');
         });
     }
 };

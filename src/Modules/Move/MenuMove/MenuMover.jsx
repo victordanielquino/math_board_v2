@@ -32,10 +32,10 @@ const useStyles  = makeStyles({
 		borderBottom: '1px solid var(--very-light-pink)',
 		backgroundColor: 'white',
 		display: 'flex',
-		padding: '5px',
+		padding: '5px 20px',
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		width: '170px',
+		//width: '170px',
 		color: 'black',
 		marginLeft: '1em',
 	}
@@ -189,45 +189,60 @@ const MenuMover = () => {
 	return (
 		<div style={{display:'flex'}}>
 			<div className={classes.container}>
-				<Typography variant='h6' color='primary' >Editar:</Typography>
-				<ButtonGroup>
-					<Button variant={variantEditNot} onClick={() => handleEdit(false)} color='error' size='small'><GppGoodIcon fontSize='small'/></Button>
-					<Button variant={variantEditYes} onClick={() => handleEdit(true)} color='success' size='small'><GppBadIcon fontSize='small'/></Button>
-				</ButtonGroup>
+				<Button
+					variant={variantEditNot}
+					onClick={() => handleEdit(false)}
+					color='error' size='small'
+					startIcon={<GppBadIcon/>}
+					style={{marginRight: '10px'}}
+					disabled={disabledUpDown}
+				>
+					Edit False
+				</Button>
+				<Button
+					variant={variantEditYes}
+					onClick={() => handleEdit(true)}
+					color='success'
+					size='small'
+					startIcon={<GppGoodIcon/>}
+					disabled={disabledUpDown}
+				>
+					Edit True
+				</Button>
 			</div>
 
 			<div className={classes.container}>
-				<Typography variant='h6' color='primary' >Position:</Typography>
-				<ButtonGroup>
 					<Button
 						variant='outlined'
 						onClick={() => handleUpDown('down')}
 						disabled={disabledUpDown}
 						size='small'
+						startIcon={<MoveDownIcon fontSize='small'/>}
+						style={{marginRight:'10px'}}
 					>
-						<MoveDownIcon fontSize='small'/>
+						Down
 					</Button>
 					<Button
 						variant='outlined'
 						onClick={() => handleUpDown('up')}
 						disabled={disabledUpDown}
 						size='small'
+						startIcon={<MoveUpIcon/>}
 					>
-						<MoveUpIcon fontSize='small'/>
+						Up
 					</Button>
-				</ButtonGroup>
 			</div>
 
 			<div className={classes.container}>
-				<Typography variant='h6' color='primary' >Duplicate:</Typography>
 				<ButtonGroup>
 					<Button
 						variant='outlined'
 						onClick={() => handleDuplicate()}
 						disabled={disabledUpDown}
 						size='small'
+						startIcon={<ContentCopyIcon/>}
 					>
-						<ContentCopyIcon fontSize='small'/>
+						Duplicate
 					</Button>
 				</ButtonGroup>
 			</div>

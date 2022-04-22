@@ -89,6 +89,12 @@ const useInitialState = () => {
 					active: 'functionIcon',
 				});
 				break;
+			case 'scissorIcon':
+				setState({
+					...state,
+					active: 'scissorIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;

@@ -9,18 +9,17 @@ import AppContext from "../../context/AppContext";
 const PaintGrid = (canvasId) => {
 	// useContext:
 	const { state } = useContext(AppContext);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 
 	// LOGICA:
 	let context = '';
 	let primeraVez = true;
 	const paint = async () => {
-		if (stateCanvas.active || primeraVez){
+		if (stateGrid.active || primeraVez){
 			primeraVez = false;
-			console.log('PaintGrid.jsx');
 			context = document.getElementById(canvasId).getContext('2d');
 			try {
-				await draw(context, state.historia, state.canvas, stateCanvas);
+				await draw(context, state.historia, state.canvas, stateGrid);
 			} catch (e) {
 				console.log(e.message);
 			}
@@ -33,14 +32,14 @@ const PaintGrid = (canvasId) => {
 		context = document.getElementById(canvasId).getContext('2d');
 		paint();
 	}, [
-		stateCanvas.width,
-		stateCanvas.height,
-		stateCanvas.tipoCuadricula,
-		stateCanvas.cuadriculaWidth,
+		stateGrid.width,
+		stateGrid.height,
+		stateGrid.tipoCuadricula,
+		stateGrid.cuadriculaWidth,
 	]);
 
 	useEffect(() => {
-		if (stateCanvas.active) paint();
+		if (stateGrid.active) paint();
 	}, [state.canvas]);
 
 	useEffect(() => {

@@ -9,10 +9,10 @@ import { u_lineDraw }                         from "../Line/UtilsLinea";
 import { utilsCuadricula_graficaCuadricula }  from '../Grid/UtilsCuadricula';
 import {u_geometricDraw}                      from "../Geometric/UtilsGeometric";
 
-const Draw = async (context, array, canvas, stateCanvas, focusText= false) => {
-    console.log('Draw.jsx');
+const Draw = async (context, array, canvas, stateGrid, focusText= false) => {
+    //console.log('Draw.jsx');
     try {
-        utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+        utilsCuadricula_graficaCuadricula(context, stateGrid); // grafica cuadricula
         await array.forEach((elm, index) => {
             switch (elm.types){
                 case 'pencil':

@@ -105,8 +105,8 @@ const useStyles  = makeStyles(theme => ({
 const KeyboardOutput = () => {
     // CONTEXT:
     const { state, h_addH } = useContext(AppContext);
-    const {stateFunction} = useContext(AppContextFunction);
-    const { s_imagenAddHId, stateImagen } = useContext(AppContextImagen);
+    const { stateFunction } = useContext(AppContextFunction);
+    const { stateImagen } = useContext(AppContextImagen);
 
     // STATE:
     const [open, setOpen] = useState(false);

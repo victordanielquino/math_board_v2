@@ -85,16 +85,15 @@ const PaintMover = (id_canvas) => {
 	// useContext
 	const { state } = useContext(AppContext);
 	const { stateMover, setSelectElmObj, h_moveSetCanvas } = useContext(AppContextMover);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 
 	// LOGICA:
 	const paint = async () => {
 		if (stateMover.active) {
-			console.log('PaintMover.jsx');
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				await draw(context, state.historia, state.canvas, stateCanvas);
+				await draw(context, state.historia, state.canvas, stateGrid);
 			} catch (e) {
 				console.log('error: PaintMover.jsx')
 			}
@@ -271,8 +270,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'geometric':
-						geometricSelect = u_geometricOpera(geometricSelect, elm, mouse);
-						console.log('geometric:', geometricSelect);
+						geometricSelect = u_geometricOpera(geometricSelect, array, mouse);
 						if (geometricSelect){
 							sw = true;
 							await paint();
@@ -346,7 +344,6 @@ const PaintMover = (id_canvas) => {
 					//}
 					break;
 				case 'circle':
-					//if(mouse.circulo_mover || mouse.circulo_mover_pts){
 					if (circuloSelect.edit) {
 						mouse.circulo_mover
 							? circuloSelect = u_circuloMover(circuloSelect, mouse)
@@ -354,7 +351,6 @@ const PaintMover = (id_canvas) => {
 						await paint();
 						u_circuloBordeSegmentado(context, circuloSelect);
 					}
-					//}
 					break;
 				case 'triangle':
 					//if (mouse.triangulo_mover || mouse.triangulo_mover_pts) {
@@ -452,8 +448,6 @@ const PaintMover = (id_canvas) => {
 		canvasMoverDatos.height = canvas.getBoundingClientRect().height;
 	};
 	const eventDraw = () => {
-		console.log('ue PaintMove.jsx');
-		console.log(state.historia)
 		if (stateMover.selectElm){
 			setSelectElmObj(false, {});
 		}

@@ -13,22 +13,19 @@ import draw from '../Draw/Draw'
 const PaintLinea = (id_canvas) => {
 	// useContext:
 	const { state, h_addH } = useContext(AppContext);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 	const { stateLinea, h_lineSetCanvas } = useContext(AppContextLinea);
 
 	// LOGICA:
 	const paint = async () => {
 		if (stateLinea.active){
-			console.log('PaintLinea.jsx');
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				await draw(context, state.historia, state.canvas, stateCanvas);
+				await draw(context, state.historia, state.canvas, stateGrid);
 			} catch (e) {
 				console.log('error: PaintLinea.jsx',e.message);
 			}
-		} else {
-			console.log('PaintLinea.jsx no active');
 		}
 	}
 	let canvas = '';
@@ -210,7 +207,6 @@ const PaintLinea = (id_canvas) => {
 		context = canvas.getContext('2d');
 		update_canvasLineaDatos();
 		if (stateLinea.active) {
-			console.log(state.historia)
 			state.historia.length > 0 ? paint():'';
 		}
 	}

@@ -6,7 +6,6 @@ import './MenuText.scss';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import SortByAlphaIcon                                                                       from '@mui/icons-material/SortByAlpha';
 import {Button, ButtonGroup, FormControl, MenuItem, Select, ToggleButton, ToggleButtonGroup} from "@mui/material";
 
 const MenuText = () => {

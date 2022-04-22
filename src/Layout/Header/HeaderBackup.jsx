@@ -15,8 +15,8 @@ import MenuLinea from '../../Modules/Line/MenuLine/MenuLinea';
 import MenuText from '../../Modules/Text/MenuText/MenuText';
 import MenuCirculo from "../../Modules/Circle/MenuCircle/MenuCirculo";
 import MenuTriangulo from "../../Modules/Triangle/MenuTriangle/MenuTriangulo";
-import MenuImagen from "../../Modules/Image/MenuImage/MenuImagen";
-import MenuFunction from "../../Modules/Function/MenuFunction/MenuFunction";
+import MenuImagen_   from "../../Modules/Image/MenuImage/MenuImagen";
+import MenuFunction  from "../../Modules/Function/MenuFunction/MenuFunction";
 
 // context:
 import AppContext from '../../context/AppContext';
@@ -121,7 +121,7 @@ const Header = () => {
 				{toggleMenuText && <MenuText />}
 				{toggleMenuCirculo && <MenuCirculo />}
 				{toggleMenuTriangulo && <MenuTriangulo />}
-				{toggleMenuImagen && <MenuImagen />}
+				{toggleMenuImagen && <MenuImagen_ />}
 				{toggleMenuFunction && <MenuFunction />}
 			</div>
 			<div className="navbar-right">

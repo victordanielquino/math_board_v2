@@ -12,17 +12,16 @@ import draw from '../Draw/Draw'
 const PaintPlano = (id_canvas) => {
 	// useContext:
 	const { state, h_addH } = useContext(AppContext);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 	const { statePlano, s_planoAddHId, h_planoSetCanvas } = useContext(AppContextPlano);
 
 	// LOGICA:
 	const paint = async () => {
 		if (statePlano.active){
-			console.log('PaintPlano');
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				await draw(context, state.historia, state.canvas, stateCanvas);
+				await draw(context, state.historia, state.canvas, stateGrid);
 			} catch (e) {
 				console.log(e.message);
 			}

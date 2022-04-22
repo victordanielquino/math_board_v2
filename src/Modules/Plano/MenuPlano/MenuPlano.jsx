@@ -1,62 +1,69 @@
 import React, { useContext, useEffect } from 'react';
 
-import './MenuPlano.scss';
-
 // CONTEXT:
-import AppContextPlano from '../../../context/AppContextPlano';
+import AppContextPlano                                           from '../../../context/AppContextPlano';
+import {Button, ButtonGroup, FormControl, TextField, Typography} from "@mui/material";
+import RemoveIcon                                                from "@mui/icons-material/Remove";
+import AddIcon                                      from "@mui/icons-material/Add";
+import useStylesMenuPlano                           from "./MenuPlanoStyle";
+import {converInteger}                              from "../../../utils/math";
 
 const MenuPlano = () => {
 	// useContext:
-	const {
-		statePlano,
-		s_planoUpdateWidthCuadricula,
-	} = useContext(AppContextPlano);
+	const { statePlano, s_planoUpdateWidthCuadricula } = useContext(AppContextPlano);
 
 	// LOGICA
+	const props = {}
+	const classes = useStylesMenuPlano(props);
 	const handleWidth = (op) => {
-		let valor = parseInt(document.getElementById('plano_width').value);
-		op == '+' ? (valor = valor + 10) : (valor = valor - 10);
-		if (valor < 10) {
-			valor = 10;
-		} else {
-			if (valor > 50) {
-				valor = 50;
-			} else {
-				document.getElementById('plano_width').value = valor;
-				s_planoUpdateWidthCuadricula(valor);
-			}
+		let valor = converInteger(statePlano.width_cuadricula);
+		switch (op) {
+			case '+':
+				(valor + 10 !== 60) ? s_planoUpdateWidthCuadricula(valor + 10):'';
+				break;
+			case '-':
+				(valor - 10 !== 20) ? s_planoUpdateWidthCuadricula(valor - 10):'';
+				break;
 		}
-	};
-	const updatePaletaInicio = () => {
-		document.getElementById('plano_width').value = statePlano.width_cuadricula;
 	};
 	// LOGICA END.
 
 	// useEffect
-	useEffect(() => {
-		updatePaletaInicio();
-	}, []);
 	return (
-		<article className="article__menuPlano">
-			<div className="article__menuPlano__width">
-				<span>WIDTH:</span>
-				<span>
-					<input
-						className="text"
-						type="text"
-						defaultValue="10"
-						id="plano_width"
+		<>
+			<article className={classes.article}>
+				<Typography variant="h6" component="h2" color='primary'>
+					Width:
+				</Typography>
+				<ButtonGroup style={{margin:'0 10px'}}>
+					<Button
+						variant='outlined'
+						size='small'
 						disabled
-					/>
-				</span>
-				<span>
-					<input type="button" value="-" onClick={() => handleWidth('-')} />
-				</span>
-				<span>
-					<input type="button" value="+" onClick={() => handleWidth('+')} />
-				</span>
-			</div>
-		</article>
+					>
+						<Typography color='primary'>
+							{statePlano.width_cuadricula}
+						</Typography>
+					</Button>
+				</ButtonGroup>
+				<ButtonGroup>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleWidth('-')}
+					>
+						<RemoveIcon fontSize='small'/>
+					</Button>
+					<Button
+						variant='outlined'
+						size='small'
+						onClick={() => handleWidth('+')}
+					>
+						<AddIcon fontSize='small'/>
+					</Button>
+				</ButtonGroup>
+			</article>
+		</>
 	);
 };
 

@@ -52,6 +52,7 @@ import {Button, ButtonGroup, ToggleButton, ToggleButtonGroup} from "@mui/materia
 import {createTheme}                                          from "@mui/material/styles";
 import {blue}                                                 from "@mui/material/colors";
 import {makeStyles}                                           from "@mui/styles";
+import AppContextScissor                                      from "../../context/AppContextScissor";
 
 const theme = createTheme({
 	palette: {
@@ -81,6 +82,7 @@ const NavIzq = () => {
 	const { s_functionSetActive } = useContext(AppContextFunction);
 	const { h_calculatorSetActive } = useContext(AppContextCalculator);
 	const { h_geometricSetActive } = useContext(AppContextGeometric);
+	const { h_scissorSetActive } = useContext(AppContextScissor);
 
 	// STATE:
 	const [navHeight, setNavHeight] = useState(window.innerHeight - 112);
@@ -99,10 +101,11 @@ const NavIzq = () => {
 		{ fontSize:'1.4em', type:'mui', name: 'geometricIcon', icon: <PentagonIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
 		{ fontSize:'1.5em', type:'awesome', name: 'borradorIcon', icon: <FontAwesomeIcon icon={faEraser} style={{}}/> },
 		{ fontSize:'1.4em', type:'awesome', name: 'functionIcon', icon: <FontAwesomeIcon icon={faFlorinSign} style={{}}/> },
 		{ fontSize:'1.4em', type:'awesome', name: 'calculadoraIcon', icon: <FontAwesomeIcon icon={faCalculator} style={{}}/> },
+		{ fontSize:'1.4em', type:'awesome', name: 'scissorIcon', icon: <FontAwesomeIcon icon={faScissors} style={{}}/> },
+		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
 	]
 
 	// LOGICA:
@@ -157,13 +160,15 @@ const NavIzq = () => {
 			case 'geometricIcon':
 				h_geometricSetActive(boolean);
 				break;
+			case 'scissorIcon':
+				h_scissorSetActive(boolean);
+				break;
 			default:
-				console.log('Opcion no registrada!!!');
+				// console.log('Opcion no registrada!!!');
 				break;
 		}
 	};
 	const handleIcon2 = (icon) => {
-		console.log(icon)
 		let activePrev = state.active;
 		let active = icon;
 		s_setActiveActivePrev(active, activePrev);

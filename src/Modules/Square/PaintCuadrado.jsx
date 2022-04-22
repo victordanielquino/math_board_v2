@@ -15,18 +15,19 @@ import draw from '../Draw/Draw';
 const PaintCuadrado = (id_canvas) => {
 	// CONTEXT:
 	const { state, h_addH } = useContext(AppContext);
-	const { stateCanvas } = useContext(AppContextGrid);
+	const { stateGrid } = useContext(AppContextGrid);
 	const { stateCuadrado, h_squareSetCanvas } = useContext(AppContextCuadrado);
 
 	// LOGICA:
 	const paint = async () => {
-		console.log('PaintCuadrado');
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		try {
-			await draw(context, state.historia, state.canvas, stateCanvas);
-		} catch (e) {
-			console.log(e.message);
+		if (stateCuadrado.active) {
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			try {
+				await draw(context, state.historia, state.canvas, stateGrid);
+			} catch (e) {
+				console.log(e.message);
+			}
 		}
 	}
 	let canvas = '';
@@ -137,12 +138,7 @@ const PaintCuadrado = (id_canvas) => {
 	}, [stateCuadrado, state.historia]);
 
 	useEffect(() => {
-		if (stateCuadrado.active){
-			console.log('stateCuadrado: active');
-			paint();
-		} else {
-			console.log('no active');
-		}
+		if (stateCuadrado.active) paint();
 	}, [stateCuadrado.active]);
 
 	useEffect(() => {

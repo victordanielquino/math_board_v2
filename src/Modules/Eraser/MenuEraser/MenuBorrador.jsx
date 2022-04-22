@@ -8,8 +8,7 @@ import './MenuBorrador.scss';
 
 const MenuBorrador = () => {
 	// useContext:
-	const { stateBorrador, updateBorradorGrosor } =
-		useContext(AppContextBorrador);
+	const { stateBorrador, updateBorradorGrosor } = useContext(AppContextBorrador);
 
 	// LOGICA:
 	const updatePaletaGrosor = (grosor) => {

@@ -16,7 +16,6 @@ const PaintCalculator = (id_canvas) => {
     // LOGICA:
     const paint = async () => {
         if (stateCalculator.active){
-            console.log('PaintCalculator.jsx active');
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
@@ -39,10 +38,6 @@ const PaintCalculator = (id_canvas) => {
             paint();
         }
     }, [state.canvas]);
-
-    useEffect(() => {
-        console.log('calculator!!!!!')
-    }, [stateCalculator.active]);
 }
 
 export default PaintCalculator;

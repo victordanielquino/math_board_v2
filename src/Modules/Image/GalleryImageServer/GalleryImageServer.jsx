@@ -232,6 +232,7 @@ const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
             imageNew.y_fin = imageNew.y_ini + elm.clientHeight;
             //s_imagenAddHId(imageNew, stateImagen.id + 1);
             imageNew.id = state.id;
+            console.log('imageNew:', imageNew);
             h_addH(imageNew);
             setLoadingDownload(false);
             setOpen(false);

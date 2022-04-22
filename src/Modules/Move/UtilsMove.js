@@ -1,7 +1,6 @@
 import {getPorcion} from "../../utils/arrays";
 
 export const u_moveUpElement = (array, id) => {
-    //console.log(id, arrayIn);
     /*let array = [];
     arrayIn.forEach( elm => array.push(elm));*/
     let sw = false;
@@ -32,7 +31,6 @@ export const u_moveUpElement = (array, id) => {
 }
 
 export const u_moveDownElement = (array, id) => {
-    //console.log(id, arrayIn);
     /*let array = [];
     arrayIn.forEach( elm => array.push(elm));*/
     let sw = false;
@@ -294,17 +292,7 @@ export const u_moveDuplicateTriangle = (triangleIn, recorrido_x, recorrido_y) =>
 }
 // MOVE: Geometric duplicate
 export const u_moveDuplicateGeometric = (geometricIn, recorrido_x, recorrido_y) => {
-    let array1 = [];
-    geometricIn.arrayVertex.forEach(elm => array1.push({
-        x:elm.x + recorrido_x,
-        y:elm.y + recorrido_y
-    }));
-    let array2 = [];
-    geometricIn.arrayVertexSegment.forEach(elm => array2.push({
-        x:elm.x + recorrido_x,
-        y:elm.y + recorrido_y
-    }));
-    const geometric = {
+    let geometric = {
         id: geometricIn.id,
         visible: geometricIn.visible,
         edit: geometricIn.edit,
@@ -326,10 +314,18 @@ export const u_moveDuplicateGeometric = (geometricIn, recorrido_x, recorrido_y) 
         k: geometricIn.k,
         types: 'geometric',
         canvas: geometricIn.canvas,
-        arrayVertex: array1,
-        arrayVertexSegment: array2,
-        nroVertex: geometricIn.vertices,
+        arrayVertex: [],
+        arrayVertexSegment: [],
+        nroVertex: geometricIn.nroVertex,
     };
+    geometricIn.arrayVertex.forEach(elm => geometric.arrayVertex.push({
+        x:elm.x + recorrido_x,
+        y:elm.y + recorrido_y
+    }));
+    geometricIn.arrayVertexSegment.forEach(elm => geometric.arrayVertexSegment.push({
+        x:elm.x + recorrido_x,
+        y:elm.y + recorrido_y
+    }));
 
     geometric.h = geometric.h + recorrido_x;
     geometric.k = geometric.k + recorrido_y;
@@ -341,7 +337,6 @@ export const u_moveDuplicateGeometric = (geometricIn, recorrido_x, recorrido_y) 
 }
 // MOVE: Image duplicate
 export const u_moveDuplicateImage = (imageIn, recorrido_x, recorrido_y) => {
-    console.log(imageIn);
     const image = {
         id: imageIn.id,
         edit: imageIn.edit,
@@ -369,7 +364,6 @@ export const u_moveDuplicateImage = (imageIn, recorrido_x, recorrido_y) => {
 }
 // MOVE: Plano duplicate
 export const u_moveDuplicatePlano = (planoIn, recorrido_x, recorrido_y) => {
-    console.log(planoIn)
     let plano = {
         id: planoIn.id,
         visible: planoIn.visible,

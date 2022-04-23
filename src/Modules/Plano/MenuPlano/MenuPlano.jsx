@@ -18,12 +18,8 @@ const MenuPlano = () => {
 	const handleWidth = (op) => {
 		let valor = converInteger(statePlano.width_cuadricula);
 		switch (op) {
-			case '+':
-				(valor + 10 !== 60) ? s_planoUpdateWidthCuadricula(valor + 10):'';
-				break;
-			case '-':
-				(valor - 10 !== 20) ? s_planoUpdateWidthCuadricula(valor - 10):'';
-				break;
+			case '+': (valor + 10 !== 60) ? s_planoUpdateWidthCuadricula(valor + 10):'';break;
+			case '-': (valor - 10 !== 20) ? s_planoUpdateWidthCuadricula(valor - 10):'';break;
 		}
 	};
 	// LOGICA END.
@@ -41,7 +37,7 @@ const MenuPlano = () => {
 						size='small'
 						disabled
 					>
-						<Typography color='primary'>
+						<Typography style={{height:'20px'}} color='primary'>
 							{statePlano.width_cuadricula}
 						</Typography>
 					</Button>

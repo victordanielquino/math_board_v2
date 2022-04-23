@@ -49,7 +49,6 @@ const AddImageLocal = ({ setOpen, stateSuccess, setStateSuccess}) => {
         visible: true,
         fileId: 0,
         filePropietario: 'VRQ',
-        fileSrc: '',
         fileNombre: '',
         fileAutor: '',
         x_ini: 100,
@@ -60,6 +59,7 @@ const AddImageLocal = ({ setOpen, stateSuccess, setStateSuccess}) => {
         dataUse: false,
         types: 'image',
         canvas: stateImagen.canvas,
+        fileSrc: '',
     };
     const handleSuccess = () => {
         if (file){

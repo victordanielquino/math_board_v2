@@ -27,7 +27,7 @@ const MenuCalculadora = () => {
     return (
         <>
             <div className={classes.container}>
-                <Typography  variant='h6' color='primary' style={{ padding: '0 10px'}}>
+                <Typography  variant='h7' color='primary' style={{ padding: '0 10px'}}>
                     Calculadora:
                 </Typography>
                 <Button
@@ -35,6 +35,7 @@ const MenuCalculadora = () => {
                     startIcon={<CalculateIcon/>}
                     style={{marginRight: '10px'}}
                     onClick={() => setOpen(true)}
+                    size='small'
                 >Open</Button>
             </div>
             <ModalUI open={open} setOpen={setOpen} title='Calculadora' booleanFooter={false}>

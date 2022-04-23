@@ -4,14 +4,14 @@ import React, { useEffect, useContext, useState } from 'react';
 import './Header.scss';
 
 // containers:
-import MenuHeader from './MenuHeader';
+import MenuHeader from './MenuHeader/MenuHeader';
 import MenuPlano from '../../Modules/Plano/MenuPlano/MenuPlano';
-import MenuMover from '../../Modules/Move/MenuMove/MenuMover';
-import MenuLapiz    from '../../Modules/Pencil/MenuPencil/MenuLapiz';
+import MenuMove  from '../../Modules/Move/MenuMove/MenuMove';
+import MenuLapiz from '../../Modules/Pencil/MenuPencil/MenuLapiz';
 import MenuEraser   from '../../Modules/Eraser/MenuEraser/MenuEraser';
 import MenuCuadrado from '../../Modules/Square/MenuSquare/MenuCuadrado';
-import MenuCuadricula from '../../Modules/Grid/MenuGrid/MenuCuadricula';
-import MenuLinea from '../../Modules/Line/MenuLine/MenuLinea';
+import MenuGrid     from '../../Modules/Grid/MenuGrid/MenuGrid';
+import MenuLinea    from '../../Modules/Line/MenuLine/MenuLinea';
 import MenuText from '../../Modules/Text/MenuText/MenuText';
 import MenuCirculo from "../../Modules/Circle/MenuCircle/MenuCirculo";
 import MenuTriangulo from "../../Modules/Triangle/MenuTriangle/MenuTriangulo";
@@ -26,7 +26,8 @@ import AppContext from '../../context/AppContext';
 import {AppBar, Toolbar, Typography} from "@mui/material";
 
 import {makeStyles} from "@mui/styles";
-import { styled } from '@mui/material/styles';
+import { styled }   from '@mui/material/styles';
+import MenuReadJson from "../../Modules/ReadJson/MenuReadJson/MenuReadJson";
 const useStyle = makeStyles(theme => ({
 	// offset: theme.mixins.toolbar
 	toolbar: {
@@ -58,6 +59,7 @@ const Header = () => {
 	const [toggleMenuCalculadora, setToggleMenuCalculadora] = useState(false);
 	const [toggleMenuGeometric, setToggleMenuGeometric] = useState(false);
 	const [toggleMenuScissor, setToggleMenuScissor] = useState(false);
+	const [toggleMenuReadJson, setToggleMenuReadJson] = useState(false);
 
 	// LOGICA:
 	const classes = useStyle();
@@ -80,6 +82,7 @@ const Header = () => {
 		setToggleMenuCalculadora(false);
 		setToggleMenuGeometric(false);
 		setToggleMenuScissor(false);
+		setToggleMenuReadJson(false);
 		switch (state.active) {
 			case 'homeIcon':
 				setToggleMenuHeader(true);
@@ -129,6 +132,9 @@ const Header = () => {
 			case 'scissorIcon':
 				setToggleMenuScissor(true);
 				break;
+			case 'readJsonIcon':
+				setToggleMenuReadJson(true);
+				break;
 			default:
 				setToggleMenuHeader(true);
 				break;
@@ -139,17 +145,17 @@ const Header = () => {
 			<div>
 				<AppBar>
 					<Toolbar className={classes.toolbar}>
-						<Typography  variant='h6'>
-							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>MathBoard</a>
+						<Typography  variant='h7'>
+							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>MATHBOARD</a>
 						</Typography>
 						<div>
 							{toggleMenuHeader && <MenuHeader />}
 							{toggleMenuPlano && <MenuPlano />}
-							{toggleMenuMover && <MenuMover />}
+							{toggleMenuMover && <MenuMove />}
 							{toggleMenuLapiz && <MenuLapiz />}
 							{toggleMenuBorrador && <MenuEraser />}
 							{toggleMenuCuadrado && <MenuCuadrado />}
-							{toggleMenuCuadricula && <MenuCuadricula />}
+							{toggleMenuCuadricula && <MenuGrid />}
 							{toggleMenuLinea && <MenuLinea />}
 							{toggleMenuText && <MenuText />}
 							{toggleMenuCirculo && <MenuCirculo />}
@@ -159,6 +165,7 @@ const Header = () => {
 							{toggleMenuCalculadora && <MenuCalculadora />}
 							{toggleMenuGeometric && <MenuGeometric />}
 							{toggleMenuScissor && <MenuScissor/>}
+							{toggleMenuReadJson && <MenuReadJson/>}
 						</div>
 						<Typography  variant='h7' style={{ color: 'white'}}>
 							UMSA / INFORMÁTICA

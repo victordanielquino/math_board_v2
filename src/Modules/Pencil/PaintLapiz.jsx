@@ -23,7 +23,6 @@ const PaintLapiz = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
-				//utilsCuadricula_graficaCuadricula(context, stateGrid); // grafica cuadricula
 				await draw(context, state.historia, state.canvas, stateGrid);
 			} catch (e) {
 				console.log(e.message);

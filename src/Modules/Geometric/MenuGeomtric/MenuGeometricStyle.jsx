@@ -8,7 +8,7 @@ const useStylesMenuGeometric  = makeStyles({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems:'center',
-        padding: '5px 10px',
+        padding: '5px 20px',
         marginRight: '20px',
     },
     button: {

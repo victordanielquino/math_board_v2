@@ -1,12 +1,13 @@
 import {makeStyles} from "@mui/styles";
 
-const useStylesMenuScissor  = makeStyles({
+const useStylesMenuReadJson  = makeStyles({
     article: {
         //outline: '1px solid black',
         borderRadius: '10px',
         backgroundColor: 'white',
         display: 'flex',
         justifyContent: 'space-between',
+        alignItems:'center',
         padding: '5px 25px',
     },
     button: {
@@ -14,7 +15,10 @@ const useStylesMenuScissor  = makeStyles({
     },
     a: {
         display: 'none',
+    },
+    inputFile: {
+        display: 'none',
     }
 });
 
-export default useStylesMenuScissor;
+export default useStylesMenuReadJson;

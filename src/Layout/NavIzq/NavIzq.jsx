@@ -1,14 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
-	faBell, faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare, faSlash, faCircle, faImage, faChartLine,
-	faEraser, faGrip, faFlorinSign, faSquareRootVariable, faTableCellsLarge, faCalculator, faScissors, faShapes
+	faArrowsUpDownLeftRight, faHouse, faPencil, faFont, faSquare, faSlash, faImage, faChartLine,
+	faEraser, faFlorinSign, faTableCellsLarge, faCalculator, faScissors
 } from '@fortawesome/free-solid-svg-icons'; // fa-regular
 import {} from '@fortawesome/free-brands-svg-icons'; // fa-brands
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import PentagonIcon from '@mui/icons-material/Pentagon';
+import SaveIcon from '@mui/icons-material/Save';
+import {Button, ButtonGroup} from "@mui/material";
+import {blue} from "@mui/material/colors";
+import {makeStyles} from "@mui/styles";
+import {createTheme} from "@mui/material/styles";
 
 import AppContext from '../../context/AppContext';
 import AppContextMover from '../../context/AppContextMover';
@@ -24,35 +29,13 @@ import AppContextTriangulo from "../../context/AppContextTriangulo";
 import AppContextImagen from "../../context/AppContextImagen";
 import AppContextFunction   from "../../context/AppContextFunction";
 import AppContextCalculator from "../../context/AppContextCalculator";
-import AppContextGeometric                                    from "../../context/AppContextGeometric";
+import AppContextGeometric from "../../context/AppContextGeometric";
+import AppContextScissor from "../../context/AppContextScissor";
+import AppContextReadJson from "../../context/AppContextReadJson";
 
 import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
 
 import './NavIzq.scss';
-import pentagon from '../../assets/icons/pentagon.svg';
-import moverIcon from '../../assets/icons/move1.svg';
-import lapizIcon from '../../assets/icons/pen1.svg';
-import borradorIcon from '../../assets/icons/eraser1.svg';
-import calculadoraIcon from '../../assets/icons/calculator.svg';
-import planoIcon from '../../assets/icons/graph-up.svg';
-import plusIcon from '../../assets/icons/plus-square.svg';
-import textIcon from '../../assets/icons/textarea.svg';
-import zoomInIcon from '../../assets/icons/zoom-in.svg';
-import zoomOutIcon from '../../assets/icons/zoom-out.svg';
-import cuadradoIcon from '../../assets/icons/square.svg';
-import lineaIcon from '../../assets/icons/linea.svg';
-import sumatoriaIcon                                          from '../../assets/icons/sumatoria1.svg';
-import imagenIcon                                             from '../../assets/icons/image1.svg';
-import circuloIcon                                            from '../../assets/icons/circle.svg';
-import cuadriculaIcon                                         from '../../assets/icons/cuadricula.svg';
-import keyboardIcon                                           from '../../assets/icons/keyboard1.svg';
-import trianguloIcon                                          from '../../assets/icons/triangle.svg';
-import functionIcon                                           from '../../assets/icons/function1.svg';
-import {Button, ButtonGroup, ToggleButton, ToggleButtonGroup} from "@mui/material";
-import {createTheme}                                          from "@mui/material/styles";
-import {blue}                                                 from "@mui/material/colors";
-import {makeStyles}                                           from "@mui/styles";
-import AppContextScissor                                      from "../../context/AppContextScissor";
 
 const theme = createTheme({
 	palette: {
@@ -75,7 +58,7 @@ const NavIzq = () => {
 	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 	const { updateLineaActive } = useContext(AppContextLinea);
 	const { updatePlanoActive } = useContext(AppContextPlano);
-	const { updateTextActive, h_textSetReset } = useContext(AppContextText);
+	const { updateTextActive } = useContext(AppContextText);
 	const { updateCirculoActive } = useContext(AppContextCirculo);
 	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
 	const { s_imagenUpdateActive } = useContext(AppContextImagen);
@@ -83,6 +66,7 @@ const NavIzq = () => {
 	const { h_calculatorSetActive } = useContext(AppContextCalculator);
 	const { h_geometricSetActive } = useContext(AppContextGeometric);
 	const { h_scissorSetActive } = useContext(AppContextScissor);
+	const { h_readJsonSetActive } = useContext(AppContextReadJson);
 
 	// STATE:
 	const [navHeight, setNavHeight] = useState(window.innerHeight - 112);
@@ -90,22 +74,23 @@ const NavIzq = () => {
 	const [select, setSelect] = useState('homeIcon');
 
 	const awesomeIcons = [
-		{ fontSize:'1.4em', type:'awesome', name: 'homeIcon', icon: <FontAwesomeIcon icon={faHouse} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'moverIcon', icon: <FontAwesomeIcon icon={faArrowsUpDownLeftRight} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'lapizIcon', icon: <FontAwesomeIcon icon={faPencil} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'textIcon', icon: <FontAwesomeIcon icon={faFont} style={{}}/> },
-		{ fontSize:'1.2em', type:'awesome', name: 'lineaIcon', icon:<FontAwesomeIcon icon={faSlash} style={{}}/>  },
-		{ fontSize:'1.4em', type:'mui', name: 'cuadradoIcon', icon: <CheckBoxOutlineBlankIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/>  },
-		{ fontSize:'1.4em', type:'mui', name: 'circuloIcon', icon: <PanoramaFishEyeIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.4em', type:'mui', name: 'trianguloIcon', icon: <ChangeHistoryIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.4em', type:'mui', name: 'geometricIcon', icon: <PentagonIcon style={{fontSize: '1.3em', margin:0, padding: 0, }}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'borradorIcon', icon: <FontAwesomeIcon icon={faEraser} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'functionIcon', icon: <FontAwesomeIcon icon={faFlorinSign} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'calculadoraIcon', icon: <FontAwesomeIcon icon={faCalculator} style={{}}/> },
-		{ fontSize:'1.4em', type:'awesome', name: 'scissorIcon', icon: <FontAwesomeIcon icon={faScissors} style={{}}/> },
-		{ fontSize:'1.5em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'homeIcon', icon: <FontAwesomeIcon icon={faHouse} style={{}}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'moverIcon', icon: <FontAwesomeIcon icon={faArrowsUpDownLeftRight} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'lapizIcon', icon: <FontAwesomeIcon icon={faPencil} style={{}}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'textIcon', icon: <FontAwesomeIcon icon={faFont} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'lineaIcon', icon:<FontAwesomeIcon icon={faSlash} style={{}}/>  },
+		{ fontSize:'1.4em', type:'mui', name: 'cuadradoIcon', icon: <CheckBoxOutlineBlankIcon style={{fontSize: '1.0em', margin:0, padding: 0, }}/>  },
+		{ fontSize:'1.4em', type:'mui', name: 'circuloIcon', icon: <PanoramaFishEyeIcon style={{fontSize: '1.0em', margin:0, padding: 0, }}/> },
+		{ fontSize:'1.4em', type:'mui', name: 'trianguloIcon', icon: <ChangeHistoryIcon style={{fontSize: '1.0em', margin:0, padding: 0, }}/> },
+		{ fontSize:'1.4em', type:'mui', name: 'geometricIcon', icon: <PentagonIcon style={{fontSize: '1.0em', margin:0, padding: 0, }}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'imagenIcon', icon: <FontAwesomeIcon icon={faImage} style={{}}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'planoIcon', icon: <FontAwesomeIcon icon={faChartLine} style={{}}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'borradorIcon', icon: <FontAwesomeIcon icon={faEraser} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'functionIcon', icon: <FontAwesomeIcon icon={faFlorinSign} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'calculadoraIcon', icon: <FontAwesomeIcon icon={faCalculator} style={{}}/> },
+		{ fontSize:'1.0em', type:'awesome', name: 'scissorIcon', icon: <FontAwesomeIcon icon={faScissors} style={{}}/> },
+		{ fontSize:'1.1em', type:'awesome', name: 'cuadriculaIcon', icon: <FontAwesomeIcon icon={faTableCellsLarge} style={{}}/> },
+		{ fontSize:'1.4em', type:'mui', name: 'readJsonIcon', icon: <SaveIcon style={{fontSize: '1.0em', margin:0, padding: 0, }}/> },
 	]
 
 	// LOGICA:
@@ -163,6 +148,9 @@ const NavIzq = () => {
 			case 'scissorIcon':
 				h_scissorSetActive(boolean);
 				break;
+			case 'readJsonIcon':
+				h_readJsonSetActive(boolean);
+				break;
 			default:
 				// console.log('Opcion no registrada!!!');
 				break;
@@ -204,7 +192,7 @@ const NavIzq = () => {
 						size='small'
 						variant={select === elem.name ? 'contained':'outlined'}
 						className={classes.awesomeIcon}
-						style={{fontSize:elem.fontSize, padding:'5px 0', height:'40px'}}
+						style={{fontSize:elem.fontSize, padding:'5px 0', height:'30px'}}
 					>
 						{elem.icon}
 					</Button>

@@ -19,8 +19,9 @@ import PaintTriangulo  from '../../Modules/Triangle/PaintTriangulo';
 import PaintImagen     from "../../Modules/Image/PaintImagen";
 import PaintText       from "../../Modules/Text/PaintText";
 import PaintCalculator from "../../Modules/Calculator/PaintCalculator";
-import PaintGeometric from "../../Modules/Geometric/PaintGeometric";
-import PaintScissor_  from "../../Modules/Scissor/PaintScissor";
+import PaintGeometric  from "../../Modules/Geometric/PaintGeometric";
+import PaintScissor   from "../../Modules/Scissor/PaintScissor";
+import PaintReadJson   from "../../Modules/ReadJson/PaintReadJson";
 
 const Canvas = ({canvasRef}) => {
 	// CONTEXT:
@@ -44,7 +45,8 @@ const Canvas = ({canvasRef}) => {
 	PaintText('canvas-1');
 	PaintCalculator('canvas-1');
 	PaintGeometric('canvas-1');
-	PaintScissor_('canvas-1');
+	PaintScissor('canvas-1');
+	PaintReadJson('canvas-1');
 
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 60);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 115);

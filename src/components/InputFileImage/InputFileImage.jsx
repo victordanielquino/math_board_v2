@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
 
 import fileUpload from '../../assets/img/file-upload.jpeg';
-//import {storageAddFile, getFecha} from "../firebase/services/firebase.services";
-// UTILS:
-//import '../../Modules/Image/MenuImage/MenuImagen.scss';
+
 import './InputFileImage.scss';
 
 import {makeStyles} from "@mui/styles";

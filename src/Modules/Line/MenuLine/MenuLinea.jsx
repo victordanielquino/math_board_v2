@@ -11,18 +11,9 @@ import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
 // styles:
 import './MenuLinea.scss';
 import CallMadeIcon from '@mui/icons-material/CallMade';
-
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
-
 import UTurnRightIcon from '@mui/icons-material/UTurnRight';
-import LooksIcon from '@mui/icons-material/Looks';
-
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
-import CableIcon from '@mui/icons-material/Cable';
-import EarbudsIcon from '@mui/icons-material/Earbuds';
-
-import RemoveIcon from '@mui/icons-material/Remove';
-import PowerInputIcon from '@mui/icons-material/PowerInput';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 

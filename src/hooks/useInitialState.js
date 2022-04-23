@@ -9,6 +9,9 @@ const initialState = {
 	elmSelect: false,
 	canvas: '',
 	historia: [],
+	mathBoards: [],
+	mathBoardsIndexSelec: -1,
+	mathBoardsReadJson:false,
 	id: 0,
 };
 const useInitialState = () => {
@@ -95,6 +98,12 @@ const useInitialState = () => {
 					active: 'scissorIcon',
 				});
 				break;
+			case 'readJsonIcon':
+				setState({
+					...state,
+					active: 'readJsonIcon',
+				});
+				break;
 			default:
 				console.log('Opcion no registrada / useInitialState!!!');
 				break;
@@ -172,7 +181,33 @@ const useInitialState = () => {
 			historia: newArray,
 		})
 	}
-
+	const h_addMathboards = (mathBoard) => {
+		setState({
+			...state,
+			mathBoards: [...state.mathBoards, mathBoard],
+		});
+	};
+	const h_setMathboardsJson = (json) => {
+		setState({
+			...state,
+			mathBoards: json,
+		});
+	};
+	const h_setMathboardsIndexSelect = (indexSelect) => {
+		setState({
+			...state,
+			mathBoardsIndexSelec: indexSelect,
+		});
+	};
+	const h_setReadJsonAll = (mathBoards, indexSelect, readJsonBoolean,historia) => {
+		setState({
+			...state,
+			mathBoards: mathBoards,
+			mathBoardsIndexSelec: indexSelect,
+			mathBoardsReadJson: readJsonBoolean,
+			historia: historia,
+		});
+	};
 
 	return {
 		state,
@@ -186,7 +221,11 @@ const useInitialState = () => {
 		h_addH,
 		h_deleteHId,
 		h_deleteById,
-		h_updateH
+		h_updateH,
+		h_addMathboards,
+		h_setMathboardsJson,
+		h_setMathboardsIndexSelect,
+		h_setReadJsonAll,
 	};
 };
 

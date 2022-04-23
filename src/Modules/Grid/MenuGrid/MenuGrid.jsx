@@ -14,7 +14,7 @@ import DensitySmallIcon                  from '@mui/icons-material/DensitySmall'
 import BlurOffIcon           from '@mui/icons-material/BlurOff';
 import useStylesMenuGrid     from "./MenuGridStyle";
 
-const MenuCuadricula = () => {
+const MenuGrid = () => {
 	// useContext:
 	const { stateGrid, h_gridTipo, updateCuadriculaWidth } = useContext(AppContextGrid);
 
@@ -42,21 +42,21 @@ const MenuCuadricula = () => {
 						size='small'
 						onClick={() => h_gridTipo('cuadricula')}
 					>
-						<GridOnIcon/>
+						<GridOnIcon fontSize='small'/>
 					</Button>
 					<Button
 						variant={stateGrid.tipoCuadricula === 'linea' ? 'contained': 'outlined'}
 						size='small'
 						onClick={() => h_gridTipo('linea')}
 					>
-						<DensitySmallIcon/>
+						<DensitySmallIcon fontSize='small'/>
 					</Button>
 					<Button
 						variant={stateGrid.tipoCuadricula === 'ninguno' ? 'contained': 'outlined'}
 						size='small'
 						onClick={() => h_gridTipo('ninguno')}
 					>
-						<BlurOffIcon/>
+						<BlurOffIcon fontSize='small'/>
 					</Button>
 				</ButtonGroup>
 			</article>
@@ -85,4 +85,4 @@ const MenuCuadricula = () => {
 	);
 };
 
-export default MenuCuadricula;
+export default MenuGrid;

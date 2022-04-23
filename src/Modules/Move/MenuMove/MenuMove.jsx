@@ -4,14 +4,11 @@ import AppContextMover from "../../../context/AppContextMover";
 import AppContext from '../../../context/AppContext';
 
 import GppGoodIcon          from '@mui/icons-material/GppGood';
-import GppBadIcon                        from '@mui/icons-material/GppBad';
-import {Button, ButtonGroup, Typography} from "@mui/material";
-import {makeStyles}                      from "@mui/styles";
-import MoveDownIcon         from '@mui/icons-material/MoveDown';
+import GppBadIcon                                                       from '@mui/icons-material/GppBad';
+import {Button, ButtonGroup, FormControl, MenuItem, Select, Typography} from "@mui/material";
+import MoveDownIcon                                                     from '@mui/icons-material/MoveDown';
 import MoveUpIcon           from '@mui/icons-material/MoveUp';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
-import './MenuMover.scss';
 import {isObjectEmpty} from "../../../utils/utils";
 import {
 	u_moveDownElement,
@@ -24,24 +21,10 @@ import {
 	u_moveDuplicateTriangle,
 	u_moveDuplicateGeometric,
 	u_moveDuplicateImage, u_moveDuplicatePlano
-} from "../UtilsMove";
+}                        from "../UtilsMove";
+import useStylesMenuMove from "./MenuMoveStyle";
 
-const useStyles  = makeStyles({
-	container: {
-		borderRadius: '10px',
-		borderBottom: '1px solid var(--very-light-pink)',
-		backgroundColor: 'white',
-		display: 'flex',
-		padding: '5px 20px',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		//width: '170px',
-		color: 'black',
-		marginLeft: '1em',
-	}
-});
-
-const MenuMover = () => {
+const MenuMove = () => {
 	// CONTEXT:
 	const { state, h_updateH, h_addH } = useContext(AppContext);
 	const { stateMover } = useContext(AppContextMover);
@@ -57,7 +40,7 @@ const MenuMover = () => {
         height: 30,
         width: 30,*/
 	}
-	const classes = useStyles(props);
+	const classes = useStylesMenuMove(props);
 	const handleEdit = (boolean) => {
 		if(stateMover.selectElm) {
 			switch (boolean) {
@@ -172,12 +155,39 @@ const MenuMover = () => {
 		}
 	}
 	const updatePaletaPosition = () => {
-		if (!isObjectEmpty(stateMover.obj)){
-			setDisabledUpDown(false);
-		} else {
-			setDisabledUpDown(true);
-		}
+		(!isObjectEmpty(stateMover.obj)) ? setDisabledUpDown(false) : setDisabledUpDown(true);
 	}
+
+	const handleChangeMathboard = (event) => {
+		let selectTitle = event.target.value
+		let mathBoardUse = state.mathBoards[state.mathBoardsIndexSelec];
+		if (selectTitle !== mathBoardUse.title) {
+			const copyRows = [...state.mathBoards];
+			let k = -1;
+			for (let i = 0; i < copyRows.length; i++) {
+				if (copyRows[i].title === selectTitle) {
+					k = i;
+					break;
+				}
+			}
+			if (k != -1) {
+				let sw = false;
+				const copyRows2 = [...state.historia];
+				for (let i = 0; i < copyRows2.length; i++) {
+					if (copyRows2[i].id === stateMover.obj.id) {
+						copyRows2[i].canvas = copyRows[k].canvas;
+						sw = true;
+						break;
+					}
+				}
+				sw ? h_updateH(copyRows2):'';
+			}
+		} else {
+			console.log('iguales');
+		}
+
+		//h_textSetTypografia(event.target.value);
+	};
 
 	// EFECT:
 	useEffect(() => {
@@ -187,67 +197,79 @@ const MenuMover = () => {
 
 
 	return (
-		<div style={{display:'flex'}}>
-			<div className={classes.container}>
+		<div className={classes.container}>
+			<Button
+				variant={variantEditNot}
+				onClick={() => handleEdit(false)}
+				color='error' size='small'
+				startIcon={<GppBadIcon/>}
+				style={{marginRight: '5px'}}
+				disabled={disabledUpDown}
+			>
+				Edit False
+			</Button>
+			<Button
+				variant={variantEditYes}
+				onClick={() => handleEdit(true)}
+				color='success'
+				size='small'
+				startIcon={<GppGoodIcon/>}
+				disabled={disabledUpDown}
+				style={{marginRight: '25px'}}
+			>
+				Edit True
+			</Button>
+			<Button
+				variant='outlined'
+				onClick={() => handleUpDown('down')}
+				disabled={disabledUpDown}
+				size='small'
+				startIcon={<MoveDownIcon fontSize='small'/>}
+				style={{marginRight:'5px'}}
+			>
+				Down
+			</Button>
+			<Button
+				variant='outlined'
+				onClick={() => handleUpDown('up')}
+				disabled={disabledUpDown}
+				size='small'
+				startIcon={<MoveUpIcon/>}
+				style={{marginRight:'25px'}}
+			>
+				Up
+			</Button>
+			<ButtonGroup>
 				<Button
-					variant={variantEditNot}
-					onClick={() => handleEdit(false)}
-					color='error' size='small'
-					startIcon={<GppBadIcon/>}
-					style={{marginRight: '10px'}}
+					variant='outlined'
+					onClick={() => handleDuplicate()}
 					disabled={disabledUpDown}
-				>
-					Edit False
-				</Button>
-				<Button
-					variant={variantEditYes}
-					onClick={() => handleEdit(true)}
-					color='success'
 					size='small'
-					startIcon={<GppGoodIcon/>}
-					disabled={disabledUpDown}
+					startIcon={<ContentCopyIcon/>}
+					style={{marginRight:'25px'}}
 				>
-					Edit True
+					Duplicate
 				</Button>
-			</div>
-
-			<div className={classes.container}>
-					<Button
-						variant='outlined'
-						onClick={() => handleUpDown('down')}
-						disabled={disabledUpDown}
-						size='small'
-						startIcon={<MoveDownIcon fontSize='small'/>}
-						style={{marginRight:'10px'}}
-					>
-						Down
-					</Button>
-					<Button
-						variant='outlined'
-						onClick={() => handleUpDown('up')}
-						disabled={disabledUpDown}
-						size='small'
-						startIcon={<MoveUpIcon/>}
-					>
-						Up
-					</Button>
-			</div>
-
-			<div className={classes.container}>
-				<ButtonGroup>
-					<Button
-						variant='outlined'
-						onClick={() => handleDuplicate()}
-						disabled={disabledUpDown}
-						size='small'
-						startIcon={<ContentCopyIcon/>}
-					>
-						Duplicate
-					</Button>
-				</ButtonGroup>
-			</div>
+			</ButtonGroup>
+			<Typography color={disabledUpDown ? '#bdbdbd': 'primary'} style={{marginRight:'5px', userSelect:'none', fontSize:'0.9em'}}>
+				MOVE:
+			</Typography>
+			<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledUpDown}>
+				<Select
+					value={state.mathBoards[state.mathBoardsIndexSelec].title}
+					onChange={handleChangeMathboard}
+					displayEmpty
+					inputProps={{ 'aria-label': 'Without label' }}
+					size='small'
+					id="demo-simple-select-error"
+					style={{ height: '1.8em'}}
+					color='primary'
+				>
+					{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title}>{elm.title}</MenuItem>))}
+				</Select>
+			</FormControl>
 		</div>
 	)
 };
 
-export default MenuMover;
+export default MenuMove;

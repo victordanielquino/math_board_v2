@@ -37,11 +37,13 @@ import useSesion     from "../hooks/useSesion";
 import useCalculator from "../hooks/useCalculator";
 import useGeometric  from "../hooks/useGeometric";
 
-import Layout            from '../Layout/Layout';
-import Home              from '../Layout/Home/Home';
+import Layout             from '../Layout/Layout';
+import Home               from '../Layout/Home/Home';
 import '../styles/global.css';
-import useScissor        from "../hooks/useScissor";
-import AppContextScissor from "../context/AppContextScissor";
+import useScissor         from "../hooks/useScissor";
+import AppContextScissor  from "../context/AppContextScissor";
+import useReadJson        from "../hooks/useReadJson";
+import AppContextReadJson from "../context/AppContextReadJson";
 
 const App = () => {
 	const initialState = useInitialState();
@@ -61,6 +63,7 @@ const App = () => {
 	const initialStateCalculator = useCalculator();
 	const initialStateGeometric = useGeometric();
 	const initialStateScissor = useScissor();
+	const initialStateReadJson = useReadJson();
 
 	return (
 		<AppContext.Provider value={initialState}>
@@ -81,13 +84,15 @@ const App = () => {
 																<AppContextCalculator.Provider value={initialStateCalculator}>
 																	<AppContextGeometric.Provider value={initialStateGeometric}>
 																		<AppContextScissor.Provider value={initialStateScissor}>
-																			<BrowserRouter>
-																				<Layout>
-																					{/*<Routes>
+																			<AppContextReadJson.Provider value={initialStateReadJson}>
+																				<BrowserRouter>
+																					<Layout>
+																						{/*<Routes>
 																				<Route exact path="/" element={<Home />} />
 																			</Routes>*/}
-																				</Layout>
-																			</BrowserRouter>
+																					</Layout>
+																				</BrowserRouter>
+																			</AppContextReadJson.Provider>
 																		</AppContextScissor.Provider>
 																	</AppContextGeometric.Provider>
 																</AppContextCalculator.Provider>

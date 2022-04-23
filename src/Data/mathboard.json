@@ -1,0 +1,21 @@
+[
+  {
+    "mathboards":[
+      {
+        "title":"MathBoard-0",
+        "canvas":"canvas-0",
+        "variant":"text",
+        "c": 0
+      }
+    ]
+  },
+  {
+    "mathboardSelect":
+      {
+        "index":0
+      }
+  },
+  {
+    "historia":[]
+  }
+]

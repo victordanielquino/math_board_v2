@@ -83,7 +83,7 @@ const MenuText = () => {
 						>
 							<Button
 								size='small'
-								style={{ height: '2.5em', marginRight:'2px'}}
+								style={{ height: '2.1em', marginRight:'2px'}}
 								variant={stateText.fontBold === 'bold' ? 'contained': 'outlined'}
 								onClick={() => handleFormats('bold')}
 							>
@@ -91,7 +91,7 @@ const MenuText = () => {
 							</Button>
 							<Button
 								size='small'
-								style={{ height: '2.5em', marginRight:'2px'}}
+								style={{ height: '2.1em', marginRight:'2px'}}
 								variant={stateText.fontItalic === 'italic' ? 'contained': 'outlined'}
 								onClick={() => handleFormats('italic')}
 							>
@@ -99,7 +99,7 @@ const MenuText = () => {
 							</Button>
 							<Button
 								size='small'
-								style={{ height: '2.5em', marginRight:'2px'}}
+								style={{ height: '2.1em', marginRight:'2px'}}
 								variant={stateText.fontUnderL === 'underlined' ? 'contained': 'outlined'}
 								onClick={() => handleFormats('underlined')}
 							>

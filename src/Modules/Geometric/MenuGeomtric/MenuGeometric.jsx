@@ -30,16 +30,16 @@ const MenuGeometric = () => {
 	} = useContext(AppContextGeometric);
 
 	// REF:
-	const verticesRef = useRef(null);
 
 	// LOGICA:
 	const props = {}
 	const classes = useStylesMenuGeometric(props);
 	const handleVertices = (value) => {
-		(verticesRef.current.value > 5 && value === '-')
-			? verticesRef.current.value = verticesRef.current.value - 1
-			: (value === '+') ? verticesRef.current.value = verticesRef.current.value - (-1):'';
-		h_geometricSetVertices(converInteger(verticesRef.current.value));
+		let valor = converInteger(stateGeometric.vertices);
+		switch (value) {
+			case '+': (valor + 1 < 15) ? h_geometricSetVertices(converInteger(valor + 1)):'';break;
+			case '-': (valor - 1 > 4) ? h_geometricSetVertices(converInteger(valor - 1)):'';break;
+		}
 	}
 
 	// EFFECT:
@@ -77,7 +77,7 @@ const MenuGeometric = () => {
 						size='small'
 						disabled
 					>
-						<Typography color='primary'>
+						<Typography style={{height:'20px', fontSize:'1.2em', margin:0, padding:0}} color='primary'>
 							{stateGeometric.vertices}
 						</Typography>
 					</Button>

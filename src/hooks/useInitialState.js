@@ -199,13 +199,14 @@ const useInitialState = () => {
 			mathBoardsIndexSelec: indexSelect,
 		});
 	};
-	const h_setReadJsonAll = (mathBoards, indexSelect, readJsonBoolean,historia) => {
+	const h_setReadJsonAll = (mathBoards, indexSelect, readJsonBoolean, historia, id=0) => {
 		setState({
 			...state,
 			mathBoards: mathBoards,
 			mathBoardsIndexSelec: indexSelect,
 			mathBoardsReadJson: readJsonBoolean,
 			historia: historia,
+			id: id,
 		});
 	};
 

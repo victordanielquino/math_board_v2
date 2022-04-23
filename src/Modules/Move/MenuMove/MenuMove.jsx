@@ -262,10 +262,10 @@ const MenuMove = () => {
 					inputProps={{ 'aria-label': 'Without label' }}
 					size='small'
 					id="demo-simple-select-error"
-					style={{ height: '1.8em'}}
-					color='primary'
+					style={{ height: '1.8em', color:'#1976d2'}}
+					//color='primary'
 				>
-					{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title}>{elm.title}</MenuItem>))}
+					{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title} style={{color:'#1976d2'}}>{elm.title}</MenuItem>))}
 				</Select>
 			</FormControl>
 		</div>

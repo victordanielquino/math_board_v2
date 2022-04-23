@@ -1,5 +1,5 @@
-import React, {useContext, useRef} from 'react';
-import AppContext                  from "../../../context/AppContext";
+import React, {useContext, useEffect, useRef} from 'react';
+import AppContext                             from "../../../context/AppContext";
 import {Button}        from "@mui/material";
 import useStylesMenuReadJson       from "./MenuReadJsonStyle";
 import FindInPageIcon from '@mui/icons-material/FindInPage';
@@ -19,6 +19,13 @@ const MenuReadJson = () => {
     const classes = useStylesMenuReadJson(props);
 
     // FUNCTIONS:
+    const searchIdMax = (array) => {
+        let id = -1;
+        array.forEach((elm, index) => {
+            elm.id > id ? id = elm.id:'';
+        })
+        return id;
+    }
     const readJson = (jsonIn) => {
         let arrayMathBoardsBtns = jsonIn[0].mathboards;	// mathboards = [{},{},{}...]
         let indexSelect = jsonIn[1].mathboardSelect.index;
@@ -27,7 +34,9 @@ const MenuReadJson = () => {
 
         // BUTTONS MATHBOARDS:
         arrayMathBoardsBtns[indexSelect].variant = 'contained';
-        h_setReadJsonAll(arrayMathBoardsBtns, indexSelect, !state.mathBoardsReadJson, historia);
+        let id = searchIdMax(historia);
+        h_setReadJsonAll(arrayMathBoardsBtns, indexSelect, !state.mathBoardsReadJson, historia, id + 1);
+        console.log('id New:', id);
     }
     const onchangeFile = async (e) => {
         const files = e.target.files;
@@ -69,6 +78,11 @@ const MenuReadJson = () => {
         a.click();
         URL.revokeObjectURL(url);
     }
+
+    // EFFECT:
+    useEffect(() => {
+        console.log('historia:', state.historia);
+    }, [state.historia]);
 
   return (
       <article className={classes.article} style={{ color:'primary'}}>

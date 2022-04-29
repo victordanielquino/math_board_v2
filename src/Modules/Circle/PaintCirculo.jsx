@@ -143,9 +143,8 @@ const PaintCirculo = (id_canvas) => {
         update_canvasCirculoDatos();
         if (state.historia.length > 0) paint();
     }
-    // LOGICA END.
 
-    // useEffect:
+    // EFFECT:
     useEffect(() => {
         if (stateCirculo.active) {
             eventDraw();

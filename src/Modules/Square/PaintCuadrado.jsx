@@ -107,17 +107,14 @@ const PaintCuadrado = (id_canvas) => {
 		}
 		mouseReinicia();
 	};
-	const update_canvasCuadradoDatos = () => {
-		canvasCuadradoDatos.top = canvas.getBoundingClientRect().top;
-		canvasCuadradoDatos.left = canvas.getBoundingClientRect().left;
-		canvasCuadradoDatos.width = canvas.getBoundingClientRect().width;
-		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
-	};
 	const eventDraw = () => {
 		console.log('ue PaintTCuadrado.jsx');
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
-		update_canvasCuadradoDatos();
+		canvasCuadradoDatos.top = canvas.getBoundingClientRect().top;
+		canvasCuadradoDatos.left = canvas.getBoundingClientRect().left;
+		canvasCuadradoDatos.width = canvas.getBoundingClientRect().width;
+		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
 		if (state.historia.length > 0) paint();
 	}
 

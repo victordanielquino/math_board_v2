@@ -28,10 +28,10 @@ const MenuCalculadora = () => {
         <>
             <div className={classes.container}>
                 <Typography  variant='h7' color='primary' style={{ padding: '0 10px'}}>
-                    Calculadora:
+                    CALCULATOR:
                 </Typography>
                 <Button
-                    variant='outlined'
+                    variant='contained'
                     startIcon={<CalculateIcon/>}
                     style={{marginRight: '10px'}}
                     onClick={() => setOpen(true)}

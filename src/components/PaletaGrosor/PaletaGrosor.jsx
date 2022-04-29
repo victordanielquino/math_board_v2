@@ -1,15 +1,15 @@
 import React, { useEffect, useContext } from 'react';
 
 // context
-import AppContext from '../../context/AppContext';
+import AppContext   from '../../context/AppContext';
 
 // styles:
 import './PaletaGrosor.scss';
 //import iconLineaNone from '../assets/icons/lineaNone.svg';
-import iconLineaS from '../../assets/icons/lineaS.svg';
-import iconLineaM from '../../assets/icons/lineaM.svg';
-import iconLineaL from '../../assets/icons/lineaL.svg';
-import iconLineaXL from '../../assets/icons/lineaXL.svg';
+import iconLineaS   from '../../assets/icons/lineaS.svg';
+import iconLineaM   from '../../assets/icons/lineaM.svg';
+import iconLineaL   from '../../assets/icons/lineaL.svg';
+import iconLineaXL  from '../../assets/icons/lineaXL.svg';
 import iconLineaXXL from '../../assets/icons/lineaXXL.svg';
 
 const PaletaGrosor = (title) => {
@@ -46,7 +46,8 @@ const PaletaGrosor = (title) => {
 	}, []);
 
 	return (
-		<div className="article__menuLapiz__tamanoSinTitle">
+		<div className="article__menuLapiz__tamano">
+			<span htmlFor="">{title.title}: </span>
 			<div className="article__menuLapiz__tamano__icons">
 				{arrayIconLinea.map((elem) => (
 					<img

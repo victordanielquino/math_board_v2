@@ -187,7 +187,7 @@ const useText = () => {
 		h_textDeleteId,
 		h_textSetCanvas,
 		h_textSetTextselect,
-		h_textSetAllTextselect
+		h_textSetAllTextselect,
 	};
 };
 

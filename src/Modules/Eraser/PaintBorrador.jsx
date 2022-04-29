@@ -20,14 +20,13 @@ import {u_geometricClickTrue} from "../Geometric/UtilsGeometric";
 
 const PaintBorrador = (id_canvas) => {
 	// useContext:
-	const  { state, h_deleteHId } = useContext(AppContext);
+	const  { state, h_deleteByIndex } = useContext(AppContext);
 	const { stateBorrador, h_eraserSetCanvas } = useContext(AppContextBorrador);
 	const { stateGrid } = useContext(AppContextGrid);
 
 	// LOGICA:
 	const paint = async () => {
 		if (stateBorrador.active) {
-			console.log('PaintBorrador.jsx');
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			try {
@@ -75,7 +74,7 @@ const PaintBorrador = (id_canvas) => {
 					default: break;
 				}
 			}
-			sw ? h_deleteHId(i):'';
+			sw ? h_deleteByIndex(i):'';
 		}
 	}
 	// :1
@@ -100,7 +99,6 @@ const PaintBorrador = (id_canvas) => {
 	// useEffect:
 	useEffect(() => {
 		if (stateBorrador.active) {
-			console.log('ue PaintBorrador.jsx');
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			paint();

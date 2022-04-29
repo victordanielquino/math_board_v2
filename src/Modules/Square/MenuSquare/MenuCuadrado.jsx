@@ -5,59 +5,57 @@ import AppContext from '../../../context/AppContext';
 import AppContextCuadrado from '../../../context/AppContextCuadrado';
 
 // styles:
-import './MenuCuadrado.scss';
 
 // components:
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
-import PaletaColorBorde from '../../PaletaColor/PaletaColor';
-import PaletaColorFondo from '../../PaletaColor/PaletaColor';
+import PaletaGrosor           from '../../../components/PaletaGrosor/PaletaGrosorSinTitle';
+import PaletaColorBorde       from '../../../components/PaletaColor/PaletaColor';
+import PaletaColorFondo       from '../../../components/PaletaColor/PaletaColor';
+import PaletaColor            from "../../../components/PaletaColor/PaletaColorSinTitle";
+import {u_convertColorToRGBA} from "../../../utils/utils";
 
 const MenuCuadrado = () => {
-	// useContext:
+	// CONTEXT:
 	const { state } = useContext(AppContext);
 	const {
-		stateCuadrado,
-		updateCuadradoBordeGrosor,
-		updateCuadradoBorde_ColorEstado,
-		updateCuadradoFondo_ColorEstado,
-		update_all,
+		h_squareSetBordegrosor,
+		h_squareSetBordecolorBordeestado,
+		h_squareSetFondocolorFondoestado,
+		h_squareSetAll,
 	} = useContext(AppContextCuadrado);
 
 	// LOGICA:
-	// LOGICA END
 
-	// useEffect:
+	// EFFECT:
 	useEffect(() => {
-		// se ejecuta cada vez que se modifica el state.color
-		updateCuadradoBorde_ColorEstado(state.color, state.color != 'white');
-	}, [state.color]);
-
-	useEffect(() => {
-		// se ejecuta cada vez que se modifica el state
-		updateCuadradoFondo_ColorEstado(
-			state.colorFondo,
-			state.colorFondo != 'white'
-		);
-	}, [state.colorFondo]);
+		let rgba = u_convertColorToRGBA(state.color, state.colorBlur);
+		h_squareSetBordecolorBordeestado(rgba, state.color !== 'white');
+	}, [state.color, state.colorBlur]);
 
 	useEffect(() => {
-		updateCuadradoBordeGrosor(state.grosor);
+		let rgba = u_convertColorToRGBA(state.colorFondo, state.colorFondoBlur);
+		h_squareSetFondocolorFondoestado(rgba, state.colorFondo !== 'white');
+	}, [state.colorFondo, state.colorFondoBlur]);
+
+	useEffect(() => {
+		h_squareSetBordegrosor(state.grosor);
 	}, [state.grosor]);
 
 	useEffect(() => {
-		update_all(
-			state.color,
-			state.colorFondo,
+		let color = u_convertColorToRGBA(state.color, state.colorBlur);
+		let colorFondo = u_convertColorToRGBA(state.colorFondo, state.colorFondoBlur);
+		h_squareSetAll(
+			color,
+			colorFondo,
 			state.grosor,
-			state.color != 'white',
-			state.colorFondo != 'white'
+			state.color !== 'white',
+			state.colorFondo !== 'white'
 		);
 	}, []);
 	return (
-		<article className="article__menuCuadrado">
-			{<PaletaGrosor title="BORDE" />}
-			{<PaletaColorBorde tipo="linea" title="BORDE" />}
-			{<PaletaColorFondo tipo="fondo" title="FONDO" />}
+		<article style={{display:'flex', justifyContent:'center', alignItems:'center', background:'white', padding:'5px 25px', borderRadius:'10px'}}>
+			{<div style={{marginRight:'20px'}}><PaletaGrosor /></div>}
+			{<div style={{marginRight:'20px'}}><PaletaColor tipo='linea' title='BORDE' /></div>}
+			{<div style={{marginRight:'0px'}}><PaletaColor tipo='fondo' title='FONDO' /></div>}
 		</article>
 	);
 };

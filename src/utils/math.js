@@ -95,8 +95,8 @@ export const arcoTanX = (x) => {
 export const convertirRadianesGrados = (radian) => {
     return radian * (180 / Math.PI);
 };
-export const convertirGradosRadianes = (grado) => {
-    return (grado * Math.PI) / 180;
+export const convertDegToRadians = (deg) => {
+    return (deg * Math.PI) / 180;
 };
 export const redondeo1Dec = (x) => {
     return x.toFixed(1) * 1;

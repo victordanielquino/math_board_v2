@@ -37,6 +37,7 @@ const PaintLapiz = (id_canvas) => {
 		edit: true,
 		grosor: stateLapiz.grosor,
 		color: stateLapiz.color,
+		colorBlur: stateLapiz.colorBlur,
 		historiaLinea: [],
 		x_min: 2000,
 		x_may: 0,
@@ -110,38 +111,35 @@ const PaintLapiz = (id_canvas) => {
 		width: 0,
 		height: 0,
 	};
-	const update_canvasLapizDatos = () => {
+	const eventDraw = () => {
+		console.log('ue PaintTCirculo.jsx');
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
 		canvasLapizDatos.top = canvas.getBoundingClientRect().top;
 		canvasLapizDatos.left = canvas.getBoundingClientRect().left;
 		canvasLapizDatos.width = canvas.getBoundingClientRect().width;
 		canvasLapizDatos.height = canvas.getBoundingClientRect().height;
-	};
-	// LOGICA END.
+		if (state.historia.length > 0) paint();
+	}
 
-	// useEffect:
-	useEffect(() => {
-		if (stateLapiz.active) paint();
-	}, [stateLapiz.active]);
-
+	// EFFECT:
 	useEffect(() => {
 		if (stateLapiz.active){
-			canvas = document.getElementById(id_canvas);
-			context = canvas.getContext('2d');
-
-			if (stateLapiz.active) {
-				update_canvasLapizDatos();
-				canvas.addEventListener('mousedown', mouseDownLapiz);
-				canvas.addEventListener('mousemove', mouseMoveLapiz);
-				canvas.addEventListener('mouseup', mouseUpLapiz);
-			}
+			eventDraw();
+			canvas.addEventListener('mousedown', mouseDownLapiz);
+			canvas.addEventListener('mousemove', mouseMoveLapiz);
+			canvas.addEventListener('mouseup', mouseUpLapiz);
 			return () => {
-				//canvasLapiz.removeEventListener('click', saludar);
 				canvas.removeEventListener('mousedown', mouseDownLapiz);
 				canvas.removeEventListener('mousemove', mouseMoveLapiz);
 				canvas.removeEventListener('mouseup', mouseUpLapiz);
 			};
 		}
-	}, [stateLapiz]);
+	}, [stateLapiz, state.historia]);
+
+	/*useEffect(() => {
+		if (stateLapiz.active) paint();
+	}, [stateLapiz.active]);*/
 
 	useEffect(() => {
 		h_lapizSetCanvas(state.canvas);
@@ -149,6 +147,10 @@ const PaintLapiz = (id_canvas) => {
 			paint();
 		}
 	}, [state.canvas]);
+
+	/*useEffect(() => {
+		console.log('historia:', state.historia);
+	}, [state.historia]);*/
 };
 
 export default PaintLapiz;

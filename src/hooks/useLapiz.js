@@ -17,15 +17,13 @@ const useLapiz = () => {
 			active: valor,
 		});
 	};
-	const updateLapizColor = (valor) => {
-		console.log('color util:', valor);
+	const h_pencilSetColor = (valor) => {
 		setStateLapiz({
 			...stateLapiz,
 			color: valor,
 		});
-		console.log('color:', stateLapiz);
 	};
-	const updateLapizGrosor = (valor) => {
+	const h_pencilSetGrosor = (valor) => {
 		setStateLapiz({
 			...stateLapiz,
 			grosor: valor,
@@ -38,11 +36,11 @@ const useLapiz = () => {
 			historiaLapiz: [...stateLapiz.historiaLapiz, lapiz],
 		});
 	};
-	const updateLapizColorGrosor = (valor1, valor2) => {
+	const h_pencilSetColorGrosor = (color, grosor) => {
 		setStateLapiz({
 			...stateLapiz,
-			color: valor1,
-			grosor: valor2,
+			color: color,
+			grosor: grosor,
 		});
 	};
 	const h_lapizSetH = (newHistoria) => {
@@ -61,12 +59,12 @@ const useLapiz = () => {
 	return {
 		stateLapiz,
 		updateLapizActive,
-		updateLapizColor,
-		updateLapizGrosor,
-		updateLapizColorGrosor,
+		h_pencilSetColor ,
+		h_pencilSetGrosor,
+		h_pencilSetColorGrosor,
 		s_lapizAddHId,
 		h_lapizSetH,
-		h_lapizSetCanvas
+		h_lapizSetCanvas,
 	};
 };
 

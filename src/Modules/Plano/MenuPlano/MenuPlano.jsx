@@ -27,7 +27,7 @@ const MenuPlano = () => {
 	// useEffect
 	return (
 		<>
-			<article className={classes.article}>
+			<article style={{display:'flex', justifyContent:'center', alignItems:'center', background:'white', padding:'5px 25px', borderRadius:'10px'}}>
 				<Typography color='primary'>
 					WIDTH:
 				</Typography>

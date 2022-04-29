@@ -11,6 +11,11 @@ const useStylesMenuGrid  = makeStyles({
         padding: '5px 25px',
         marginRight: '20px',
     },
+    subArticle: {
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+    },
     button: {
         marginRight: '10px',
     },

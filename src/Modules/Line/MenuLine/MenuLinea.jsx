@@ -5,8 +5,8 @@ import AppContext from '../../../context/AppContext';
 import AppContextLinea from '../../../context/AppContextLinea';
 
 // components:
-import PaletaColor from '../../PaletaColor/PaletaColorSinTitle';
-import PaletaGrosor from '../../PaletaGrosor/PaletaGrosorSinTitle';
+import PaletaColor  from '../../../components/PaletaColor/PaletaColorSinTitle';
+import PaletaGrosor from '../../../components/PaletaGrosor/PaletaGrosorSinTitle';
 
 // styles:
 import './MenuLinea.scss';
@@ -134,23 +134,39 @@ const MenuLinea = () => {
 	}, []);
 
 	return (
-		<article className="article__menuLinea">
-			{<PaletaGrosor title="LINEA" />}
-			<div className='article__menuLinea__btns'>
-				<ButtonGroup>
-					<Button variant={variantLine} size='small' onClick={() => handleBtnTypeLine('line')}><OpenInFullIcon fontSize='small'/></Button>
-					<Button variant={variantCuadratic} size='small' onClick={() => handleBtnTypeLine('cuadratic')}><UTurnRightIcon fontSize='small'/></Button>
-					<Button variant={variantBeziel} size='small' onClick={() => handleBtnTypeLine('bezier')}><SwapCallsIcon fontSize='small'/></Button>
-					<Button variant={variantVector} size='small' onClick={() => handleBtnTypeLine('vector')}><CallMadeIcon fontSize='small'/></Button>
+		<article style={{display:'flex', justifyContent:'center', alignItems:'center', background:'white', padding:'5px 25px', borderRadius:'10px'}}>
+			{<div style={{marginRight:'20px'}}><PaletaGrosor /></div>}
+			<div style={{display:'flex', justifyContent:'center', alignItems:'center', marginRight:'20px'}}>
+				<ButtonGroup
+					aria-label="text formatting"
+					size='small'
+					color='primary'
+				>
+					<Button variant={variantLine} size='small' onClick={() => handleBtnTypeLine('line')}>
+						<OpenInFullIcon fontSize='small'/>
+					</Button>
+					<Button variant={variantCuadratic} size='small' onClick={() => handleBtnTypeLine('cuadratic')}>
+						<UTurnRightIcon fontSize='small'/>
+					</Button>
+					<Button variant={variantBeziel} size='small' onClick={() => handleBtnTypeLine('bezier')}>
+						<SwapCallsIcon fontSize='small'/>
+					</Button>
+					<Button variant={variantVector} size='small' onClick={() => handleBtnTypeLine('vector')}>
+						<CallMadeIcon fontSize='small'/>
+					</Button>
 				</ButtonGroup>
 			</div>
-			<div className='article__menuLinea__segment'>
-				<ButtonGroup>
+			<div style={{display:'flex', justifyContent:'center', alignItems:'center', marginRight:'20px'}}>
+				<ButtonGroup
+					aria-label="text formatting"
+					size='small'
+					color='primary'
+				>
 					<Button variant={variantSegmentFalse} color='primary' size='small' onClick={() => handleBtnSegmentLine(false)}><HorizontalRuleIcon fontSize='small'/></Button>
 					<Button variant={variantSegmentTrue} color='primary' size='small' onClick={() => handleBtnSegmentLine(true)}><MoreHorizIcon fontSize='small'/></Button>
 				</ButtonGroup>
 			</div>
-			{<PaletaColor tipo="linea" title="COLOR" />}
+			{<PaletaColor tipo="linea" />}
 		</article>
 	);
 };

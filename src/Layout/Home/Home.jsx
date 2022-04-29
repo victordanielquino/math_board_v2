@@ -38,7 +38,7 @@ const useStyles  = makeStyles( theme => ({
 
 const Home = () => {
 	// CONTEXT:
-	const {state, h_setCanvas, h_setMathboardsJson, h_addMathboards, h_setReadJsonAll, h_setMathboardsIndexSelect } = useContext(AppContext);
+	const {state, h_setCanvas, h_setMathboardsJson, h_setMathboardsJsonIndex, h_addMathboards, h_setReadJsonAll, h_setMathboardsIndexSelect } = useContext(AppContext);
 
 	// STATE:
 	const [mathBoardSelect, setMathBoardSelect] = useState({});
@@ -70,7 +70,7 @@ const Home = () => {
 				let elmNew = copyRows[0];
 				// indicamos que la pizarra sera otra
 				setMathBoardSelect(elmNew);
-				h_setMathboardsJson(copyRows);
+				h_setMathboardsJsonIndex(copyRows, 0);
 			} else {
 				if (index > 0 && state.mathBoards.length > 1) {
 					const copyRows = [...state.mathBoards];
@@ -79,7 +79,7 @@ const Home = () => {
 					let elmNew = copyRows[index - 1];
 					// indicamos que la pizarra sera otra
 					setMathBoardSelect(elmNew);
-					h_setMathboardsJson(copyRows);
+					h_setMathboardsJsonIndex(copyRows, index-1);
 				} else {
 					console.log('no se puede eliminar')
 				}

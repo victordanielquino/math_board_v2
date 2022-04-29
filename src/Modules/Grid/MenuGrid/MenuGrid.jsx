@@ -33,53 +33,55 @@ const MenuGrid = () => {
 	return (
 		<div style={{display:'flex'}}>
 			<article className={classes.article}>
-				<Typography color='primary'>
-					TYPE GRID:
-				</Typography>;
-				<ButtonGroup>
-					<Button
-						variant={stateGrid.tipoCuadricula === 'cuadricula' ? 'contained': 'outlined'}
-						size='small'
-						onClick={() => h_gridTipo('cuadricula')}
-					>
-						<GridOnIcon fontSize='small'/>
-					</Button>
-					<Button
-						variant={stateGrid.tipoCuadricula === 'linea' ? 'contained': 'outlined'}
-						size='small'
-						onClick={() => h_gridTipo('linea')}
-					>
-						<DensitySmallIcon fontSize='small'/>
-					</Button>
-					<Button
-						variant={stateGrid.tipoCuadricula === 'ninguno' ? 'contained': 'outlined'}
-						size='small'
-						onClick={() => h_gridTipo('ninguno')}
-					>
-						<BlurOffIcon fontSize='small'/>
-					</Button>
-				</ButtonGroup>
-			</article>
-			<article className={classes.article}>
-				<Typography color='primary'>
-					WIDTH:
-				</Typography>;
-				<ButtonGroup>
-					<Button
-						variant='outlined'
-						size='small'
-						onClick={() => handleBtnAncho('-')}
-					>
-						<RemoveIcon fontSize='small'/>
-					</Button>
-					<Button
-						variant='outlined'
-						size='small'
-						onClick={() => handleBtnAncho('+')}
-					>
-						<AddIcon fontSize='small'/>
-					</Button>
-				</ButtonGroup>
+				<div className={classes.subArticle} style={{marginRight:'20px'}}>
+					<Typography color='primary'>
+						TYPE GRID:
+					</Typography>;
+					<ButtonGroup>
+						<Button
+							variant={stateGrid.tipoCuadricula === 'cuadricula' ? 'contained': 'outlined'}
+							size='small'
+							onClick={() => h_gridTipo('cuadricula')}
+						>
+							<GridOnIcon fontSize='small'/>
+						</Button>
+						<Button
+							variant={stateGrid.tipoCuadricula === 'linea' ? 'contained': 'outlined'}
+							size='small'
+							onClick={() => h_gridTipo('linea')}
+						>
+							<DensitySmallIcon fontSize='small'/>
+						</Button>
+						<Button
+							variant={stateGrid.tipoCuadricula === 'ninguno' ? 'contained': 'outlined'}
+							size='small'
+							onClick={() => h_gridTipo('ninguno')}
+						>
+							<BlurOffIcon fontSize='small'/>
+						</Button>
+					</ButtonGroup>
+				</div>
+				<div className={classes.subArticle}>
+					<Typography color='primary'>
+						WIDTH:
+					</Typography>;
+						<Button
+							variant='contained'
+							size='small'
+							onClick={() => handleBtnAncho('-')}
+							style={{maxWidth: '30px', maxHeight: '25px', minWidth: '30px', minHeight: '25px', marginRight:'5px'}}
+						>
+							<RemoveIcon fontSize='small'/>
+						</Button>
+						<Button
+							variant='contained'
+							size='small'
+							onClick={() => handleBtnAncho('+')}
+							style={{maxWidth: '30px', maxHeight: '25px', minWidth: '30px', minHeight: '25px', marginRight:'5px'}}
+						>
+							<AddIcon fontSize='small'/>
+						</Button>
+				</div>
 			</article>
 		</div>
 	);

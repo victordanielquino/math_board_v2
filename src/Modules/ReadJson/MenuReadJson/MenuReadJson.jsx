@@ -80,9 +80,6 @@ const MenuReadJson = () => {
     }
 
     // EFFECT:
-    useEffect(() => {
-        console.log('historia:', state.historia);
-    }, [state.historia]);
 
   return (
       <article className={classes.article} style={{ color:'primary'}}>

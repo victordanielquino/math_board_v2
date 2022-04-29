@@ -64,8 +64,8 @@ import {
 	u_textGraficaH,
 	u_textMover,
 	u_textOpera,
-	u_textBordeSegmentado,
-}                         from '../Text/UtilsText';
+	u_textBordeSegmentado, u_textRotate,
+} from '../Text/UtilsText';
 import {
 	u_imagenGraficaH,
 	u_imagenOpera,
@@ -78,7 +78,6 @@ import {
 	u_geometricDrawBorderSegment,
 	u_geometricMove,
 	u_geometricOpera, u_geometricResize,
-	u_geomtricGetClick
 } from "../Geometric/UtilsGeometric";
 
 const PaintMover = (id_canvas) => {
@@ -141,6 +140,9 @@ const PaintMover = (id_canvas) => {
 		plano_pto: '',
 		// TEXTO
 		text_mover: false,
+		text_mover_pts:false,
+		text_seleccionar_pts: false,
+		text_pto: '',
 		// CIRCULO
 		circulo_mover: false,
 		circulo_mover_pts: false,
@@ -200,7 +202,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'circle':
-						circuloSelect = u_circuloOpera(context, circuloSelect, array, mouse);
+						circuloSelect = u_circuloOpera(circuloSelect, array, mouse);
 						if (circuloSelect){
 							sw = true;
 							await paint();
@@ -263,6 +265,7 @@ const PaintMover = (id_canvas) => {
 						textSelect = u_textOpera(textSelect, array, mouse);
 						if (textSelect){
 							sw = true;
+							//textSelect.rotateDeg = textSelect.angulo;
 							await paint();
 							u_textBordeSegmentado(context, textSelect);
 							mouse.click = true;
@@ -304,16 +307,15 @@ const PaintMover = (id_canvas) => {
 			captura_Pos_Posprev(e);
 			switch (mouse.elementSelect){
 				case 'text':
-					//if (mouse.text_mover) {
 					if (textSelect.edit){
-						textSelect = u_textMover(textSelect, mouse);
+						mouse.text_mover
+							? textSelect = u_textMover(textSelect, mouse)
+							: mouse.text_mover_pts ? textSelect = u_textRotate(textSelect, mouse):'';
 						await paint()
 						u_textBordeSegmentado(context, textSelect);
 					}
-					//}
 					break;
 				case 'square':
-					//if (mouse.cuadrado_mover || mouse.cuadrado_mover_pts) {
 					if (cuadradoSelect.edit) {
 						mouse.cuadrado_mover
 							? cuadradoSelect = u_cuadradoMover(cuadradoSelect, mouse)
@@ -321,19 +323,15 @@ const PaintMover = (id_canvas) => {
 						await paint();
 						u_cuadradoBordeSegmentado(context, cuadradoSelect);
 					}
-					//}
 					break;
 				case 'pencil':
-					//if (mouse.lapiz_mover) {
 					if (lapizSelect.edit) {
 						lapizSelect = u_lapizMover(lapizSelect, mouse);
 						await paint();
 						u_lapizBordeSegmentado(context, lapizSelect);
 					}
-					//}
 					break;
 				case 'plano':
-					//if (mouse.plano_mover || mouse.plano_mover_pts) {
 					if (planoSelect.edit) {
 						mouse.plano_mover
 							? planoSelect = u_planoMover(planoSelect, mouse)
@@ -341,7 +339,6 @@ const PaintMover = (id_canvas) => {
 						await paint();
 						u_planoBordeSegmentado(context, planoSelect);
 					}
-					//}
 					break;
 				case 'circle':
 					if (circuloSelect.edit) {
@@ -353,7 +350,6 @@ const PaintMover = (id_canvas) => {
 					}
 					break;
 				case 'triangle':
-					//if (mouse.triangulo_mover || mouse.triangulo_mover_pts) {
 					if (trianguloSelect.edit) {
 						mouse.triangulo_mover
 							? trianguloSelect = u_trianguloMover(trianguloSelect, mouse)
@@ -361,7 +357,6 @@ const PaintMover = (id_canvas) => {
 						await paint();
 						u_trianguloBordeSegmentado(context, trianguloSelect);
 					}
-					//}
 					break;
 				case 'image':
 					if (imagenSelect.edit) {
@@ -373,7 +368,6 @@ const PaintMover = (id_canvas) => {
 					}
 					break;
 				case 'line':
-					//if (mouse.linea_mover || mouse.linea_mover_pts) {
 					if (lineaSelect.edit) {
 						mouse.linea_mover
 							? lineaSelect = u_lineaMover(lineaSelect, mouse)
@@ -381,7 +375,6 @@ const PaintMover = (id_canvas) => {
 						await paint();
 						u_lineaBordeSegmentado(context, lineaSelect);
 					}
-					//}
 					break;
 				case 'geometric':
 					if (geometricSelect.edit) {
@@ -419,6 +412,8 @@ const PaintMover = (id_canvas) => {
 		mouse.plano_pto = '';
 		// TEXTO:
 		mouse.text_mover = false;
+		mouse.text_mover_pts = false;
+		mouse.text_pto = '';
 		// CIRCULO:
 		mouse.circulo_mover = false;
 		mouse.circulo_mover_pts = false;

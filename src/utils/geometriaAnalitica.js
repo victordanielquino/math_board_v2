@@ -1,9 +1,25 @@
-import {multiplicacion, potencia, raiz, tanX} from "./math";
+import {arcoTanX, division, multiplicacion, potencia, raiz, resta, suma, tanX} from "./math";
 
 export const u_distanciaEntreDosPtos = (p1, p2) => {
     let d = potencia(p2.x - p1.x, 2) + potencia(p2.y - p1.y, 2);
     d = raiz(d);
     return d;
+}
+
+// PENDIENTE: RECTA
+export const pendienteToRect = (rec) => {
+    let pendiente = 0;
+    if (rec.a !== 0 && rec.b !== 0)
+        pendiente = -rec.a/rec.b;
+    return pendiente;
+}
+// PENDIENTE: PASA POR 2 PUNTOS
+export const pendientePasaTwoPts = (p1, p2) => {
+    let resp = 0;
+    if (p1.x - p2.x !== 0) {
+        resp = division(resta(p2.y, p1.y), resta(p2.x, p1.x));
+    }
+    return resp;
 }
 
 export const rectaQuePasaPorDosPtos = (p1, p2) => {
@@ -117,6 +133,27 @@ export const anguloEntreDosRectasCaso1 = (rec2, anguloIn, p) => {
     rec1.c = -(rec1.a * p.x) - (rec1.b * p.y);
     return rec1;
 }
+export const anguloEntreDosRectasCaso2 = (rec1, rec2) => {
+    // rec1: ax + by + c = 0
+    // rec2: ax + by + c = 0
+
+    let angulo = 0;
+    let m1 = pendienteToRect(rec1);
+    let m2 = pendienteToRect(rec2);
+    // CASO 1: NINGUNA DE LAS RECTAS PASAN POR LO EJES X E Y
+    if (m1 !== 0 && m2 !== 0) {
+        angulo = arcoTanX(division(resta(m1,m2), suma(1, multiplicacion(m1, m2))));
+    } else {
+        if (m1 === 0 && m2 !== 0) {
+            angulo = arcoTanX(m2);
+        } else {
+            if (m1 !== 0 && m2 === 0) {
+                angulo = arcoTanX(m1);
+            }
+        }
+    }
+    return angulo;
+}
 
 export const rectaPerpendicular = (rec1, p) => {
     // rec1: ax + by + c = 0, p(x, y);
@@ -135,4 +172,37 @@ export const ecuacionDe2doGrado = (ec) => {
     res.x1 = (- ec.b + Math.sqrt(discriminante)) / (2 * ec.a);
     res.x2 = (- ec.b - Math.sqrt(discriminante)) / (2 * ec.a);
     return res;
+}
+
+// TRIANGULO: CLICK DENTRO DEL TRIANGULO
+export const u_productoCruz_UxV = (p1, p2, p3) => {
+    /*
+    u = P1P2 = P2 -P1 = (X2, Y2) - (X1, Y1) = (X2-X1, Y2-Y1)
+    V = P1P3 = P3 -P1 = (X3, Y3) - (X1, Y1) = (X3-X1, Y3-Y1)
+            |  i        j    k|
+    u x v = |x2-x1    y2-y1  0| = (0, 0, (x2-x1)(y3-y1) - (y2-y1)(x3-x1))
+            |x3-x1    y3-y1  0|
+    * */
+    return (p2.x - p1.x)*(p3.y - p1.y) - (p2.y - p1.y)*(p3.x - p1.x);
+}
+export const u_estaPtoInTriangle = (p, triangle) => {
+    // p : { x, y };   triangle: { x1, y1, x2, y2, x3, y3 }
+    let resp = false;
+    let p0 = { x: p.x,y: p.y };
+    let p1 = { x: triangle.x1, y:triangle.y1 };
+    let p2 = { x: triangle.x2, y:triangle.y2 };
+    let p3 = { x: triangle.x3, y:triangle.y3 };
+    (
+        (
+            u_productoCruz_UxV(p0, p1, p2) < 0 &&
+            u_productoCruz_UxV(p0, p2, p3) < 0 &&
+            u_productoCruz_UxV(p0, p3, p1) < 0
+        ) ||
+        (
+            u_productoCruz_UxV(p0, p1, p2) > 0 &&
+            u_productoCruz_UxV(p0, p2, p3) > 0 &&
+            u_productoCruz_UxV(p0, p3, p1) > 0
+        )
+    ) ? resp = true : '';
+    return resp;
 }

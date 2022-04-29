@@ -5,9 +5,9 @@ import AppContext from "../../../context/AppContext";
 import AppContextGeometric from "../../../context/AppContextGeometric";
 
 // components:
-import PaletaGrosor                      from '../../PaletaGrosor/PaletaGrosorSinTitle';
-import PaletaColorBorde                  from '../../PaletaColor/PaletaColor';
-import PaletaColorFondo                  from '../../PaletaColor/PaletaColor';
+import PaletaGrosor     from '../../../components/PaletaGrosor/PaletaGrosorSinTitle';
+import PaletaColorBorde                  from '../../../components/PaletaColor/PaletaColor';
+import PaletaColorFondo                  from '../../../components/PaletaColor/PaletaColor';
 
 // styles:
 import './MenuGeometric.scss';
@@ -16,6 +16,8 @@ import {Button, ButtonGroup, Typography} from "@mui/material";
 import RemoveIcon                        from "@mui/icons-material/Remove";
 import AddIcon                           from "@mui/icons-material/Add";
 import useStylesMenuGeometric            from "./MenuGeometricStyle";
+import PaletaColor                       from "../../../components/PaletaColor/PaletaColorSinTitle";
+import {u_convertColorToRGBA}            from "../../../utils/utils";
 
 const MenuGeometric = () => {
 	// CONTEXT:
@@ -41,24 +43,30 @@ const MenuGeometric = () => {
 			case '-': (valor - 1 > 4) ? h_geometricSetVertices(converInteger(valor - 1)):'';break;
 		}
 	}
+	const widthBtn = '35px';
+	const heightBtn = '28px';
 
 	// EFFECT:
 	useEffect(() => {
-		h_geometricSetBordecolorBordeestado(state.color, state.color !== 'white');
-	}, [state.color]);
+		let rgba = u_convertColorToRGBA(state.color, state.colorBlur);
+		h_geometricSetBordecolorBordeestado(rgba, state.color !== 'white');
+	}, [state.color, state.colorBlur]);
 
 	useEffect(() => {
-		h_geometricSetFondocolorFondoestado(state.colorFondo, state.colorFondo !== 'white');
-	}, [state.colorFondo]);
+		let rgba = u_convertColorToRGBA(state.colorFondo, state.colorFondoBlur);
+		h_geometricSetFondocolorFondoestado(rgba, state.colorFondo !== 'white');
+	}, [state.colorFondo, state.colorFondoBlur]);
 
 	useEffect(() => {
 		h_geometricSetBordeGrosor(state.grosor);
 	}, [state.grosor]);
 
 	useEffect(() => {
+		let color = u_convertColorToRGBA(state.color, state.colorBlur);
+		let colorFondo = u_convertColorToRGBA(state.colorFondo, state.colorFondoBlur);
 		h_geometricSetAll(
-			state.color,
-			state.colorFondo,
+			color,
+			colorFondo,
 			state.grosor,
 			state.color !== 'white',
 			state.colorFondo !== 'white'
@@ -66,12 +74,12 @@ const MenuGeometric = () => {
 	}, []);
 
 	return (
-		<div style={{display:'flex'}}>
-			<article className={classes.article}>
+		<div style={{display:'flex', justifyContent:'center', alignItems:'center', backgroundColor:'white', borderRadius:'10px', padding:'5px 20px'}}>
+			<div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
 				<Typography color='primary'>
 					V:
 				</Typography>
-				<ButtonGroup style={{margin:'0 10px'}}>
+				<ButtonGroup style={{margin:'0 3px'}}>
 					<Button
 						variant='outlined'
 						size='small'
@@ -82,28 +90,26 @@ const MenuGeometric = () => {
 						</Typography>
 					</Button>
 				</ButtonGroup>
-				<ButtonGroup>
 					<Button
-						variant='outlined'
+						variant='contained'
 						size='small'
 						onClick={() => handleVertices('-')}
+						style={{maxWidth: widthBtn, maxHeight: heightBtn, minWidth: widthBtn, minHeight: heightBtn, padding:0, marginRight:'3px'}}
 					>
 						<RemoveIcon fontSize='small'/>
 					</Button>
 					<Button
-						variant='outlined'
+						variant='contained'
 						size='small'
 						onClick={() => handleVertices('+')}
+						style={{maxWidth: widthBtn, maxHeight: heightBtn, minWidth: widthBtn, minHeight: heightBtn, padding:0, marginRight:'25px'}}
 					>
 						<AddIcon fontSize='small'/>
 					</Button>
-				</ButtonGroup>
-			</article>
-			<article className="article__menuCirculo">
-				{<PaletaGrosor title="BORDE" />}
-				{<PaletaColorBorde tipo="linea" title="Borde" />}
-				{<PaletaColorFondo tipo="fondo" title="Fondo" />}
-			</article>
+			</div>
+			{<div style={{marginRight:'20px'}}><PaletaGrosor /></div>}
+			{<div style={{marginRight:'20px'}}><PaletaColor tipo='linea' title='BORDE' /></div>}
+			{<div style={{marginRight:'0px'}}><PaletaColor tipo='fondo' title='FONDO' /></div>}
 		</div>
 	);
 };

@@ -8,6 +8,8 @@ import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import {Button, ButtonGroup, FormControl, MenuItem, Select, ToggleButton, ToggleButtonGroup} from "@mui/material";
 
+import ButtonUIColor      from "../../../components/ButtonUIColor/ButtonUIColor";
+
 const MenuText = () => {
 	// CONTEXT:
 	const {
@@ -21,6 +23,7 @@ const MenuText = () => {
 	} = useContext(AppContextText);
 
 	// STATE:
+	const [clickBlack, setClickBlack] = useState(false);
 
 	// LOGICA
 	const textSizeArray = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 40, 50, 60];
@@ -41,41 +44,29 @@ const MenuText = () => {
 	}
 	const handleFormats = (value) => {
 		switch (value) {
-			case 'bold':
-				stateText.fontBold === 'bold' ? h_textSetBold('') : h_textSetBold('bold');
+			case 'bold': stateText.fontBold === 'bold' ? h_textSetBold('') : h_textSetBold('bold');
 				break;
-			case 'italic':
-				stateText.fontItalic === 'italic' ? h_textSetItalic('') : h_textSetItalic('italic');
+			case 'italic': stateText.fontItalic === 'italic' ? h_textSetItalic('') : h_textSetItalic('italic');
 				break;
-			case 'underlined':
-				stateText.fontUnderL === 'underlined' ? h_textSetUnderL('') : h_textSetUnderL('underlined');
+			case 'underlined': stateText.fontUnderL === 'underlined' ? h_textSetUnderL('') : h_textSetUnderL('underlined');
 				break;
 		}
+	}
+	const handleCLickColor = (color) => {
+		h_textSetColor(color);
 	}
 
 	return (
 		<>
-			<article className="article__menuText">
-				<div className='article__menuText__div'>
-					<div className='article__menuText__div__selectorColor'>
-						<div
-							className='article__menuText__div__selectorColor__black'
-							onClick={() => handleColors('black')}
-							style={stateText.fontColor === 'black' ? {backgroundColor:'black'} : {backgroundColor:'white'} }/>
-						<div
-							className='article__menuText__div__selectorColor__red'
-							onClick={() => handleColors('red')}
-							style={stateText.fontColor === 'red' ? {backgroundColor:'red'} : {backgroundColor:'white'} }/>
-						<div
-							className='article__menuText__div__selectorColor__blue'
-							onClick={() => handleColors('blue')}
-							style={stateText.fontColor === 'blue' ? {backgroundColor:'blue'} : {backgroundColor:'white'} }/>
-						<div
-							className='article__menuText__div__selectorColor__green'
-							onClick={() => handleColors('green')}
-							style={stateText.fontColor === 'green' ? {backgroundColor:'green'} : {backgroundColor:'white'} }/>
+			<article style={{display:'flex', justifyContent:'center', alignItems:'center', background:'white', padding:'5px 25px', borderRadius:'10px'}}>
+					<div style={{display:'flex', marginRight:'20px'}}>
+						<ButtonUIColor color={'black'} variant={stateText.fontColor === "black" ? 'contained':'outlined'} border={'3px'} onclick={handleCLickColor} />
+						<ButtonUIColor color={'red'} variant={stateText.fontColor === "red" ? 'contained':'outlined'} border={'3px'} onclick={handleCLickColor}/>
+						<ButtonUIColor color={'yellow'} variant={stateText.fontColor === "yellow" ? 'contained':'outlined'} border={'3px'} onclick={handleCLickColor}/>
+						<ButtonUIColor color={'green'} variant={stateText.fontColor === "green" ? 'contained':'outlined'} border={'3px'} onclick={handleCLickColor}/>
+						<ButtonUIColor color={'blue'} variant={stateText.fontColor === "blue" ? 'contained':'outlined'} border={'3px'} onclick={handleCLickColor}/>
 					</div>
-					<FormControl sx={{ m: 0}}>
+					<FormControl sx={{ m: 0}} style={{marginRight:'20px'}}>
 						<ButtonGroup
 							aria-label="text formatting"
 							size='small'
@@ -107,7 +98,7 @@ const MenuText = () => {
 							</Button>
 						</ButtonGroup>
 					</FormControl>
-					<FormControl sx={{ m: 0, minWidth: 150 }} size='small'>
+					<FormControl sx={{ m: 0, minWidth: 150 }} size='small' style={{marginRight:'20px'}}>
 						<Select
 							value={stateText.fontTypografia}
 							onChange={handleChangeText}
@@ -115,7 +106,7 @@ const MenuText = () => {
 							inputProps={{ 'aria-label': 'Without label' }}
 							size='small'
 							id="demo-simple-select-error"
-							style={{ height: '1.8em'}}
+							style={{ height: '1.8em', color:'#1976d2'}}
 						>
 							{textTypografiaArray.map(elm => (<MenuItem key={elm.name} value={elm.typografia}>{elm.name}</MenuItem>))}
 						</Select>
@@ -127,12 +118,11 @@ const MenuText = () => {
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
 							size='small'
-							style={{ height: '1.8em'}}
+							style={{ height: '1.8em', color:'#1976d2'}}
 						>
 							{textSizeArray.map((size) => ( <MenuItem key={size} value={size}>{size}</MenuItem>))}
 						</Select>
 					</FormControl>
-				</div>
 			</article>
 		</>
 	);

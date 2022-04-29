@@ -115,11 +115,22 @@ export const u_moveDuplicateText = (textIn, recorrido_x, recorrido_y) => {
         fontFocus: false,
         canvas: textIn.canvas,
         types: 'text',
+        cursor: 0,
+        line:{
+            x_ini: textIn.line.x_ini,
+            y_ini: textIn.line.y_ini,
+            x_fin: textIn.line.x_fin,
+            y_fin: textIn.line.y_fin,
+        },
     };
     text.x_ini = text.x_ini + recorrido_x;
     text.x_fin = text.x_fin + recorrido_x;
     text.y_ini = text.y_ini + recorrido_y;
     text.y_fin = text.y_fin + recorrido_y;
+    text.line.x_ini += recorrido_x;
+    text.line.y_ini += recorrido_y;
+    text.line.x_ini += recorrido_x;
+    text.line.y_ini += recorrido_y;
     return text;
 }
 // MOVE: Line duplicate

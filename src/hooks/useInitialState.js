@@ -4,7 +4,9 @@ const initialState = {
 	active: '',
 	activePrev: '',
 	color: 'red',
+	colorBlur: false,
 	colorFondo: 'yellow',
+	colorFondoBlur: false,
 	grosor: 2,
 	elmSelect: false,
 	canvas: '',
@@ -153,7 +155,7 @@ const useInitialState = () => {
 			id: state.id + 1,
 		});
 	};
-	const h_deleteHId = (indexIn) => {
+	const h_deleteByIndex = (indexIn) => {
 		let newArray = [];
 		state.historia.forEach((elm, index) => {
 			index !== indexIn
@@ -193,6 +195,13 @@ const useInitialState = () => {
 			mathBoards: json,
 		});
 	};
+	const h_setMathboardsJsonIndex = (json, index) => {
+		setState({
+			...state,
+			mathBoards: json,
+			mathBoardsIndexSelec: index,
+		});
+	};
 	const h_setMathboardsIndexSelect = (indexSelect) => {
 		setState({
 			...state,
@@ -209,6 +218,18 @@ const useInitialState = () => {
 			id: id,
 		});
 	};
+	const h_setColorblur = (boolean) => {
+		setState({
+			...state,
+			colorBlur: boolean,
+		});
+	};
+	const h_setColorfondoblur = (boolean) => {
+		setState({
+			...state,
+			colorFondoBlur: boolean,
+		});
+	};
 
 	return {
 		state,
@@ -220,13 +241,16 @@ const useInitialState = () => {
 		s_setActiveActivePrev,
 		h_setCanvas,
 		h_addH,
-		h_deleteHId,
+		h_deleteByIndex,
 		h_deleteById,
 		h_updateH,
 		h_addMathboards,
 		h_setMathboardsJson,
 		h_setMathboardsIndexSelect,
 		h_setReadJsonAll,
+		h_setColorblur,
+		h_setColorfondoblur,
+		h_setMathboardsJsonIndex
 	};
 };
 

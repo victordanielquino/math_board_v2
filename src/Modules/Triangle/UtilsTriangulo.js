@@ -111,12 +111,12 @@ const u_trianguloGetClick = (context, array, x, y) => {
             let p3 = { x: triangulo.x3, y:triangulo.y3 };
             (
                 (
-                    u_trianguloProductoCruz_UxV(p0,p1,p2) < 0 && 
+                    u_trianguloProductoCruz_UxV(p0, p1, p2) < 0 &&
                     u_trianguloProductoCruz_UxV(p0, p2, p3) < 0 &&
                     u_trianguloProductoCruz_UxV(p0, p3, p1) < 0
                 ) ||
                 (
-                    u_trianguloProductoCruz_UxV(p0,p1,p2) > 0 &&
+                    u_trianguloProductoCruz_UxV(p0, p1, p2) > 0 &&
                     u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
                     u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
                 )

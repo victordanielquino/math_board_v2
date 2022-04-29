@@ -170,7 +170,7 @@ const MenuMove = () => {
 					break;
 				}
 			}
-			if (k != -1) {
+			if (k !== -1) {
 				let sw = false;
 				const copyRows2 = [...state.historia];
 				for (let i = 0; i < copyRows2.length; i++) {
@@ -194,7 +194,6 @@ const MenuMove = () => {
 		updatePaletaEdit();
 		updatePaletaPosition();
 	}, [stateMover.obj]);
-
 
 	return (
 		<div className={classes.container}>
@@ -255,18 +254,20 @@ const MenuMove = () => {
 				MOVE:
 			</Typography>
 			<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledUpDown}>
-				<Select
-					value={state.mathBoards[state.mathBoardsIndexSelec].title}
-					onChange={handleChangeMathboard}
-					displayEmpty
-					inputProps={{ 'aria-label': 'Without label' }}
-					size='small'
-					id="demo-simple-select-error"
-					style={{ height: '1.8em', color:'#1976d2'}}
-					//color='primary'
-				>
-					{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title} style={{color:'#1976d2'}}>{elm.title}</MenuItem>))}
-				</Select>
+				{
+					<Select
+						value={state.mathBoards[state.mathBoardsIndexSelec].title}
+						onChange={handleChangeMathboard}
+						displayEmpty
+						inputProps={{ 'aria-label': 'Without label' }}
+						size='small'
+						id="demo-simple-select-error"
+						style={{ height: '1.8em', color:'#1976d2'}}
+						//color='primary'
+					>
+						{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title} style={{color:'#1976d2'}}>{elm.title}</MenuItem>))}
+					</Select>
+				}
 			</FormControl>
 		</div>
 	)

@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 
 // context
-import AppContext from '../../context/AppContext';
+import AppContext    from '../../context/AppContext';
 
 // styles:
 import './PaletaColor.scss';
 import iconLineaNone from '../../assets/icons/lineaNone.svg';
-import {Paper} from "@mui/material";
+import {Paper}       from "@mui/material";
 
 import {makeStyles} from "@mui/styles";
 import { styled } from '@mui/material/styles';
@@ -57,7 +57,10 @@ const PaletaColor = (value) => {
 	}, []);
 
 	return (
-		<div className="article__menuLapiz__paletaColorSinTitle">
+		<div className="article__menuLapiz__paletaColor">
+			<div>
+				<span>{value.title}: </span>
+			</div>
 			<div className="article__menuLapiz__paletaColor__container">
 				{arrayPaletaColor.map((elem) => (
 					<div

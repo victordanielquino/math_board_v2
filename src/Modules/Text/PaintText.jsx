@@ -5,17 +5,17 @@ import AppContextText from "../../context/AppContextText";
 import AppContextGrid from "../../context/AppContextGrid";
 
 // UTILS:
-import AppContext      from "../../context/AppContext";
-import draw            from '../Draw/Draw';
-import {isObjectEmpty}                    from "../../utils/utils";
-import {u_textLineAnimation, u_textMover} from "./UtilsText";
+import AppContext                                                                from "../../context/AppContext";
+import draw                                                                      from '../Draw/Draw';
+import {isObjectEmpty}                                                                         from "../../utils/utils";
+import {u_textAngulo, u_textLineAnimation, u_textMover, u_textPositionCursor, u_textValidChar} from "./UtilsText";
 
 const PaintText = (id_canvas) => {
     // CONTEXT:
     const {
         state,
         h_addH,
-        h_deleteById
+        h_deleteByIndex
     } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const {
@@ -23,12 +23,10 @@ const PaintText = (id_canvas) => {
         h_textSetReset,
         h_textSetCanvas,
         h_textSetTextselect,
-        h_textSetAllTextselect
+        h_textSetAllTextselect,
     } = useContext(AppContextText);
 
     // STATE:
-    const [count, setCount] = useState(0);
-    const [intervalId, setIntervalId] = useState(0);
     const [toggleAnimation, setToggleAnimation] = useState(0);
 
     // LOGICA
@@ -44,8 +42,9 @@ const PaintText = (id_canvas) => {
         }
     }
     const paintAnimation = (color) => {
-        if (stateText.active)
-            u_textLineAnimation(context, stateText.textSelect, color);
+        if (stateText.active) {
+            u_textLineAnimation(context, stateText.textSelect.line, color);
+        }
     }
     let text = {
         id: stateText.id,
@@ -68,6 +67,21 @@ const PaintText = (id_canvas) => {
         fontFocus: false,
         canvas: stateText.canvas,
         types: 'text',
+        cursor: 0,
+        line:{},
+        vertex: [],
+        pto: {},
+
+        rotateDeg: 0,
+        rotateDegPrev: 0,
+        angulo: 0,
+        radio: 0,
+        radioX: 0,
+        radioY: 0,
+        h: 0,
+        k: 0,
+        width: 0,
+        height: 0,
     };
     let canvas = '';
     let context = '';
@@ -111,8 +125,16 @@ const PaintText = (id_canvas) => {
             captura_Pos_Posprev(e);
             if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                 text.y_ini = text.y_ini - text.fontSize;
-                text.y_fin = text.y_fin - text.fontSize;
                 text.id = state.id;
+                text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
+                text.vertex = [
+                    { x : text.x_ini, y : text.y_ini },
+                    { x : text.x_fin, y : text.y_ini},
+                    { x : text.x_fin, y : text.y_fin},
+                    { x : text.x_ini, y : text.y_fin},
+                ];
+                text.radioX = text.x_ini;
+                text.radioY = text.y_ini;
                 h_addH(text);
             }
         } else {
@@ -120,8 +142,16 @@ const PaintText = (id_canvas) => {
                 captura_Pos_Posprev(e);
                 if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                     text.y_ini = text.y_ini - text.fontSize;
-                    text.y_fin = text.y_fin - text.fontSize;
                     text.id = state.id;
+                    text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
+                    text.vertex = [
+                        { x : text.x_ini, y : text.y_ini },
+                        { x : text.x_fin, y : text.y_ini},
+                        { x : text.x_fin, y : text.y_fin},
+                        { x : text.x_ini, y : text.y_fin},
+                    ];
+                    text.radioX = text.x_ini;
+                    text.radioY = text.y_ini;
                     h_addH(text);
                 }
             }
@@ -132,20 +162,22 @@ const PaintText = (id_canvas) => {
     const keyDown = (e) => {
         if (stateText.textSelect.canvas === stateText.canvas){
             // console.log(e);
-            //console.log(e.key);
-            //console.log(e.keyCode);
+            // console.log(e.key);
+            // console.log(e.keyCode);
             let key = e.key;
             let keyV = e.which || e.keyCode;
             let ctrl = e.ctrlKey
                 ? e.ctrlKey
                 : (key === 17) ? true : false;
             if (keyV === 86 && ctrl) {
-                console.log("Ctrl+V is pressed.");
+                // console.log("Ctrl+V is pressed.");
                 navigator.clipboard.readText()
                     .then(texto => {
-                        //console.log("Aquí tenemos el texto: ", texto);
+                        // console.log("Aquí tenemos el texto: ", texto);
                         key = texto;
                         stateText.textSelect.fontText = stateText.textSelect.fontText + key;
+                        stateText.textSelect.cursor = stateText.textSelect.fontText.length;
+                        stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
                         paint();
                     })
                     .catch(error => {
@@ -153,23 +185,40 @@ const PaintText = (id_canvas) => {
                         console.log("Hubo un error: ", error);
                     });
             } else {
-                switch (e.keyCode){
-                    case 8: key = '';
-                        (stateText.textSelect.fontText.length > 0) ? stateText.textSelect.fontText = stateText.textSelect.fontText.slice(0,-1): '';
-                        break;
-                    case 9: key = ''; break;
-                    case 16: key = ''; break;
-                    case 17: key = ''; break;
-                    case 18: key = ''; break;
-                    case 20: key = ''; break;
-                    case 37: key = ''; break;
-                    case 38: key = ''; break;
-                    case 39: key = ''; break;
-                    case 40: key = ''; break;
-                    case 91: key = ''; break;
+                if (u_textValidChar(e.keyCode)) {
+                    let lefth = stateText.textSelect.fontText.slice(0, stateText.textSelect.cursor);
+                    let right = stateText.textSelect.fontText.slice(stateText.textSelect.cursor, stateText.textSelect.fontText.length);
+                    stateText.textSelect.fontText = lefth + key + right;
+                    stateText.textSelect.cursor += 1;
+                    stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
+                    paint();
+                } else {
+                    // LEFTH:
+                    if (e.keyCode === 37 && stateText.textSelect.cursor > 0) {
+                        stateText.textSelect.cursor -= 1;
+                        stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
+                        paint();
+                    } else {
+                        // RIGTH:
+                        if (e.keyCode === 39 && stateText.textSelect.cursor < stateText.textSelect.fontText.length) {
+                            stateText.textSelect.cursor += 1;
+                            let line = u_textPositionCursor(stateText.textSelect);
+                            stateText.textSelect.line = line;
+                            paint();
+                        } else {
+                            // BACKSPACE:
+                            if (e.keyCode === 8 && stateText.textSelect.fontText.length > 0 && stateText.textSelect.cursor > 0) {
+                                //stateText.textSelect.fontText = stateText.textSelect.fontText.slice(0,-1);
+                                let lefth = stateText.textSelect.fontText.slice(0, stateText.textSelect.cursor-1);
+                                let right = stateText.textSelect.fontText.slice(stateText.textSelect.cursor, stateText.textSelect.fontText.length);
+                                stateText.textSelect.fontText = lefth + right;
+                                stateText.textSelect.cursor -= 1;
+                                stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
+                                paint();
+                            }
+                        }
+                    }
                 }
-                stateText.textSelect.fontText = stateText.textSelect.fontText + key;
-                paint();
             }
         }
     }
@@ -179,24 +228,17 @@ const PaintText = (id_canvas) => {
         width: 0,
         height: 0,
     };
-    const update_canvasTextDatos = () => {
+    const enventDraw = () => {
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
         canvasTextDatos.top = canvas.getBoundingClientRect().top;
         canvasTextDatos.left = canvas.getBoundingClientRect().left;
         canvasTextDatos.width = canvas.getBoundingClientRect().width;
         canvasTextDatos.height = canvas.getBoundingClientRect().height;
-    };
-    const enventDraw = () => {
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        update_canvasTextDatos();
-        /*if (state.historia.length > 0) {
-            console.log('historia:',state.historia);
-            stateText.textSelect = state.historia[state.historia.length - 1];
-            paint();
-        }*/
     }
     let color = 'white';
     const beginInterval = () => {
+        //console.log('state line:', stateText.textSelect.line);
         canvas = document.getElementById(id_canvas);
         context = canvas.getContext('2d');
         let auxAnimation = setInterval(() => {
@@ -234,7 +276,14 @@ const PaintText = (id_canvas) => {
 
     useEffect(() => {
         paint();
-        (!isObjectEmpty(stateText.textSelect)) ? beginInterval() : stopInterval();
+        if (!isObjectEmpty(stateText.textSelect)) {
+            stateText.textSelect.line.x_ini = stateText.textSelect.x_fin;
+            stateText.textSelect.line.x_fin = stateText.textSelect.x_fin;
+            stateText.textSelect.line.y_ini = stateText.textSelect.y_ini-3;
+            stateText.textSelect.line.y_fin = stateText.textSelect.y_fin+3;
+            beginInterval();
+        }
+        else stopInterval();
     }, [stateText.textSelect]);
 
     useEffect(() => {
@@ -247,6 +296,7 @@ const PaintText = (id_canvas) => {
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
             stateText.textSelect.fontBold = stateText.fontBold;
+            stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
             paint();
         }
     }, [stateText.fontBold]);
@@ -254,6 +304,7 @@ const PaintText = (id_canvas) => {
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
             stateText.textSelect.fontItalic = stateText.fontItalic;
+            stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
             paint();
         }
     }, [stateText.fontItalic]);
@@ -268,13 +319,15 @@ const PaintText = (id_canvas) => {
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
             stateText.textSelect.fontTypografia = stateText.fontTypografia;
+            stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
             paint();
         }
     }, [stateText.fontTypografia]);
 
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
-            stateText.textSelect.fontSize = stateText.fontSize;
+            stateText.textSelect.fontSize = stateText.fontSize;;
+            stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
             paint();
         }
     }, [stateText.fontSize]);
@@ -299,7 +352,18 @@ const PaintText = (id_canvas) => {
 
     useEffect(() => {
         if (!stateText.active){
+            // ANGULO0 ENTRE DOS RECTAS
+            if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.fontText.length > 0) {
+                stateText.textSelect = u_textAngulo(stateText.textSelect);
+                //console.log('angulo:',stateText.textSelect);
+            }
             h_textSetReset();
+            if (state.historia.length > 0
+                && state.historia[state.historia.length -1].types === 'text'
+                && state.historia[state.historia.length -1].fontText.length === 0
+            ) {
+                h_deleteByIndex(state.historia.length -1);
+            }
         }
     }, [stateText.active]);
 

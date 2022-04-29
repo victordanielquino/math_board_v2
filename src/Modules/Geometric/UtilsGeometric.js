@@ -121,6 +121,7 @@ export const u_geometricDrawCircleWithRadioSegment = (context, geometricFig) => 
     context.arc(geometricFig.h, geometricFig.k, geometricFig.radio, 0, 2*Math.PI, true);
     context.stroke();
     context.closePath();*/
+
     // radio:
     context.beginPath();
     context.moveTo(geometricFig.h, geometricFig.k);

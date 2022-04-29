@@ -8,6 +8,7 @@ const useStylesMenuEraser  = makeStyles({
         display: 'flex',
         justifyContent: 'space-between',
         padding: '5px 25px',
+        userSelect:'none'
     },
     button: {
         marginRight: '10px',

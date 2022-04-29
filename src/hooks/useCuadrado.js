@@ -26,7 +26,7 @@ const useCuadrado = () => {
 		});
 	};
 	// UPDATE GENERAL(HEADER - PALETA):
-	const updateCuadradoBordeGrosor = (valor) => {
+	const h_squareSetBordegrosor = (valor) => {
 		setStateCuadrado({
 			...stateCuadrado,
 			bordeGrosor: valor,
@@ -38,7 +38,7 @@ const useCuadrado = () => {
 			bordeEstado: valor,
 		});
 	};
-	const updateCuadradoBorde_ColorEstado = (color, estado) => {
+	const h_squareSetBordecolorBordeestado = (color, estado) => {
 		setStateCuadrado({
 			...stateCuadrado,
 			bordeColor: color,
@@ -51,7 +51,7 @@ const useCuadrado = () => {
 			fondoEstado: valor,
 		});
 	};
-	const updateCuadradoFondo_ColorEstado = (color, estado) => {
+	const h_squareSetFondocolorFondoestado = (color, estado) => {
 		setStateCuadrado({
 			...stateCuadrado,
 			fondoColor: color,
@@ -92,7 +92,7 @@ const useCuadrado = () => {
 			historiaCuadrado: array,
 		});
 	};
-	const update_all = (
+	const h_squareSetAll = (
 		colorBorde,
 		colorFondo,
 		bordeGrosor,
@@ -124,14 +124,14 @@ const useCuadrado = () => {
 	return {
 		stateCuadrado,
 		updateCuadradoActive,
-		updateCuadradoBordeGrosor,
+		h_squareSetBordegrosor,
 		updateCuadradoBordeEstado,
-		updateCuadradoBorde_ColorEstado,
+		h_squareSetBordecolorBordeestado,
 		updateCuadradoFondoEstado,
-		updateCuadradoFondo_ColorEstado,
+		h_squareSetFondocolorFondoestado,
 		add_cuadrado_en_historia,
 		update_cuadrado_en_historia,
-		update_all,
+		h_squareSetAll,
 		update_cuadradoH, // new
 		s_cuadradoAddH,
 		s_cuadradoAddHId,

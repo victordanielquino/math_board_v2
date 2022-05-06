@@ -19,7 +19,7 @@ export const u_convertColorToRGBA = (color, colorBlur) => {
             colorBlur ? rgba = 'rgba(0, 0, 255, 0.2)' : rgba = 'rgba(0, 0, 255, 1)';
             break;
         case 'yellow':
-            colorBlur ? rgba = 'rgba(255, 255, 0, 0.2)' : rgba = 'rgba(255, 255, 0, 1)';
+            colorBlur ? rgba = 'rgba(255, 255, 0, 0.3)' : rgba = 'rgba(255, 255, 0, 1)';
             break;
         case 'white':
             colorBlur ? rgba = 'rgba(255, 255, 255, 0.2)' : rgba = 'rgba(255, 255, 255, 1)';
@@ -29,4 +29,12 @@ export const u_convertColorToRGBA = (color, colorBlur) => {
             break;
     }
     return rgba;
+}
+
+export const u_canvasAutoSize = (canvas, canvasDatos) => {
+    canvasDatos.top = canvas.getBoundingClientRect().top;
+    canvasDatos.left = canvas.getBoundingClientRect().left;
+    canvasDatos.width = canvas.getBoundingClientRect().width;
+    canvasDatos.height = canvas.getBoundingClientRect().height;
+    return canvasDatos;
 }

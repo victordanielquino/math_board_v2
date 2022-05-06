@@ -9,7 +9,8 @@ import AppContextGrid from "../../context/AppContextGrid";
 
 import { u_lapizGraficaLinea } from './UtilsLapiz';
 
-import draw from '../Draw/Draw'
+import draw               from '../Draw/Draw'
+import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintLapiz = (id_canvas) => {
 	// useContext:
@@ -105,27 +106,16 @@ const PaintLapiz = (id_canvas) => {
 		}
 		mouse.click = false;
 	};
-	const canvasLapizDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
-	const eventDraw = () => {
-		console.log('ue PaintTCirculo.jsx');
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		canvasLapizDatos.top = canvas.getBoundingClientRect().top;
-		canvasLapizDatos.left = canvas.getBoundingClientRect().left;
-		canvasLapizDatos.width = canvas.getBoundingClientRect().width;
-		canvasLapizDatos.height = canvas.getBoundingClientRect().height;
-		if (state.historia.length > 0) paint();
-	}
+	let canvasLapizDatos = {top: 0, left: 0, width: 0, height: 0};
 
 	// EFFECT:
 	useEffect(() => {
 		if (stateLapiz.active){
-			eventDraw();
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			canvasLapizDatos = u_canvasAutoSize(canvas, canvasLapizDatos);
+			if (state.historia.length > 0) paint();
+
 			canvas.addEventListener('mousedown', mouseDownLapiz);
 			canvas.addEventListener('mousemove', mouseMoveLapiz);
 			canvas.addEventListener('mouseup', mouseUpLapiz);

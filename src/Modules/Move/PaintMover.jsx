@@ -73,12 +73,13 @@ import {
 	u_imagenMover,
 	u_imagenUpdateZise
 }                         from "../Image/UtilsImagen";
-import draw                                                                 from '../Draw/Draw'
+import draw               from '../Draw/Draw'
 import {
 	u_geometricDrawBorderSegment,
 	u_geometricMove,
 	u_geometricOpera, u_geometricResize,
-} from "../Geometric/UtilsGeometric";
+}                         from "../Geometric/UtilsGeometric";
+import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintMover = (id_canvas) => {
 	// useContext
@@ -164,12 +165,7 @@ const PaintMover = (id_canvas) => {
 		geometric_selection_pts: false,
 		geometric_pto: '',
 	};
-	const canvasMoverDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
+	let canvasMoverDatos = {top: 0, left: 0, width: 0, height: 0};
 	const captura_Pos_Posprev = (e) => {
 		const x = e.clientX;
 		const y = e.clientY;
@@ -192,7 +188,7 @@ const PaintMover = (id_canvas) => {
 				let array = [elm];
 				switch (elm.types) {
 					case 'square':
-						cuadradoSelect = u_cuadradoOpera(context, cuadradoSelect, array, mouse);
+						cuadradoSelect = u_cuadradoOpera(cuadradoSelect, array, mouse);
 						if (cuadradoSelect){
 							sw = true;
 							await paint();
@@ -265,7 +261,6 @@ const PaintMover = (id_canvas) => {
 						textSelect = u_textOpera(textSelect, array, mouse);
 						if (textSelect){
 							sw = true;
-							//textSelect.rotateDeg = textSelect.angulo;
 							await paint();
 							u_textBordeSegmentado(context, textSelect);
 							mouse.click = true;
@@ -436,26 +431,18 @@ const PaintMover = (id_canvas) => {
 		mouse.geometric_mover_pts = false;
 		mouse.geometric_pto = '';
 	};
-	const update_canvasMoverDatos = () => {
-		canvasMoverDatos.top = canvas.getBoundingClientRect().top;
-		canvasMoverDatos.left = canvas.getBoundingClientRect().left;
-		canvasMoverDatos.width = canvas.getBoundingClientRect().width;
-		canvasMoverDatos.height = canvas.getBoundingClientRect().height;
-	};
-	const eventDraw = () => {
-		if (stateMover.selectElm){
-			setSelectElmObj(false, {});
-		}
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		update_canvasMoverDatos();
-		if (state.historia.length > 0) paint();
-	}
 
 	// useEffect:
 	useEffect( () => {
 		if (stateMover.active) {
-			eventDraw();
+			if (stateMover.selectElm){
+				setSelectElmObj(false, {});
+			}
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			canvasMoverDatos = u_canvasAutoSize(canvas, canvasMoverDatos);
+			if (state.historia.length > 0) paint();
+
 			canvas.addEventListener('mousedown', mouseDownMover);
 			canvas.addEventListener('mousemove', mouseMoveMover);
 			canvas.addEventListener('mouseup', mouseUpMover);

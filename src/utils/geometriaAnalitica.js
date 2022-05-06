@@ -6,15 +6,26 @@ export const u_distanciaEntreDosPtos = (p1, p2) => {
     return d;
 }
 
-// PENDIENTE: RECTA
+// RECTA: Pendiente de la ecuacion de una recta
 export const pendienteToRect = (rec) => {
+    // rec: ax + by + c = 0
+    // si b = 0, la pendiente es infiinita;
     let pendiente = 0;
-    if (rec.a !== 0 && rec.b !== 0)
+    if (rec.b !== 0)
         pendiente = -rec.a/rec.b;
     return pendiente;
 }
+// RECTA: Pendiente de la recta que pasa por dos puntos
+export const pendieteTwoPuntos = (p1, p2) => {
+    // p1: (x, y), p2: (x, y)
+    // si x2 - x1 = 0, la pendiente es infiinita.
+    let pendiente = 0;
+    if (p2.x - p1.x !== 0)
+        pendiente = (p2.y - p1.y) / (p2.x - p1.x);
+    return pendiente;
+}
 // PENDIENTE: PASA POR 2 PUNTOS
-export const pendientePasaTwoPts = (p1, p2) => {
+export const pendienteTwoPts = (p1, p2) => {
     let resp = 0;
     if (p1.x - p2.x !== 0) {
         resp = division(resta(p2.y, p1.y), resta(p2.x, p1.x));
@@ -140,15 +151,20 @@ export const anguloEntreDosRectasCaso2 = (rec1, rec2) => {
     let angulo = 0;
     let m1 = pendienteToRect(rec1);
     let m2 = pendienteToRect(rec2);
-    // CASO 1: NINGUNA DE LAS RECTAS PASAN POR LO EJES X E Y
+    // CASO 1: NINGUNA DE LAS RECTAS PASAN POR LOS EJES X E Y
     if (m1 !== 0 && m2 !== 0) {
         angulo = arcoTanX(division(resta(m1,m2), suma(1, multiplicacion(m1, m2))));
     } else {
+        // m1 es infinito y paralelo al eje Y
         if (m1 === 0 && m2 !== 0) {
             angulo = arcoTanX(m2);
         } else {
+            // m2 es infinito y paralelo al eje Y
             if (m1 !== 0 && m2 === 0) {
                 angulo = arcoTanX(m1);
+            } else {
+                if (m1 === 0 && m2 === 0)
+                    angulo = 0;
             }
         }
     }
@@ -205,4 +221,109 @@ export const u_estaPtoInTriangle = (p, triangle) => {
         )
     ) ? resp = true : '';
     return resp;
+}
+
+// PUTNO MEDIO ENTRE DOS PUNTOS:
+export const u_ptoMedio = (p1, p2) => {
+    // p1: (x, y)     p2: (x, y)
+    return {x:(p1.x + p2.x)/2, y:(p1.y + p2.y)/2};
+}
+
+// RECTA: Reta paralela a "rec" y que pasa por el punto "p"
+export const u_rectaParalela = (rec, p) => {
+    if (rec.b === 0) {
+        // la recta 'rec' es paralela al eje 'Y':
+        return rectaQuePasaPorDosPtos(p, {x:p.x, y:p.y+1});
+    } else {
+        let m = pendienteToRect(rec);
+        return {
+            a: m,
+            b: - 1,
+            c: -(m * p.x) + p.y
+        }
+    }
+}
+// RECTA: Interseccion entre dos rectas:
+export const u_intersectionnToTwoRects = (rec1, rec2) => {
+    // rec1 : { a, b, c}     rec2 : { a, b, c}
+    let pto = {x:-1, y:-1};
+
+    if (rec1.b !== 0) {
+        // X:
+        let numerador = resta(multiplicacion(rec2.b, rec1.c), multiplicacion(rec1.b, rec2.c));
+        let denominador = resta(multiplicacion(rec2.a, rec1.b), multiplicacion(rec1.a, rec2.b));
+        denominador !== 0 ? pto.x = division(numerador, denominador) : pto.x = 0;
+        // Y:
+        numerador = - (rec1.a * pto.x) - rec1.c;
+        denominador = rec1.b;
+        pto.y = division(numerador, denominador);
+    } else {
+        if (rec1.b === 0) {
+            // la recta 'rec1' es paralela al eje 'Y'
+            pto.x = -rec1.c / rec1.a;
+            let numerador = - (rec2.a * pto.x) - rec2.c;
+            let denominador = rec2.b;
+            pto.y = division(numerador, denominador);
+        } else {
+            console.log('caso no contemplado');
+        }
+    }
+
+    return pto;
+}
+export const u_intersectionToTwoRects = (rec1, rec2) => {
+    // rec1 : { a, b, c}     rec2 : { a, b, c}
+    let pto = {x:-1, y:-1};
+
+    if (rec1.a !== 0 && rec1.b !== 0 && rec2.a !== 0 && rec2.b !== 0) {
+        let numerador = resta(multiplicacion(rec2.a, rec1.c), multiplicacion(rec1.a, rec2.c));
+        let denominador = resta(multiplicacion(rec1.a, rec2.b), multiplicacion(rec2.a, rec1.b));
+        denominador !== 0 ? pto.y = division(numerador, denominador) : pto.y = 0;
+
+        numerador = - (rec1.b * pto.y) - rec1.c;
+        denominador = rec1.a;
+        pto.x = division(numerador, denominador);
+    } else {
+        if (rec1.a === 0 && rec1.b !== 0) {
+            pto.y = -rec1.c / rec1.b;
+            let numerador = - (rec2.b * pto.y) - rec2.c;
+            let denominador = rec2.a;
+            pto.x = division(numerador, denominador);
+        } else {
+            if (rec1.a !== 0 && rec1.b === 0) {
+                pto.x = -rec1.c / rec1.a;
+                let numerador = - (rec2.a * pto.x) - rec2.c;
+                let denominador = rec2.b;
+                pto.y = division(numerador, denominador);
+            }
+        }
+    }
+
+    return pto;
+}
+// RECTA: Angulo de inclinacion de la recta con la horizontal:
+export const u_rectToDegInclination = (pendiente) => {
+    return arcoTanX(pendiente);
+}
+// RECTA: Recta perpendicular a una recta r y que pasa por el putno p
+export const u_rectToPerpendicular = (rec, p) => {
+    if (rec.b === 0) {
+        // la recta 'r' es paralela al eje 'Y'
+        return rectaQuePasaPorDosPtos(p, {x:p.x - 1, y:p.y});
+    } else {
+        let m = pendienteToRect(rec);
+        if (m === 0) {
+            // la recta 'r' es parapalela al eje 'X'
+            return rectaQuePasaPorDosPtos(p, {x:p.x, y:p.y -1});
+        } else {
+            let mPerpendicular = division(-1, m);
+            return {
+                a : mPerpendicular,
+                b : -1,
+                c : p.y - (mPerpendicular * p.x)
+            }
+        }
+    }
+
+    return '';
 }

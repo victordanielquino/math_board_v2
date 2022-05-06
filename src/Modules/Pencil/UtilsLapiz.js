@@ -134,14 +134,8 @@ const u_lapizMover = (lapiz, mouse) => {
 const u_lapizGetClick = (array, x, y) => {
 	let resp = '';
 	array.forEach((lapiz) => {
-		if (lapiz.visible) {
-			let x1 = lapiz.x_min;
-			let y1 = lapiz.y_min;
-			let x2 = lapiz.x_may;
-			let y2 = lapiz.y_may;
-			if (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20) {
-				resp = lapiz;
-			}
+		if (lapiz.x_min < x && x < lapiz.x_may && lapiz.y_min < y && y < lapiz.y_may) {
+			resp = lapiz;
 		}
 	});
 	return resp;

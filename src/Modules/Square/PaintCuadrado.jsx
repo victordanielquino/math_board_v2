@@ -8,9 +8,10 @@ import AppContextCuadrado from '../../context/AppContextCuadrado';
 // utils:
 import {
 	u_cuadradoValidaPosicion,
-	u_squareDraw,
-} from './UtilsCuadrado';
-import draw from '../Draw/Draw';
+	u_squareDraw, u_squareSetIniitalRotate,
+}                         from './UtilsCuadrado';
+import draw               from '../Draw/Draw';
+import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintCuadrado = (id_canvas) => {
 	// CONTEXT:
@@ -47,6 +48,23 @@ const PaintCuadrado = (id_canvas) => {
 		y_fin: 0,
 		canvas: stateCuadrado.canvas,
 		types: 'square',
+
+		h: 0,
+		k: 0,
+		angulo: 0,
+		radio: 0,
+		radioX: 0,
+		radioY: 0,
+		deg: 0,
+		degPrev: 0,
+		pts: [],
+		vertex: [
+			{x:0, y:0},
+			{x:0, y:0},
+			{x:0, y:0},
+			{x:0, y:0},
+		],
+		move: false,
 	};
 	const mouse = {
 		click: false,
@@ -63,12 +81,7 @@ const PaintCuadrado = (id_canvas) => {
 		mouse.pos_prev.y = 0;
 	};
 
-	const canvasCuadradoDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
+	let canvasCuadradoDatos = {top: 0, left: 0, width: 0, height: 0};
 	const captura_Pos_Posprev = (e) => {
 		const x = e.clientX;
 		const y = e.clientY;
@@ -85,6 +98,7 @@ const PaintCuadrado = (id_canvas) => {
 		captura_Pos_Posprev(e);
 		cuadrado.x_ini = mouse.pos.x;
 		cuadrado.y_ini = mouse.pos.y;
+		cuadrado.vertex[0] = {x:mouse.pos.x, y:mouse.pos.y, pto:0};
 	};
 	// 2
 	const mouseMoveCuadrado = async (e) => {
@@ -93,35 +107,31 @@ const PaintCuadrado = (id_canvas) => {
 			captura_Pos_Posprev(e);
 			cuadrado.x_fin = mouse.pos.x;
 			cuadrado.y_fin = mouse.pos.y;
+			cuadrado.vertex[2] = {x:mouse.pos.x, y:mouse.pos.y, pto:2};
+			cuadrado.vertex[1] = {x:cuadrado.vertex[2].x, y:cuadrado.vertex[0].y, pto:1};
+			cuadrado.vertex[3] = {x:cuadrado.vertex[0].x, y:cuadrado.vertex[2].y, pto:3};
 			await paint();
 			u_squareDraw(context, cuadrado);
 		}
 	};
 	// 3
 	const mouseUpCuadrado = () => {
-		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
+		if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
 			cuadrado = u_cuadradoValidaPosicion(cuadrado);
-			//s_cuadradoAddHId(cuadrado);
 			cuadrado.id = state.id;
+			cuadrado = u_squareSetIniitalRotate(cuadrado);
 			h_addH(cuadrado);
 		}
 		mouseReinicia();
 	};
-	const eventDraw = () => {
-		console.log('ue PaintTCuadrado.jsx');
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		canvasCuadradoDatos.top = canvas.getBoundingClientRect().top;
-		canvasCuadradoDatos.left = canvas.getBoundingClientRect().left;
-		canvasCuadradoDatos.width = canvas.getBoundingClientRect().width;
-		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
-		if (state.historia.length > 0) paint();
-	}
 
 	// useEffect:
 	useEffect(() => {
 		if (stateCuadrado.active) {
-			eventDraw();
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			canvasCuadradoDatos = u_canvasAutoSize(canvas, canvasCuadradoDatos);
+			if (state.historia.length > 0) paint();
 			canvas.addEventListener('mousedown', mouseDownCuadrado);
 			canvas.addEventListener('mousemove', mouseMoveCuadrado);
 			canvas.addEventListener('mouseup', mouseUpCuadrado);

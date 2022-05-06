@@ -82,6 +82,15 @@ const PaintText = (id_canvas) => {
         k: 0,
         width: 0,
         height: 0,
+
+        vertexS:[], // S: segment
+        ptoS: {},
+        rotateDegS: 0,
+        rotateDegPrevS: 0,
+        anguloS: 0,
+        radioS: 0,
+        radioXS: 0,
+        radioYS: 0,
     };
     let canvas = '';
     let context = '';
@@ -135,6 +144,19 @@ const PaintText = (id_canvas) => {
                 ];
                 text.radioX = text.x_ini;
                 text.radioY = text.y_ini;
+
+                text.vertexS = [
+                    { x : text.x_ini-5, y : text.y_ini-5 },
+                    { x : text.x_fin+5, y : text.y_ini-5},
+                    { x : text.x_fin+5, y : text.y_fin+5},
+                    { x : text.x_ini-5, y : text.y_fin+5},
+                ];
+                text.ptoS = {
+                    x_ini:text.vertexS[0].x - 5, y_ini:text.vertexS[0].y - 5,
+                    x_fin:text.vertexS[0].x + 5, y_fin:text.vertexS[0].y + 5
+                };
+                text.radioXS = text.x_ini - 5;
+                text.radioYS = text.y_ini - 5;
                 h_addH(text);
             }
         } else {
@@ -143,15 +165,31 @@ const PaintText = (id_canvas) => {
                 if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                     text.y_ini = text.y_ini - text.fontSize;
                     text.id = state.id;
-                    text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
                     text.vertex = [
                         { x : text.x_ini, y : text.y_ini },
                         { x : text.x_fin, y : text.y_ini},
                         { x : text.x_fin, y : text.y_fin},
                         { x : text.x_ini, y : text.y_fin},
                     ];
+                    text.pto = {
+                        x_ini:text.vertex[0].x - 5, y_ini:text.vertex[0].y - 5,
+                        x_fin:text.vertex[0].x + 5, y_fin:text.vertex[0].y + 5
+                    };
                     text.radioX = text.x_ini;
                     text.radioY = text.y_ini;
+
+                    text.vertexS = [
+                        { x : text.x_ini-5, y : text.y_ini-5 },
+                        { x : text.x_fin+5, y : text.y_ini-5},
+                        { x : text.x_fin+5, y : text.y_fin+5},
+                        { x : text.x_ini-5, y : text.y_fin+5},
+                    ];
+                    text.ptoS = {
+                        x_ini:text.vertexS[0].x - 5, y_ini:text.vertexS[0].y - 5,
+                        x_fin:text.vertexS[0].x + 5, y_fin:text.vertexS[0].y + 5
+                    };
+                    text.radioXS = text.x_ini - 5;
+                    text.radioYS = text.y_ini - 5;
                     h_addH(text);
                 }
             }

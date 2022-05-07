@@ -89,7 +89,7 @@ const u_circuloGraficaH = (context, array) => {
 }
 // CIRCULO: CUADRADOS PEQUEÑOS PARA MODIFICAR EL TAMANO DEL CIRCULO:
 const u_circuloGetPtsRedimencion = (circulo) => {
-    let width_p = 10;
+    let width_p = 5;
     let width_c = 2;
 
     let x_ini = circulo.x_ini - width_c;
@@ -127,9 +127,9 @@ const u_circuloGetPtsRedimencion = (circulo) => {
 };
 // CIRCULO: CUADRADO SEGMENTADO ALREDEDOR DEL CIRCULO SELECCIONADO
 const u_circuloBordeSegmentado = (context, circulo) => {
-    context.strokeStyle = 'red'; // borde Color
-    context.lineWidth = 1; // borde grosor de linea
-    context.setLineDash([10, 4]); // lineas segmentadas
+    context.strokeStyle = '#1976d2'; // borde Color
+    context.lineWidth = 2; // borde grosor de linea
+    context.setLineDash([5, 5]); // lineas segmentadas
 
     context.beginPath();
     context.moveTo(circulo.x_ini, circulo.y_ini); // (x_ini, y_ini)
@@ -140,8 +140,9 @@ const u_circuloBordeSegmentado = (context, circulo) => {
     context.stroke();
     context.closePath();
 
-    context.fillStyle = 'red'; // borde Color
-    context.setLineDash([14, 4]); // lineas segmentadas
+    context.strokeStyle = '#1976d2'; // borde Color
+    context.fillStyle = 'white'; // borde Color
+    context.setLineDash([0, 0]); // lineas segmentadas
 
     let array = u_circuloGetPtsRedimencion(circulo);
     array.forEach((elem) => {
@@ -151,6 +152,7 @@ const u_circuloBordeSegmentado = (context, circulo) => {
         context.lineTo(elem.x2, elem.y2); // (x_fin, y_fin)
         context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
         context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
+        context.stroke();
         context.fill();
         context.closePath();
     });

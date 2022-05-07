@@ -1,11 +1,11 @@
 // TEXTO: GRAFICA
-import {convertDegToRadians}                                                                    from "../../utils/math";
+import {convertDegToRadians} from "../../utils/math";
 import {
 	anguloEntreDosRectasCaso1,
 	anguloEntreDosRectasCaso2, circunferenciaConCentroRadio, interseccionRectaCircunferencia,
 	rectaQuePasaPorDosPtos,
 	u_distanciaEntreDosPtos, u_estaPtoInTriangle
-} from "../../utils/geometriaAnalitica";
+}                            from "../../utils/geometriaAnalitica";
 
 const u_textPositionCursor = (text) => {
 	let line = {x_ini:text.x_ini, y_ini:text.y_ini - 3, x_fin:text.x_ini, y_fin:text.y_fin+3};
@@ -54,25 +54,6 @@ const u_textGraficaFontEdit = (context, text, boolean) => {
 	let dimensiones = context.measureText(text.fontText);
 	text.x_fin = text.x_ini + dimensiones.width;
 	text.y_fin = text.y_ini + text.fontSize;
-
-	//text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
-	text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
-	text.vertex = [
-		{ x : text.x_ini, y : text.y_ini },
-		{ x : text.x_fin, y : text.y_ini},
-		{ x : text.x_fin, y : text.y_fin},
-		{ x : text.x_ini, y : text.y_fin},
-	];
-	text.vertexS = [
-		{ x : text.x_ini-5, y : text.y_ini-5 },
-		{ x : text.x_fin+5, y : text.y_ini-5},
-		{ x : text.x_fin+5, y : text.y_fin+5},
-		{ x : text.x_ini-5, y : text.y_fin+5},
-	];
-	text.ptoS = {
-		x_ini:text.vertexS[0].x - 5, y_ini:text.vertexS[0].y - 5,
-		x_fin:text.vertexS[0].x + 5, y_fin:text.vertexS[0].y + 5
-	};
 
 	// UNDERLINE: Texto Sub-rayado
 	if(text.fontUnderL === 'underlined'){
@@ -184,6 +165,31 @@ const u_textMover = (text, mouse) => {
 	text.line.y_ini += recorrido_y;
 	text.line.y_fin += recorrido_y;
 
+	// VERTICES:
+	text.vertex[0] = { x : text.vertex[0].x + recorrido_x, y : text.vertex[0].y + recorrido_y};
+	text.vertex[1] = { x : text.vertex[1].x + recorrido_x, y : text.vertex[1].y + recorrido_y};
+	text.vertex[2] = { x : text.vertex[2].x + recorrido_x, y : text.vertex[2].y + recorrido_y};
+	text.vertex[3] = { x : text.vertex[3].x + recorrido_x, y : text.vertex[3].y + recorrido_y};
+
+	// CENTRO:
+	text.h += recorrido_x;
+	text.k += recorrido_y;
+
+	return text;
+};
+
+const u_textMover_ = (text, mouse) => {
+	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
+	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
+	text.x_ini = text.x_ini + recorrido_x;
+	text.x_fin = text.x_fin + recorrido_x;
+	text.y_ini = text.y_ini + recorrido_y;
+	text.y_fin = text.y_fin + recorrido_y;
+	text.line.x_ini += recorrido_x;
+	text.line.x_fin += recorrido_x;
+	text.line.y_ini += recorrido_y;
+	text.line.y_fin += recorrido_y;
+
 	// CUADRADITO:
 	text.pto.x_ini += recorrido_x;
 	text.pto.x_fin += recorrido_x;
@@ -257,7 +263,7 @@ const u_textClickSobreText = (textSelect, mouse) => {
 const u_textOpera = (textSelect, array, mouse) => {
 	if (mouse.text_seleccionar_pts) {
 		mouse.text_pto = u_textSearchPtoClickResize(mouse.pos.x, mouse.pos.y, textSelect);
-		if (mouse.text_pto !== '') {
+		if (mouse.text_pto !== -1) {
 			mouse.text_mover = false;
 			mouse.text_mover_pts = true;
 		} else {
@@ -273,8 +279,8 @@ const u_textOpera = (textSelect, array, mouse) => {
 	return textSelect;
 }
 const u_textBordeSegmentado = (context, text) => {
-	context.strokeStyle = 'red'; // borde Color
-	context.lineWidth = 1; // borde grosor de linea
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
 	context.setLineDash([5, 5]); // lineas segmentadas
 
 	context.beginPath();
@@ -287,14 +293,18 @@ const u_textBordeSegmentado = (context, text) => {
 	context.closePath();
 
 	// CUADRADITO PARA ROTAR:
-	context.fillStyle = 'red'; // borde Color
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.fillStyle = 'white'; // borde Color
+	context.setLineDash([0, 0]); // lineas segmentadas
 	context.beginPath();
-	context.moveTo(text.ptoS.x_ini, text.ptoS.y_ini); // (x_ini, y_ini)
-	context.lineTo(text.ptoS.x_fin, text.ptoS.y_ini); // (x_fin, y_ini)
-	context.lineTo(text.ptoS.x_fin, text.ptoS.y_fin); // (x_fin, y_fin)
-	context.lineTo(text.ptoS.x_ini, text.ptoS.y_fin); // (x_ini, y_fin)
-	context.lineTo(text.ptoS.x_ini, text.ptoS.y_ini); // (x_ini, y_ini)
+	context.moveTo(text.vertex[0].x - 5, text.vertex[0].y - 5); // (x_ini, y_ini)
+	context.lineTo(text.vertex[0].x + 5, text.vertex[0].y - 5); // (x_fin, y_ini)
+	context.lineTo(text.vertex[0].x + 5, text.vertex[0].y + 5); // (x_fin, y_fin)
+	context.lineTo(text.vertex[0].x - 5, text.vertex[0].y + 5); // (x_ini, y_fin)
+	context.lineTo(text.vertex[0].x - 5, text.vertex[0].y - 5); // (x_ini, y_ini)
 	context.fill();
+	context.stroke();
+	context.closePath();
 
 	// CIRCULO
 	/*context.setLineDash([5, 5]);
@@ -312,93 +322,41 @@ const u_textBordeSegmentado = (context, text) => {
 };
 // RESIZE:
 const u_textSearchPtoClickResize = (x, y, text) => {
-	let resp = '';
-	if (text.ptoS.x_ini <= x && x <= text.ptoS.x_fin && text.ptoS.y_ini <= y && y <= text.ptoS.y_fin ) {
-		resp = 'ini';
-		text.radioX = text.x_ini;
-		text.radioY = text.y_ini;
-		text.radioXS = text.x_ini - 5;
-		text.radioYS = text.y_ini - 5;
+	let resp = -1;
+	if (text.vertex[0].x - 5 <= x && x <= text.vertex[0].x + 5 && text.vertex[0].y - 5 <= y && y <= text.vertex[0].y + 5 ) {
+		resp = text.vertex[0].pto;
 	}
 	return resp;
 }
 // ROTATE:
 const u_textRotate = (text, mouse) => {
-	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
-	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
 	// RECTA 1:
-	text.radioX += recorrido_x;
-	text.radioY += recorrido_y;
-	let rec1 = rectaQuePasaPorDosPtos({x:text.radioX, y:text.radioY}, {x:text.h, y:text.k});
-	let cir1 = circunferenciaConCentroRadio({h:text.h, k:text.k}, text.radio);
-	let resp1 = interseccionRectaCircunferencia(rec1, cir1);
-	let d1_1 = u_distanciaEntreDosPtos({x:resp1.x1, y:resp1.y1}, {x:text.x_ini, y:text.y_ini});
-	let d1_2 = u_distanciaEntreDosPtos({x:resp1.x2, y:resp1.y2}, {x:text.x_ini, y:text.y_ini});
-	if (d1_1 < d1_2) {
-		text.x_ini = resp1.x1;
-		text.y_ini = resp1.y1;
-		text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
-		text.vertex[0] = { x : resp1.x1, y : resp1.y1 };
-		text.vertex[2] = { x : resp1.x2, y : resp1.y2};
+	let recMouse = rectaQuePasaPorDosPtos({x:mouse.pos.x, y:mouse.pos.y},{x:text.h, y:text.k});
+	let cirRadio = circunferenciaConCentroRadio({h:text.h, k:text.k}, text.radio + 5);
+	let resp1 = interseccionRectaCircunferencia(recMouse, cirRadio);
+	let d1 = u_distanciaEntreDosPtos({x:mouse.pos.x, y:mouse.pos.y}, {x:resp1.x1, y:resp1.y1});
+	let d2 = u_distanciaEntreDosPtos({x:mouse.pos.x, y:mouse.pos.y}, {x:resp1.x2, y:resp1.y2});
+	if (d1 < d2) {
+		text.vertex[0].x = resp1.x1; text.vertex[0].y = resp1.y1;
+		text.vertex[2].x = resp1.x2; text.vertex[2].y = resp1.y2;
 	} else {
-		text.x_ini = resp1.x2;
-		text.y_ini = resp1.y2;
-		text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
-		text.vertex[0] = { x : resp1.x2, y : resp1.y2 };
-		text.vertex[2] = { x : resp1.x1, y : resp1.y1};
+		text.vertex[0].x = resp1.x2; text.vertex[0].y = resp1.y2;
+		text.vertex[2].x = resp1.x1; text.vertex[2].y = resp1.y1;
 	}
-	// RECTA 2:
-	let rec2 = anguloEntreDosRectasCaso1(rec1, -text.angulo, {x:text.h, y:text.k});
-	let resp2 = interseccionRectaCircunferencia(rec2, cir1);
-	let d2_1 = u_distanciaEntreDosPtos({x:resp2.x1, y:resp2.y1}, {x:text.x_ini, y:text.y_ini});
-	let d2_2 = u_distanciaEntreDosPtos({x:resp2.x2, y:resp2.y2}, {x:text.x_ini, y:text.y_ini});
-	if (d2_1 < d2_2) {
-		text.vertex[3] = { x : resp2.x1, y : resp2.y1};
-		text.vertex[1] = { x : resp2.x2, y : resp2.y2};
+	let recAngulo = anguloEntreDosRectasCaso1(recMouse, 180 - text.angulo, {x:text.h, y:text.k});
+	let resp2 = interseccionRectaCircunferencia(recAngulo, cirRadio);
+	d1 = u_distanciaEntreDosPtos({x:text.vertex[0].x, y:text.vertex[0].y}, {x:resp2.x1, y:resp2.y1});
+	d2 = u_distanciaEntreDosPtos({x:text.vertex[0].x, y:text.vertex[0].y}, {x:resp2.x2, y:resp2.y2});
+	if (d1 < d2) {
+		text.vertex[3].x = resp2.x1; text.vertex[3].y = resp2.y1;
+		text.vertex[1].x = resp2.x2; text.vertex[1].y = resp2.y2;
 	} else {
-		text.vertex[3] = { x : resp2.x2, y : resp2.y2};
-		text.vertex[1] = { x : resp2.x1, y : resp2.y1};
+		text.vertex[3].x = resp2.x2; text.vertex[3].y = resp2.y2;
+		text.vertex[1].x = resp2.x1; text.vertex[1].y = resp2.y1;
 	}
-
-	// RECTA 1:
-	text.radioXS += recorrido_x;
-	text.radioYS += recorrido_y;
-	rec1 = rectaQuePasaPorDosPtos({x:text.radioXS, y:text.radioYS}, {x:text.h, y:text.k});
-	cir1 = circunferenciaConCentroRadio({h:text.h, k:text.k}, text.radioS);
-	resp1 = interseccionRectaCircunferencia(rec1, cir1);
-	d1_1 = u_distanciaEntreDosPtos({x:resp1.x1, y:resp1.y1}, {x:text.x_ini - 5, y:text.y_ini - 5});
-	d1_2 = u_distanciaEntreDosPtos({x:resp1.x2, y:resp1.y2}, {x:text.x_ini - 5, y:text.y_ini - 5});
-	if (d1_1 < d1_2) {
-		text.vertexS[0] = { x : resp1.x1, y : resp1.y1 };
-		text.vertexS[2] = { x : resp1.x2, y : resp1.y2};
-		text.ptoS = {
-			x_ini:text.vertexS[0].x - 5, y_ini:text.vertexS[0].y - 5,
-			x_fin:text.vertexS[0].x + 5, y_fin:text.vertexS[0].y + 5
-		};
-	} else {
-		text.vertexS[0] = { x : resp1.x2, y : resp1.y2 };
-		text.vertexS[2] = { x : resp1.x1, y : resp1.y1};
-		text.ptoS = {
-			x_ini:text.vertexS[0].x - 5, y_ini:text.vertexS[0].y - 5,
-			x_fin:text.vertexS[0].x + 5, y_fin:text.vertexS[0].y + 5
-		};
-	}
-	// RECTA 2:
-	rec2 = anguloEntreDosRectasCaso1(rec1, -text.anguloS, {x:text.h, y:text.k});
-	resp2 = interseccionRectaCircunferencia(rec2, cir1);
-	d2_1 = u_distanciaEntreDosPtos({x:resp2.x1, y:resp2.y1}, {x:text.x_ini - 5, y:text.y_ini - 5});
-	d2_2 = u_distanciaEntreDosPtos({x:resp2.x2, y:resp2.y2}, {x:text.x_ini - 5, y:text.y_ini - 5});
-	if (d2_1 < d2_2) {
-		text.vertexS[3] = { x : resp2.x1, y : resp2.y1};
-		text.vertexS[1] = { x : resp2.x2, y : resp2.y2};
-	} else {
-		text.vertexS[3] = { x : resp2.x2, y : resp2.y2};
-		text.vertexS[1] = { x : resp2.x1, y : resp2.y1};
-	}
-	// ROTA TEXT:
-	let rec3 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_ini}, {x:text.h, y:text.k});
-	let rec4 = rectaQuePasaPorDosPtos({x:text.h - 1, y:text.k}, {x:text.h, y:text.k});
-	let angulo = anguloEntreDosRectasCaso2(rec3, rec4);
+	// ROTATE TEXT:
+	let recHorizontal = rectaQuePasaPorDosPtos({x:text.h - 1, y:text.k}, {x:text.h, y:text.k});
+	let angulo = anguloEntreDosRectasCaso2(recMouse, recHorizontal);
 	text.rotateDeg = angulo - text.rotateDegPrev;
 
 	return text;
@@ -408,47 +366,45 @@ const u_textRotate = (text, mouse) => {
 const u_textValidChar = (ascci) => {
 	return (32 === ascci) || (65 <= ascci && ascci <= 90) || (48 <= ascci && ascci <= 57) || (186 <= ascci && ascci <= 192) || (219 <= ascci && ascci <= 222);
 }
-
-// ANGULO ENTRE DOS RECTAS:
-const u_textAngulo = (text) => {
-	let h = text.x_ini + (text.x_fin - text.x_ini)/2;
-	let k = text.y_ini + (text.y_fin - text.y_ini)/2;
-	text.h = h;
-	text.k = k;
-
+// TEXT: SearchVertex:
+export const u_textSearchVertex = (text) => {
 	let r1 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_ini},{x:text.h, y: text.k});
 	let r2 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_fin},{x:text.h, y: text.k});
-	let angulo = anguloEntreDosRectasCaso2(r1, r2);
-	text.angulo = angulo;
-
-	let radio = u_distanciaEntreDosPtos({x:text.x_ini, y:text.y_ini},{x:text.h, y:text.k});
-	text.radio = radio;
-
-	text.width = text.x_fin - text.x_ini;
-	text.height = text.y_fin - text.y_ini;
-
-	if (text.rotateDegPrev === 0) {
-		let rec1 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_ini}, {x:text.h, y:text.k});
-		let rec2 = rectaQuePasaPorDosPtos({x:text.h - 1, y:text.k}, {x:text.h, y:text.k});
-		let angulo2 = anguloEntreDosRectasCaso2(rec1, rec2);
-		text.rotateDegPrev = angulo2;
+	let cir = circunferenciaConCentroRadio({h:text.h, k:text.k}, text.radio + 5);
+	let resp1 = interseccionRectaCircunferencia(r1, cir);
+	let d1 = u_distanciaEntreDosPtos({x:text.x_ini, y:text.y_ini}, {x:resp1.x1, y:resp1.y1});
+	let d2 = u_distanciaEntreDosPtos({x:text.x_ini, y:text.y_ini}, {x:resp1.x2, y:resp1.y2});
+	if (d1 < d2) {
+		text.vertex[0].x = resp1.x1;
+		text.vertex[0].y = resp1.y1;
+		text.vertex[2].x = resp1.x2;
+		text.vertex[2].y = resp1.y2;
+	} else {
+		text.vertex[0].x = resp1.x2;
+		text.vertex[0].y = resp1.y2;
+		text.vertex[2].x = resp1.x1;
+		text.vertex[2].y = resp1.y1;
 	}
-
-	// PARTE 2:
-	r1 = rectaQuePasaPorDosPtos({x:text.x_ini - 5, y:text.y_ini - 5},{x:text.h, y: text.k});
-	r2 = rectaQuePasaPorDosPtos({x:text.x_ini - 5, y:text.y_fin + 5},{x:text.h, y: text.k});
-	angulo = anguloEntreDosRectasCaso2(r1, r2);
-	text.anguloS = angulo;
-	radio = u_distanciaEntreDosPtos({x:text.x_ini - 5, y:text.y_ini - 5},{x:text.h, y:text.k});
-	text.radioS = radio;
-	if (text.rotateDegPrevS === 0) {
-		let rec1 = rectaQuePasaPorDosPtos({x:text.x_ini - 5, y:text.y_ini - 5}, {x:text.h, y:text.k});
-		let rec2 = rectaQuePasaPorDosPtos({x:text.h - 1, y:text.k}, {x:text.h, y:text.k});
-		let angulo2 = anguloEntreDosRectasCaso2(rec1, rec2);
-		text.rotateDegPrevS = angulo2;
+	let resp2 = interseccionRectaCircunferencia(r2, cir);
+	d1 = u_distanciaEntreDosPtos({x:text.x_ini, y:text.y_fin}, {x:resp2.x1, y:resp2.y1});
+	d2 = u_distanciaEntreDosPtos({x:text.x_ini, y:text.y_fin}, {x:resp2.x2, y:resp2.y2});
+	if (d1 < d2) {
+		text.vertex[3].x = resp2.x1;
+		text.vertex[3].y = resp2.y1;
+		text.vertex[1].x = resp2.x2;
+		text.vertex[1].y = resp2.y2;
+	} else {
+		text.vertex[3].x = resp2.x2;
+		text.vertex[3].y = resp2.y2;
+		text.vertex[1].x = resp2.x1;
+		text.vertex[1].y = resp2.y1;
 	}
-
-	return text;
+}
+// TEXT: SearchAngulo:
+export const u_textSearchAngulo = (text) => {
+	let r1 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_ini},{x:text.h, y: text.k});
+	let r2 = rectaQuePasaPorDosPtos({x:text.x_ini, y:text.y_fin},{x:text.h, y: text.k});
+	text.angulo = anguloEntreDosRectasCaso2(r1, r2);
 }
 export {
 	u_textGraficaH,
@@ -462,5 +418,4 @@ export {
 	u_textValidChar,
 	u_textPositionCursor,
 	u_textRotate,
-	u_textAngulo
 };

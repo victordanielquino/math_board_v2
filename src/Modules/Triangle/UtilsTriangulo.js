@@ -48,7 +48,7 @@ const u_trianguloProductoCruz_UxV = (p1, p2, p3) => {
 }
 // TRIANGULO: CUADRADOS PEQUEÑOS PARA MODIFICAR EL TAMANO DEL TRIANGULO:
 const u_trianguloGetPtsRedimencion = (triangulo) => {
-    let width_p = 10;
+    let width_p = 5;
     let vectorPuntosCuadrado = [
         {
             x1: triangulo.x1 - width_p,
@@ -73,9 +73,9 @@ const u_trianguloGetPtsRedimencion = (triangulo) => {
 };
 // TRIANGULO: CUADRADO SEGMENTADO ALREDEDOR DEL TRIANGULO SELECCIONADO
 const u_trianguloBordeSegmentado = (context, triangulo) => {
-    context.strokeStyle = 'red'; // borde Color
+    context.strokeStyle = '#1976d2'; // borde Color
     context.lineWidth = 2; // borde grosor de linea
-    context.setLineDash([10, 4]); // lineas segmentadas
+    context.setLineDash([5, 5]); // lineas segmentadas
 
     context.beginPath();
     context.moveTo(triangulo.x1, triangulo.y1); // (x_ini, y_ini)
@@ -85,7 +85,8 @@ const u_trianguloBordeSegmentado = (context, triangulo) => {
     context.stroke();
     context.closePath();
 
-    context.fillStyle = 'red'; // borde Color
+    context.strokeStyle = '#1976d2'; // borde Color
+    context.fillStyle = 'white'; // borde Color
     context.setLineDash([0, 0]); // lineas segmentadas
 
     let array = u_trianguloGetPtsRedimencion(triangulo);
@@ -97,6 +98,7 @@ const u_trianguloBordeSegmentado = (context, triangulo) => {
         context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
         context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
         context.fill();
+        context.stroke();
         context.closePath();
     });
 };

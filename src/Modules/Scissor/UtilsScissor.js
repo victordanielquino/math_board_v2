@@ -1,6 +1,6 @@
 export const u_scissorDrawRectangulo = (context, scissor) => {
-    context.strokeStyle = 'red'; // borde Color
-    context.lineWidth = 1; // borde grosor de linea
+    context.strokeStyle = '#1976d2';
+    context.lineWidth = 2; // borde grosor de linea
     context.setLineDash([5, 5]); // lineas segmentadas
 
     let x_ini = scissor.x_ini;
@@ -18,7 +18,8 @@ export const u_scissorDrawRectangulo = (context, scissor) => {
     context.closePath();
 
     if (scissor.vertex.length > 0) {
-        context.fillStyle = 'red'; // borde Color
+        context.strokeStyle = '#1976d2';
+        context.fillStyle = 'white'; // borde Color
         context.setLineDash([0, 0]); // lineas segmentadas
         scissor.vertex.forEach((elm) => {
             context.beginPath();
@@ -28,6 +29,7 @@ export const u_scissorDrawRectangulo = (context, scissor) => {
             context.lineTo(elm.x_ini, elm.y_fin); // (x_ini, y_fin)
             context.lineTo(elm.x_ini, elm.y_ini); // (x_ini, y_ini)
             context.fill();
+            context.stroke();
             context.closePath();
         });
     }

@@ -50,7 +50,7 @@ const useStyles  = makeStyles(theme => ({
 }))
 const NavIzq = () => {
 	// useContext:
-	const { state, updateCanvasPaleta , s_setActiveActivePrev} = useContext(AppContext);
+	const { state, s_setActiveActivePrev} = useContext(AppContext);
 	const { updateMoverActive } = useContext(AppContextMover);
 	const { updateLapizActive } = useContext(AppContextLapiz);
 	const { updateBorradorActive } = useContext(AppContextBorrador);
@@ -58,7 +58,7 @@ const NavIzq = () => {
 	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 	const { updateLineaActive } = useContext(AppContextLinea);
 	const { updatePlanoActive } = useContext(AppContextPlano);
-	const { updateTextActive } = useContext(AppContextText);
+	const { h_textSetActive } = useContext(AppContextText);
 	const { updateCirculoActive } = useContext(AppContextCirculo);
 	const { s_trianguloUpdateActive } = useContext(AppContextTriangulo);
 	const { s_imagenUpdateActive } = useContext(AppContextImagen);
@@ -124,7 +124,7 @@ const NavIzq = () => {
 				updateCuadriculaActive(boolean);
 				break;
 			case 'textIcon':
-				updateTextActive(boolean);
+				h_textSetActive(boolean);
 				break;
 			case 'circuloIcon':
 				updateCirculoActive(boolean);

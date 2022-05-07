@@ -6,8 +6,8 @@ const initialStateText = {
 	y_ini: 0,
 	x_fin: 0,
 	y_fin: 0,
-	fontAlign: 'start',	// startr, end
-	fontBaseline: 'top', // top, bottom
+	fontAlign: 'start',	// start, end; alineacion horizontal
+	fontBaseline: 'top', // top, bottom: alineacion vertical
 	fontColor: 'black',
 	fontBold: '', // bold
 	fontItalic: '', // italic
@@ -24,7 +24,7 @@ const initialStateText = {
 const useText = () => {
 	const [stateText, setStateText] = useState(initialStateText);
 
-	const updateTextActive = (valor) => {
+	const h_textSetActive = (valor) => {
 		setStateText({
 			...stateText,
 			active: valor,
@@ -168,7 +168,7 @@ const useText = () => {
 
 	return {
 		stateText,
-		updateTextActive,
+		h_textSetActive,
 		s_textAddH,
 		s_textAddHId,
 

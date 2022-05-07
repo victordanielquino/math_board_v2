@@ -152,7 +152,7 @@ const u_lapizOpera = (lapizSelect, array, mouse) => {
 }
 // LAPIZ: SEGMENTADO:
 const u_lapizBordeSegmentado = (context, lapiz) => {
-	context.strokeStyle = 'red'; // borde Color
+	context.strokeStyle = '#1976d2'; // borde Color
 	context.lineWidth = 1; // borde grosor de linea
 	context.setLineDash([10, 4]); // lineas segmentadas
 

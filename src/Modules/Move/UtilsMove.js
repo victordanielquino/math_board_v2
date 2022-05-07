@@ -96,10 +96,10 @@ export const u_moveDuplicatePencil = (pencil, recorrido_x, recorrido_y) => {
 export const u_moveDuplicateText = (textIn, recorrido_x, recorrido_y) => {
     let text = {
         id: textIn.id,
-        x_ini: textIn.x_ini,
-        y_ini: textIn.y_ini,
-        x_fin: textIn.x_fin,
-        y_fin: textIn.y_fin,
+        x_ini: textIn.x_ini + recorrido_x,
+        y_ini: textIn.y_ini + recorrido_y,
+        x_fin: textIn.x_fin + recorrido_x,
+        y_fin: textIn.y_fin + recorrido_y,
         visible: textIn.visible,
         edit: textIn.edit,
 
@@ -115,22 +115,31 @@ export const u_moveDuplicateText = (textIn, recorrido_x, recorrido_y) => {
         fontFocus: false,
         canvas: textIn.canvas,
         types: 'text',
-        cursor: 0,
+        cursor: textIn.cursor,
         line:{
-            x_ini: textIn.line.x_ini,
-            y_ini: textIn.line.y_ini,
-            x_fin: textIn.line.x_fin,
-            y_fin: textIn.line.y_fin,
+            x_ini: textIn.line.x_ini + recorrido_x,
+            y_ini: textIn.line.y_ini + recorrido_y,
+            x_fin: textIn.line.x_fin + recorrido_x,
+            y_fin: textIn.line.y_fin + recorrido_y,
         },
+
+        vertex: [
+            {x:textIn.vertex[0].x + recorrido_x, y:textIn.vertex[0].y + recorrido_y, pto:0},
+            {x:textIn.vertex[1].x + recorrido_x, y:textIn.vertex[1].y + recorrido_y, pto:1},
+            {x:textIn.vertex[2].x + recorrido_x, y:textIn.vertex[2].y + recorrido_y, pto:2},
+            {x:textIn.vertex[3].x + recorrido_x, y:textIn.vertex[3].y + recorrido_y, pto:3},
+        ],
+        select: false,
+        rotateDeg: textIn.rotateDeg,
+        rotateDegPrev: textIn.rotateDegPrev,
+        angulo: textIn.angulo,
+        radio: textIn.radio,
+        h: textIn.h + recorrido_x,
+        k: textIn.k + recorrido_y,
+        width: textIn.width,
+        height: textIn.height,
     };
-    text.x_ini = text.x_ini + recorrido_x;
-    text.x_fin = text.x_fin + recorrido_x;
-    text.y_ini = text.y_ini + recorrido_y;
-    text.y_fin = text.y_fin + recorrido_y;
-    text.line.x_ini += recorrido_x;
-    text.line.y_ini += recorrido_y;
-    text.line.x_ini += recorrido_x;
-    text.line.y_ini += recorrido_y;
+
     return text;
 }
 // MOVE: Line duplicate
@@ -227,18 +236,35 @@ export const u_moveDuplicateSquare = (squareIn, recorrido_x, recorrido_y) => {
         bordeColor: squareIn.bordeColor,
         fondoEstado: squareIn.fondoEstado,
         fondoColor: squareIn.fondoColor,
-        x_ini: squareIn.x_ini,
-        y_ini: squareIn.y_ini,
-        x_fin: squareIn.x_fin,
-        y_fin: squareIn.y_fin,
+        x_ini: squareIn.x_ini + recorrido_x,
+        y_ini: squareIn.y_ini + recorrido_y,
+        x_fin: squareIn.x_fin + recorrido_x,
+        y_fin: squareIn.y_fin + recorrido_y,
         canvas: squareIn.canvas,
         types: 'square',
+
+        h: squareIn.h + recorrido_x,
+        k: squareIn.k + recorrido_y,
+        angulo: squareIn.angulo,
+        radio: squareIn.radio,
+        radioX: squareIn.radioX,
+        radioY: squareIn.radioY,
+        deg: squareIn.deg,
+        degPrev: squareIn.degPrev,
+        pts: [],
+        vertex: [
+            {x:squareIn.vertex[0].x + recorrido_x, y:squareIn.vertex[0].y + recorrido_y, pto: 0},
+            {x:squareIn.vertex[1].x + recorrido_x, y:squareIn.vertex[1].y + recorrido_y, pto: 1},
+            {x:squareIn.vertex[2].x + recorrido_x, y:squareIn.vertex[2].y + recorrido_y, pto: 2},
+            {x:squareIn.vertex[3].x + recorrido_x, y:squareIn.vertex[3].y + recorrido_y, pto: 3},
+            {x:squareIn.vertex[4].x + recorrido_x, y:squareIn.vertex[4].y + recorrido_y, pto: 4},
+            {x:squareIn.vertex[5].x + recorrido_x, y:squareIn.vertex[5].y + recorrido_y, pto: 5},
+            {x:squareIn.vertex[6].x + recorrido_x, y:squareIn.vertex[6].y + recorrido_y, pto: 6},
+            {x:squareIn.vertex[7].x + recorrido_x, y:squareIn.vertex[7].y + recorrido_y, pto: 7},
+        ],
+        move: false,
     };
 
-    square.x_ini = square.x_ini + recorrido_x;
-    square.y_ini = square.y_ini + recorrido_y;
-    square.x_fin = square.x_fin + recorrido_x;
-    square.y_fin = square.y_fin + recorrido_y;
     return square;
 }
 // MOVE: Circle duplicate

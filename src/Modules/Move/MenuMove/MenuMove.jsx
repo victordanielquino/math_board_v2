@@ -9,6 +9,7 @@ import {Button, ButtonGroup, FormControl, MenuItem, Select, Typography} from "@m
 import MoveDownIcon                                                     from '@mui/icons-material/MoveDown';
 import MoveUpIcon           from '@mui/icons-material/MoveUp';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import {isObjectEmpty} from "../../../utils/utils";
 import {
 	u_moveDownElement,
@@ -26,7 +27,7 @@ import useStylesMenuMove from "./MenuMoveStyle";
 
 const MenuMove = () => {
 	// CONTEXT:
-	const { state, h_updateH, h_addH } = useContext(AppContext);
+	const { state, h_updateH, h_addH, s_setActiveActivePrev } = useContext(AppContext);
 	const { stateMover } = useContext(AppContextMover);
 
 	// STATE:
@@ -130,6 +131,11 @@ const MenuMove = () => {
 			default:
 				break;
 		}
+	}
+	const handleEditable = () => {
+		console.log(stateMover.obj);
+		stateMover.obj.select = true;
+		//s_setActiveActivePrev('textIcon', 'moverIcon');
 	}
 	const updatePaletaEdit = () => {
 		if(stateMover.selectElm) {
@@ -269,6 +275,19 @@ const MenuMove = () => {
 					</Select>
 				}
 			</FormControl>
+			{
+				(stateMover.obj.types === 'text') &&
+				<Button
+					variant='outlined'
+					onClick={() => handleEditable()}
+					disabled={disabledUpDown}
+					size='small'
+					startIcon={<BorderColorIcon/>}
+					style={{marginLeft:'25px'}}
+				>
+					edit
+				</Button>
+			}
 		</div>
 	)
 };

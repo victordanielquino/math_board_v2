@@ -123,7 +123,7 @@ const u_imagenClickSobreImagen = (imagenSelect, mouse) => {
 }
 // CUADRADOS PEQUEÑOS PAR UPDATE DEL CUADRADO:
 const u_imagenGetPtsRedimencion = (imagen) => {
-    let width_p = 10;
+    let width_p = 5;
     let width_c = 2;
 
     let x_ini = imagen.x_ini - width_c;
@@ -216,9 +216,9 @@ const u_imagenOpera = (imagenSelect, array, mouse) => {
 }
 // IMAGEN: BORDE SEGMENTADO
 const u_imagenBordeSegmentado = (context, imagen) => {
-    context.strokeStyle = 'red'; // borde Color
-    context.lineWidth = 3; // borde grosor de linea
-    context.setLineDash([10, 4]); // lineas segmentadas
+    context.strokeStyle = '#1976d2'; // borde Color
+    context.lineWidth = 2; // borde grosor de linea
+    context.setLineDash([5, 5]); // lineas segmentadas
 
     context.beginPath();
     context.moveTo(imagen.x_ini, imagen.y_ini); // (x_ini, y_ini)
@@ -229,7 +229,8 @@ const u_imagenBordeSegmentado = (context, imagen) => {
     context.stroke();
     context.closePath();
 
-    context.fillStyle = 'red'; // borde Color
+    context.strokeStyle = '#1976d2'; // borde Color
+    context.fillStyle = 'white'; // borde Color
     context.setLineDash([0, 0]); // lineas segmentadas
 
     let array = u_imagenGetPtsRedimencion(imagen);
@@ -241,6 +242,7 @@ const u_imagenBordeSegmentado = (context, imagen) => {
         context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
         context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
         context.fill();
+        context.stroke();
         context.closePath();
     });
 };

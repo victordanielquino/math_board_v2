@@ -343,7 +343,7 @@ const u_lineaGraficaH = (context, array) => {
 };
 // CUADRADOS PARA UPDATE LINEA:
 const u_lineaGetPtsRedimencion = (linea) => {
-	let width_p = 10;
+	let width_p = 5;
 	let vectorPuntosLinea = [];
 	vectorPuntosLinea = [
 		{
@@ -672,9 +672,9 @@ const u_lineaOpera = (lineaSelect, array, mouse) => {
 }
 // LINEA: BORDE LINEA
 const bordeSegmentadoLine = (context, linea) => {
-	context.strokeStyle = 'red'; // borde Color
-	context.lineWidth = 1; // borde grosor de linea
-	context.setLineDash([10, 4]); // lineas segmentadas
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
+	context.setLineDash([5, 5]); // lineas segmentadas
 	let x_ini = linea.x_ini;
 	let y_ini = linea.y_ini;
 	let x_fin = linea.x_fin;
@@ -705,7 +705,8 @@ const bordeSegmentadoLine = (context, linea) => {
 	context.stroke();
 	context.closePath();
 
-	context.fillStyle = 'red'; // borde Color
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.fillStyle = 'white'; // borde Color
 	context.setLineDash([0, 0]); // lineas segmentadas
 
 	let array = u_lineaGetPtsRedimencion(linea);
@@ -717,14 +718,15 @@ const bordeSegmentadoLine = (context, linea) => {
 		context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
 		context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
 		context.fill();
+		context.stroke();
 		context.closePath();
 	});
 }
 // LINEA: BORDE LINEA
 const bordeSegmentadoVector = (context, vector) => {
-	context.strokeStyle = 'red'; // borde Color
-	context.lineWidth = 1; // borde grosor de linea
-	context.setLineDash([10, 4]); // lineas segmentadas
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
+	context.setLineDash([5, 5]); // lineas segmentadas
 	let x_ini = vector.x_ini;
 	let y_ini = vector.y_ini;
 	let x_fin = vector.x_fin;
@@ -755,7 +757,8 @@ const bordeSegmentadoVector = (context, vector) => {
 	context.stroke();
 	context.closePath();
 
-	context.fillStyle = 'red'; // borde Color
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.fillStyle = 'white'; // borde Color
 	context.setLineDash([0, 0]); // lineas segmentadas
 
 	let array = u_lineaGetPtsRedimencion(vector);
@@ -767,14 +770,15 @@ const bordeSegmentadoVector = (context, vector) => {
 		context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
 		context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
 		context.fill();
+		context.stroke();
 		context.closePath();
 	});
 }
 // CUADRATIC: BORDE SEGMENTADO
 const bordeSegmentadoCuadratic = (context, cuadratic) => {
-	context.strokeStyle = 'red'; // borde Color
-	context.lineWidth = 1; // borde grosor de linea
-	context.setLineDash([10, 4]); // lineas segmentadas
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.lineWidth = 2; // borde grosor de linea
+	context.setLineDash([5, 5]); // lineas segmentadas
 
 	context.beginPath();
 	context.moveTo(cuadratic.cdc_xmin, cuadratic.cdc_ymin);
@@ -785,13 +789,18 @@ const bordeSegmentadoCuadratic = (context, cuadratic) => {
 	context.stroke();
 	context.closePath();
 
-	context.fillStyle = 'red'; // borde Color
-
+	context.strokeStyle = '#1976d2'; // borde Color
+	context.fillStyle = 'white'; // borde Color
+	context.setLineDash([0, 0]); // lineas segmentadas
 	context.beginPath();
-	context.fillRect(cuadratic.x_ini-10, cuadratic.y_ini-10, 20, 20);
-	context.fillRect(cuadratic.x_fin-10, cuadratic.y_fin-10, 20, 20);
-	context.fillRect(cuadratic.cdc_pto_x2-10, cuadratic.cdc_pto_y2-10, 20, 20);
+	context.fillRect(cuadratic.x_ini-5, cuadratic.y_ini-5, 10, 10);
+	context.strokeRect(cuadratic.x_ini-5, cuadratic.y_ini-5, 10, 10);
+	context.fillRect(cuadratic.x_fin-5, cuadratic.y_fin-5, 10, 10);
+	context.strokeRect(cuadratic.x_fin-5, cuadratic.y_fin-5, 10, 10);
+	context.fillRect(cuadratic.cdc_pto_x2-5, cuadratic.cdc_pto_y2-5, 10, 10);
+	context.strokeRect(cuadratic.cdc_pto_x2-5, cuadratic.cdc_pto_y2-5, 10, 10);
 	context.fill();
+	context.stroke();
 	context.closePath();
 }
 // LINEA SEGMENTADO:

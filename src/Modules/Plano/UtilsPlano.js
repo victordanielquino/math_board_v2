@@ -305,7 +305,7 @@ const u_planoDeleteById = (array, id) => {
 };
 // PLANO: CUADRADOS PEQUEÑOS REDIMENCIONAR PLANO
 const u_planoGetPtsRedimencion = (cuadrado) => {
-	let width_p = 10;
+	let width_p = 5;
 	let width_c = 2;
 
 	let x_ini = cuadrado.x_ini - width_c;
@@ -492,9 +492,9 @@ const u_planoOpera = (context, planoSelect, array, mouse) => {
 }
 // PLANO: SEGMENTADO:
 const u_planoBordeSegmentado = (context, plano) => {
-	context.strokeStyle = 'red'; // borde Color
+	context.strokeStyle = '#1976d2'; // borde Color
 	context.lineWidth = 2; // borde grosor de linea
-	context.setLineDash([14, 4]); // lineas segmentadas
+	context.setLineDash([5, 5]); // lineas segmentadas
 
 	let x_ini = plano.x_ini - 2;
 	let y_ini = plano.y_ini - 2;
@@ -510,8 +510,9 @@ const u_planoBordeSegmentado = (context, plano) => {
 	context.stroke();
 	context.closePath();
 
-	context.fillStyle = 'red'; // borde Color
-	context.setLineDash([14, 4]); // lineas segmentadas
+	context.strokeStyle = '#1976d2';
+	context.fillStyle = 'white'; // borde Color
+	context.setLineDash([0, 0]); // lineas segmentadas
 
 	let array = u_planoGetPtsRedimencion(plano);
 	array.forEach((elem) => {
@@ -522,6 +523,7 @@ const u_planoBordeSegmentado = (context, plano) => {
 		context.lineTo(elem.x1, elem.y2); // (x_ini, y_fin)
 		context.lineTo(elem.x1, elem.y1); // (x_ini, y_ini)
 		context.fill();
+		context.stroke();
 		context.closePath();
 	});
 };

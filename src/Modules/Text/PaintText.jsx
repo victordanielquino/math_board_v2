@@ -5,10 +5,17 @@ import AppContextText from "../../context/AppContextText";
 import AppContextGrid from "../../context/AppContextGrid";
 
 // UTILS:
-import AppContext                                                                from "../../context/AppContext";
-import draw                                                                      from '../Draw/Draw';
-import {isObjectEmpty}                                                                         from "../../utils/utils";
-import {u_textAngulo, u_textLineAnimation, u_textMover, u_textPositionCursor, u_textValidChar} from "./UtilsText";
+import AppContext                                                                              from "../../context/AppContext";
+import draw                                                                                    from '../Draw/Draw';
+import {isObjectEmpty, u_canvasAutoSize}                                                       from "../../utils/utils";
+import {
+    u_textLineAnimation,
+    u_textMover,
+    u_textPositionCursor, u_textSearchAngulo,
+    u_textSearchVertex,
+    u_textValidChar
+} from "./UtilsText";
+import {u_distanciaEntreDosPtos}                                                               from "../../utils/geometriaAnalitica";
 
 const PaintText = (id_canvas) => {
     // CONTEXT:
@@ -64,36 +71,31 @@ const PaintText = (id_canvas) => {
         fontTypografia: stateText.fontTypografia,
         fontSize: stateText.fontSize,
         fontText: '',
-        fontFocus: false,
         canvas: stateText.canvas,
         types: 'text',
         cursor: 0,
         line:{},
-        vertex: [],
-        pto: {},
 
+        vertex: [
+            {x:0, y:0, pto:0},
+            {x:0, y:0, pto:1},
+            {x:0, y:0, pto:2},
+            {x:0, y:0, pto:3},
+        ],
+        select: false,
         rotateDeg: 0,
         rotateDegPrev: 0,
         angulo: 0,
         radio: 0,
-        radioX: 0,
-        radioY: 0,
         h: 0,
         k: 0,
         width: 0,
         height: 0,
-
-        vertexS:[], // S: segment
-        ptoS: {},
-        rotateDegS: 0,
-        rotateDegPrevS: 0,
-        anguloS: 0,
-        radioS: 0,
-        radioXS: 0,
-        radioYS: 0,
     };
     let canvas = '';
     let context = '';
+    let canvasTextDatos = { top: 0, left: 0, width: 0, height: 0 };
+    let color = 'white';
     const mouse = {
         click: false,
         move: false,
@@ -109,20 +111,35 @@ const PaintText = (id_canvas) => {
         mouse.pos_prev.y = mouse.pos.y;
         mouse.pos.x = x_real;
         mouse.pos.y = y_real;
-        text.x_ini = mouse.pos_prev.x;
+        /*text.x_ini = mouse.pos_prev.x;
         text.y_ini = mouse.pos_prev.y;
         text.x_fin = mouse.pos.x;
-        text.y_fin = mouse.pos.y;
+        text.y_fin = mouse.pos.y;*/
     };
+    const beginInterval = () => {
+        canvas = document.getElementById(id_canvas);
+        context = canvas.getContext('2d');
+        let auxAnimation = setInterval(() => {
+            paintAnimation(color);
+            color === 'white' ? color = 'black': color = 'white';
+        }, 500);
+        setToggleAnimation(auxAnimation);
+    }
+    const stopInterval = () => {
+        clearInterval(toggleAnimation);
+    }
     // 1
     const mouseDownText = (e) => {
+        console.log('1', text)
         mouse.click = true;
         captura_Pos_Posprev(e);
-        //handleClick();
+        text.x_ini = mouse.pos.x;
+        text.y_ini = mouse.pos.y;
     };
     // 2
     const mouseMoveText = (e) => {
         if (mouse.click && !isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
+            console.log('2')
             captura_Pos_Posprev(e);
             u_textMover(stateText.textSelect, mouse)
             paint();
@@ -130,17 +147,19 @@ const PaintText = (id_canvas) => {
     };
     // 3
     const mouseUpText = async (e) => {
+        console.log('3:', stateText.textSelect)
         if (isObjectEmpty(stateText.textSelect)){
+            console.log('prueba 1')
             captura_Pos_Posprev(e);
             if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                 text.y_ini = text.y_ini - text.fontSize;
                 text.id = state.id;
                 text.pto = {x_ini:text.x_ini - 5, y_ini:text.y_ini - 5, x_fin:text.x_ini + 5, y_fin:text.y_ini + 5};
                 text.vertex = [
-                    { x : text.x_ini, y : text.y_ini },
-                    { x : text.x_fin, y : text.y_ini},
-                    { x : text.x_fin, y : text.y_fin},
-                    { x : text.x_ini, y : text.y_fin},
+                    { x : text.x_ini, y : text.y_ini, pto:0 },
+                    { x : text.x_fin, y : text.y_ini, pto:1 },
+                    { x : text.x_fin, y : text.y_fin, pto:2 },
+                    { x : text.x_ini, y : text.y_fin, pto:3 },
                 ];
                 text.radioX = text.x_ini;
                 text.radioY = text.y_ini;
@@ -157,9 +176,12 @@ const PaintText = (id_canvas) => {
                 };
                 text.radioXS = text.x_ini - 5;
                 text.radioYS = text.y_ini - 5;
+                console.log('3 historia:', text);
                 h_addH(text);
             }
         } else {
+            console.log('3 false')
+            // cambio de pizarra y hace click para agregar nuevo texto
             if (stateText.textSelect.canvas !== stateText.canvas) {
                 captura_Pos_Posprev(e);
                 if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
@@ -231,20 +253,20 @@ const PaintText = (id_canvas) => {
                     stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
                     paint();
                 } else {
-                    // LEFTH:
+                    // BTN LEFTH:
                     if (e.keyCode === 37 && stateText.textSelect.cursor > 0) {
                         stateText.textSelect.cursor -= 1;
                         stateText.textSelect.line = u_textPositionCursor(stateText.textSelect);
                         paint();
                     } else {
-                        // RIGTH:
+                        // BTN RIGTH:
                         if (e.keyCode === 39 && stateText.textSelect.cursor < stateText.textSelect.fontText.length) {
                             stateText.textSelect.cursor += 1;
                             let line = u_textPositionCursor(stateText.textSelect);
                             stateText.textSelect.line = line;
                             paint();
                         } else {
-                            // BACKSPACE:
+                            // BTN DELETE:
                             if (e.keyCode === 8 && stateText.textSelect.fontText.length > 0 && stateText.textSelect.cursor > 0) {
                                 //stateText.textSelect.fontText = stateText.textSelect.fontText.slice(0,-1);
                                 let lefth = stateText.textSelect.fontText.slice(0, stateText.textSelect.cursor-1);
@@ -260,70 +282,8 @@ const PaintText = (id_canvas) => {
             }
         }
     }
-    const canvasTextDatos = {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-    };
-    const enventDraw = () => {
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        canvasTextDatos.top = canvas.getBoundingClientRect().top;
-        canvasTextDatos.left = canvas.getBoundingClientRect().left;
-        canvasTextDatos.width = canvas.getBoundingClientRect().width;
-        canvasTextDatos.height = canvas.getBoundingClientRect().height;
-    }
-    let color = 'white';
-    const beginInterval = () => {
-        //console.log('state line:', stateText.textSelect.line);
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        let auxAnimation = setInterval(() => {
-            paintAnimation(color);
-            color === 'white' ? color = 'black': color = 'white';
-        }, 500);
-        setToggleAnimation(auxAnimation);
-    }
-    const stopInterval = () => {
-        clearInterval(toggleAnimation);
-    }
 
     // EFECT:
-    useEffect( () => {
-        if (stateText.active){
-            enventDraw();
-            canvas.addEventListener('mousedown', mouseDownText);
-            canvas.addEventListener('mousemove', mouseMoveText);
-            canvas.addEventListener('mouseup', mouseUpText);
-            document.addEventListener('keydown', keyDown);
-            return () => {
-                canvas.removeEventListener('mousedown', mouseDownText);
-                canvas.removeEventListener('mousemove', mouseMoveText);
-                canvas.removeEventListener('mouseup', mouseUpText);
-                document.removeEventListener('keydown', keyDown);
-            };
-        }
-    }, [stateText]);
-
-    useEffect( () => {
-        if (stateText.active && state.historia.length > 0){
-            h_textSetTextselect(state.historia[state.historia.length - 1]);
-        }
-    }, [state.historia]);
-
-    useEffect(() => {
-        paint();
-        if (!isObjectEmpty(stateText.textSelect)) {
-            stateText.textSelect.line.x_ini = stateText.textSelect.x_fin;
-            stateText.textSelect.line.x_fin = stateText.textSelect.x_fin;
-            stateText.textSelect.line.y_ini = stateText.textSelect.y_ini-3;
-            stateText.textSelect.line.y_fin = stateText.textSelect.y_fin+3;
-            beginInterval();
-        }
-        else stopInterval();
-    }, [stateText.textSelect]);
-
     useEffect(() => {
         if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
             stateText.textSelect.fontColor = stateText.fontColor;
@@ -370,6 +330,42 @@ const PaintText = (id_canvas) => {
         }
     }, [stateText.fontSize]);
 
+    useEffect( () => {
+        if (stateText.active){
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasTextDatos = u_canvasAutoSize(canvas, canvasTextDatos);
+            canvas.addEventListener('mousedown', mouseDownText);
+            canvas.addEventListener('mousemove', mouseMoveText);
+            canvas.addEventListener('mouseup', mouseUpText);
+            document.addEventListener('keydown', keyDown);
+            return () => {
+                canvas.removeEventListener('mousedown', mouseDownText);
+                canvas.removeEventListener('mousemove', mouseMoveText);
+                canvas.removeEventListener('mouseup', mouseUpText);
+                document.removeEventListener('keydown', keyDown);
+            };
+        }
+    }, [stateText]);
+
+    useEffect( () => {
+        if (stateText.active && state.historia.length > 0){
+            h_textSetTextselect(state.historia[state.historia.length - 1]);
+        }
+    }, [state.historia]);
+
+    useEffect(() => {
+        paint();
+        if (!isObjectEmpty(stateText.textSelect)) {
+            stateText.textSelect.line.x_ini = stateText.textSelect.x_fin;
+            stateText.textSelect.line.x_fin = stateText.textSelect.x_fin;
+            stateText.textSelect.line.y_ini = stateText.textSelect.y_ini-3;
+            stateText.textSelect.line.y_fin = stateText.textSelect.y_fin+3;
+            beginInterval();
+        }
+        else stopInterval();
+    }, [stateText.textSelect]);
+
     useEffect(() => {
         // INICIA O DETIENE ANIMACION AL CAMBIAR DE PIZARRA
         (!isObjectEmpty(stateText.textSelect) && stateText.canvas === stateText.textSelect.canvas)
@@ -389,19 +385,44 @@ const PaintText = (id_canvas) => {
     }, [stateText.canvas]);
 
     useEffect(() => {
-        if (!stateText.active){
-            // ANGULO0 ENTRE DOS RECTAS
-            if (!isObjectEmpty(stateText.textSelect) && stateText.textSelect.fontText.length > 0) {
-                stateText.textSelect = u_textAngulo(stateText.textSelect);
-                //console.log('angulo:',stateText.textSelect);
+        if (stateText.active) {
+            paint();
+            // preguntamos si el textSelect es vacio:
+            if (isObjectEmpty(stateText.textSelect)) {
+                // no hay ningun texto select en el stateText
+                let elm = {};
+                for (let i = 0; i < state.historia.length; i++) {
+                    if (state.historia[i].types === 'text' && state.historia[i].select) {
+                        elm = state.historia[i];
+                        elm.rotateDeg = 0;
+                        break;
+                    }
+                }
+                (!isObjectEmpty(elm)) ? h_textSetTextselect(elm):'';
             }
-            h_textSetReset();
-            if (state.historia.length > 0
-                && state.historia[state.historia.length -1].types === 'text'
-                && state.historia[state.historia.length -1].fontText.length === 0
-            ) {
-                h_deleteByIndex(state.historia.length -1);
+        } else {
+            // stateText desactivado o se desactiva
+            if (!isObjectEmpty(stateText.textSelect)) {
+                if (stateText.textSelect.fontText.length > 0) {
+                    stateText.textSelect.h = stateText.textSelect.x_ini + (stateText.textSelect.x_fin - stateText.textSelect.x_ini)/2;
+                    stateText.textSelect.k = stateText.textSelect.y_ini + (stateText.textSelect.y_fin - stateText.textSelect.y_ini)/2;
+                    stateText.textSelect.radio = u_distanciaEntreDosPtos({x:stateText.textSelect.x_ini, y:stateText.textSelect.y_ini},{x:stateText.textSelect.h, y:stateText.textSelect.k});
+                    stateText.textSelect.width = stateText.textSelect.x_fin - stateText.textSelect.x_ini;
+                    stateText.textSelect.height = stateText.textSelect.y_fin - stateText.textSelect.y_ini;
+                    // vertex:
+                    u_textSearchVertex(stateText.textSelect);
+                    u_textSearchAngulo(stateText.textSelect);
+                    stateText.textSelect.rotateDegPrev = stateText.textSelect.angulo / 2;
+                    stateText.textSelect.select = false;
+                }
+                h_textSetReset();
             }
+        }
+        if (state.historia.length > 0
+            && state.historia[state.historia.length -1].types === 'text'
+            && state.historia[state.historia.length -1].fontText.length === 0
+        ) {
+            h_deleteByIndex(state.historia.length -1);
         }
     }, [stateText.active]);
 

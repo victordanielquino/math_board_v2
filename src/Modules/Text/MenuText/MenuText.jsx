@@ -23,7 +23,6 @@ const MenuText = () => {
 	} = useContext(AppContextText);
 
 	// STATE:
-	const [clickBlack, setClickBlack] = useState(false);
 
 	// LOGICA
 	const textSizeArray = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 40, 50, 60];
@@ -39,9 +38,6 @@ const MenuText = () => {
 	const handleChangeZise = (event) => {
 		h_textSetSize(event.target.value);
 	};
-	const handleColors = (color) => {
-		h_textSetColor(color);
-	}
 	const handleFormats = (value) => {
 		switch (value) {
 			case 'bold': stateText.fontBold === 'bold' ? h_textSetBold('') : h_textSetBold('bold');

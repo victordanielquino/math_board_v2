@@ -91,7 +91,7 @@ const u_cuadradoMover = (cuadrado, mouse) => {
 	cuadrado.vertex[6].x += recorrido_x; cuadrado.vertex[6].y += recorrido_y;
 	cuadrado.vertex[7].x += recorrido_x; cuadrado.vertex[7].y += recorrido_y;
 	// pts:
-	cuadrado.pts[0].x_ini += recorrido_x; cuadrado.pts[0].y_ini += recorrido_y;
+	/*cuadrado.pts[0].x_ini += recorrido_x; cuadrado.pts[0].y_ini += recorrido_y;
 	cuadrado.pts[0].x_fin += recorrido_x; cuadrado.pts[0].y_fin += recorrido_y;
 	cuadrado.pts[1].x_ini += recorrido_x; cuadrado.pts[1].y_ini += recorrido_y;
 	cuadrado.pts[1].x_fin += recorrido_x; cuadrado.pts[1].y_fin += recorrido_y;
@@ -100,7 +100,7 @@ const u_cuadradoMover = (cuadrado, mouse) => {
 	cuadrado.pts[3].x_ini += recorrido_x; cuadrado.pts[3].y_ini += recorrido_y;
 	cuadrado.pts[3].x_fin += recorrido_x; cuadrado.pts[3].y_fin += recorrido_y;
 	cuadrado.pts[4].x_ini += recorrido_x; cuadrado.pts[4].y_ini += recorrido_y;
-	cuadrado.pts[4].x_fin += recorrido_x; cuadrado.pts[4].y_fin += recorrido_y;
+	cuadrado.pts[4].x_fin += recorrido_x; cuadrado.pts[4].y_fin += recorrido_y;*/
 	// h,k:
 	cuadrado.h += recorrido_x; cuadrado.k += recorrido_y;
 	// radioX, radioY:
@@ -419,11 +419,6 @@ const u_squareDrawPto = (context, square, colorFondo, colorBorde) => {
 	context.fillStyle = colorFondo; // borde Color
 	context.lineWidth = 1; // borde grosor de linea
 	context.beginPath();
-	/*context.moveTo(square.x_ini, square.y_ini); // (x_ini, y_ini)
-	context.lineTo(square.x_fin, square.y_ini); // (x_fin, y_ini)
-	context.lineTo(square.x_fin, square.y_fin); // (x_fin, y_fin)
-	context.lineTo(square.x_ini, square.y_fin); // (x_ini, y_fin)
-	context.lineTo(square.x_ini, square.y_ini); // (x_ini, y_ini)*/
 	context.moveTo(square.x - 5, square.y - 5); // (x_ini, y_ini)
 	context.lineTo(square.x + 5, square.y - 5); // (x_fin, y_ini)
 	context.lineTo(square.x + 5, square.y + 5); // (x_fin, y_fin)
@@ -436,7 +431,7 @@ const u_squareDrawPto = (context, square, colorFondo, colorBorde) => {
 // CUADRADO: CUADRADO SEGMENTADO ALREDEDOR DEL CIRCULO SELECCIONADO
 const u_cuadradoBordeSegmentado = (context, cuadrado) => {
 	context.strokeStyle = '#1976d2'; // borde Color
-	context.lineWidth = 1; // borde grosor de linea
+	context.lineWidth = 2; // borde grosor de linea
 	context.setLineDash([5, 5]); // lineas segmentadas
 	let margin = 0;
 	context.beginPath();
@@ -451,9 +446,6 @@ const u_cuadradoBordeSegmentado = (context, cuadrado) => {
 	context.strokeStyle = '#1976d2'; // borde Color
 	context.fillStyle = 'white'; // borde Color
 	context.setLineDash([0, 0]); // lineas segmentadas
-	/*for (let elm of cuadrado.pts) {
-		u_squareDrawPto(context, elm, 'white', '#1976d2')
-	}*/
 	u_squareDrawPto(context, cuadrado.vertex[0], 'white', '#1976d2')
 	for (let i = 4; i < 8; i++) {
 		u_squareDrawPto(context, cuadrado.vertex[i], 'white', '#1976d2')

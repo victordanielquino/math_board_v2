@@ -1,4 +1,5 @@
 import {arcoTanX, division, multiplicacion, potencia, raiz, resta, suma, tanX} from "./math";
+import {isObjectEmpty}                                                         from "./utils";
 
 export const u_distanciaEntreDosPtos = (p1, p2) => {
     let d = potencia(p2.x - p1.x, 2) + potencia(p2.y - p1.y, 2);
@@ -44,6 +45,15 @@ export const rectaQuePasaPorDosPtos = (p1, p2) => {
     recta.p1 = p1;
     recta.p2 = p2;
     return recta;
+}
+export const u_rectaEcuacionPuntoPendiente = (p, m) => {
+    // p: {x, y}; m: {num, den};
+    let pendiente = m.num / m.den;
+    return {
+        a: pendiente,
+        b: -1,
+        c: p.y - pendiente * p.x,
+    };
 }
 
 export const circunferenciaConCentroRadio = (c, r) => {
@@ -326,4 +336,89 @@ export const u_rectToPerpendicular = (rec, p) => {
     }
 
     return '';
+}
+// RECTA: encutra x si y = a
+export const u_rectSearchX = (rect, y) => {
+    // rect: {a, b, c}
+    let x = -10000;
+    if (rect.a !== 0)
+        x = ((- rect.b * y) - rect.c) / rect.a;
+    return x;
+}
+// RECTA: encutra xy si x = a
+export const u_rectSearchY = (rect, x) => {
+    // rect: {a, b, c}
+    let y = -10000;
+    if (rect.b !== 0)
+        y = ((- rect.a * x) - rect.c) / rect.b;
+    return y;
+}
+// -------- PARABOLA --------
+// PARABOLA: Ecuacion Canonica
+export const u_parabolaEcuacionCononica = (v, p, eje) => {
+    // v: {h, k};   p: 2;   eje: 'x' o 'y'
+    let resp = {
+        a: 1,
+        b:0,
+        c: - 4 * p,
+        d:0,
+    }
+    if (eje === 'y') {
+        // ecuacion: ax^2 + bx + cy + d = 0
+        resp.b = - 2 * v.h;
+        resp.d = Math.pow(v.h, 2) + 4 * p * v.k;
+    } else {
+        if (eje === 'x') {
+            // ecuacion: ay^2 + by + cx + d = 0
+            resp.b = - 2 * v.k;
+            resp.d = Math.pow(v.k, 2) + 4 * p * v.h;
+        }
+    }
+    return resp;
+}
+// PARABOLA:
+export const u_parabolaSearchXY = (ecuParabola, eje, x_y) => {
+    let ecu2doGrado = {};
+    let resp = {};
+    if (eje === 'y' || eje === 'x') {
+        ecu2doGrado.a = ecuParabola.a;
+        ecu2doGrado.b = ecuParabola.b;
+        ecu2doGrado.c = (ecuParabola.c * x_y) + ecuParabola.d;
+        resp = ecuacionDe2doGrado(ecu2doGrado);
+    }
+    return resp;
+}
+// PARABOLA: Encuentra Vertice y P de la ecuacion general
+export const u_parabolaSearchVPFD = (ecuParabola, eje) => {
+    // ecuParabola: {a, b, c, d};   eje: 'x' o 'y'
+    let resp = {};
+    if (!isObjectEmpty(ecuParabola)) {
+        resp.vertice = {
+            h: - ecuParabola.b / 2,
+            k: (Math.pow(ecuParabola.b,2) - 4*ecuParabola.d) / (4 * ecuParabola.c),
+        };
+        resp.p = - ecuParabola.c / 4;
+        if (eje === 'x') {
+            resp.foco = {
+                x: resp.vertice.h + resp.p,
+                y: resp.vertice.k
+            }
+            resp.directriz = {
+                x: resp.vertice.h - resp.p,
+                y: resp.vertice.k,
+            }
+        } else {
+            if (eje === 'y') {
+                resp.foco = {
+                    x: resp.vertice.h,
+                    y: resp.vertice.k + resp.p,
+                }
+                resp.directriz = {
+                    x: resp.vertice.h,
+                    y: resp.vertice.k - resp.p,
+                }
+            }
+        }
+    }
+    return resp;
 }

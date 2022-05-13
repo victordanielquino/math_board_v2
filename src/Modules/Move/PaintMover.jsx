@@ -452,7 +452,7 @@ const PaintMover = (id_canvas) => {
 				canvas.removeEventListener('mouseup', mouseUpMover);
 			};
 		}
-	}, [stateMover.active, stateMover.canvas, state.historia]);
+	}, [stateMover.active, stateMover.canvas, state.historia, stateMover.refresh]);
 
 	useEffect(() => {
 		h_moveSetCanvas(state.canvas);

@@ -411,23 +411,27 @@ export const u_moveDuplicatePlano = (planoIn, recorrido_x, recorrido_y) => {
         fondoEstado: planoIn.fondoEstado,
         fondoColor: planoIn.fondoColor,
         width_cuadricula: planoIn.width_cuadricula,
-        x_ini: planoIn.x_ini,
-        y_ini: planoIn.y_ini,
-        x_fin: planoIn.x_fin,
-        y_fin: planoIn.y_fin,
+        x_ini: planoIn.x_ini + recorrido_x,
+        y_ini: planoIn.y_ini + recorrido_y,
+        x_fin: planoIn.x_fin + recorrido_x,
+        y_fin: planoIn.y_fin + recorrido_y,
         x_min: planoIn.x_min,
         y_max: planoIn.y_max,
         salto: planoIn.salto,
         types: 'plano',
         canvas: planoIn.canvas,
-        h: planoIn.h,
-        k: planoIn.k,
+        h: planoIn.h + recorrido_x,
+        k: planoIn.k + recorrido_y,
+        x_cordenada: [],
+        x_value: [],
+        y_cordenada: [],
+        y_value: [],
+        draw: [],
     };
-    plano.x_ini = plano.x_ini + recorrido_x;
-    plano.y_ini = plano.y_ini + recorrido_y;
-    plano.x_fin = plano.x_fin + recorrido_x;
-    plano.y_fin = plano.y_fin + recorrido_y;
-    plano.h = plano.h + recorrido_x;
-    plano.k = plano.k + recorrido_y;
+    planoIn.x_cordenada.forEach((elm, index) => plano.x_cordenada.push(planoIn.x_cordenada[index] + recorrido_x));
+    planoIn.x_value.forEach((elm, index) => plano.x_value.push(planoIn.x_value[index]));
+    planoIn.y_cordenada.forEach((elm, index) => plano.y_cordenada.push(planoIn.y_cordenada[index] + recorrido_y));
+    planoIn.y_value.forEach((elm, index) => plano.y_value.push(planoIn.y_value[index]));
+
     return plano;
 }

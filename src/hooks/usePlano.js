@@ -77,7 +77,7 @@ const usePlano = () => {
 		s_planoUpdateYmax,
 		s_planoUpdateWidthCuadricula,
 		h_planoSetH,
-		h_planoSetCanvas
+		h_planoSetCanvas,
 	};
 };
 

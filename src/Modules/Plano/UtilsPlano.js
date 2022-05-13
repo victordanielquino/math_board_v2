@@ -1,4 +1,11 @@
-import {u_cuadradoGetPtsRedimencion} from "../Square/UtilsCuadrado";
+import {u_puntoDraw}                         from "./Punto/UtilsPunto";
+import {u_rectaDrawRectaQuePasaPorDosPuntos} from "./Recta/RectaPasaPorDosPuntos/UtilsRectaPasaPorDosPuntos";
+import {u_distanciaDistanciaEntreDosPuntos}  from "./DistanciaDosPuntos/UtilsDistanciaDosPuntos";
+import {u_canonicaDrawEcuacionCanonica}      from "./Recta/EcuacionCanonica/UtilsEcuacionCanonica";
+import {u_generalDrawEcuacionGeneral}        from "./Recta/EcuacionGeneral/UtilsEcuacionGeneral";
+import {u_rectaDrawEcuacionPuntoPendiente}   from "./Recta/PuntoPendiente/UtilsPuntoPendiente";
+import {u_circunferenciaDraw}                                  from "./Circunferencia/UtilsCIrcunferencia";
+import {u_parabolaDrawCanonica, u_parabolaDrawEcuacionGeneral} from "./Parabola/UtilsParabola";
 
 const Texto = {
 	texto: 'Hola mundo', //texto de prueba
@@ -119,15 +126,15 @@ const uPlano_graficaNumeros = (context, plano, array_x, array_y, array_x_num, ar
 	context.textBaseline = 'bottom';
 	context.beginPath(); //iniciar ruta
 	for(let i = 0; i< array_x.length; i++){
-		(array_x_num[i] != 0) ?
-			context.fillText(array_x_num[i], array_x[i]-3, plano.k+20):
-			context.fillText(array_x_num[i], array_x[i]-10, plano.k+20);
+		(array_x_num[i] !== 0)
+			? context.fillText(array_x_num[i], array_x[i]-3, plano.k+20)
+			: context.fillText(array_x_num[i], array_x[i]-10, plano.k+20);
 	}
 	context.textAlign = 'end';
 	for(let i = 0; i< array_y.length; i++){
-		(array_y_num[i] != 0) ?
-			context.fillText(array_y_num[i]* -1, plano.h-5, array_y[i]+7):
-			'';
+		(array_y_num[i] !== 0)
+			? context.fillText(array_y_num[i]* -1, plano.h-5, array_y[i]+7)
+			: '';
 	}
 	context.closePath();
 
@@ -138,6 +145,49 @@ const uPlano_graficaNumeros = (context, plano, array_x, array_y, array_x_num, ar
 	context.fillText('X', plano.x_fin-20, plano.k-3);
 	context.closePath();
 };
+// PLANO: abscisas X
+const u_planoAbscisas = (plano) => {
+	// EJE X:
+	let x_cordenada = [];
+	let x_value = [];
+
+	for (let i = plano.h - plano.width_cuadricula; i > plano.x_ini; i = i - plano.width_cuadricula) {
+		x_cordenada.push(i);
+	}
+	let l = x_cordenada.length * (-1);
+	for (let i = plano.h + plano.width_cuadricula; i < plano.x_fin; i = i + plano.width_cuadricula) {
+		x_cordenada.push(i);
+	}
+	x_cordenada.push(plano.h);
+	x_cordenada.sort(function(a,b) {return a -b});
+	for(let i = 0; i < x_cordenada.length; i++){
+		x_value.push(l);
+		l++;
+	}
+	plano.x_cordenada = x_cordenada;
+	plano.x_value = x_value;
+}
+// PLANO: ordenadas Y
+const u_planoOrdenadas = (plano) => {
+	// EJE Y:
+	let y_cordenada = [];
+	let y_value = [];
+	for (let i = plano.k - plano.width_cuadricula; i > plano.y_ini; i = i - plano.width_cuadricula) {
+		y_cordenada.push(i);
+	}
+	let l = y_cordenada.length * (-1);
+	for (let i = plano.k + plano.width_cuadricula; i < plano.y_fin; i = i + plano.width_cuadricula) {
+		y_cordenada.push(i);
+	}
+	y_cordenada.push(plano.k);
+	y_cordenada.sort(function(a,b) {return a -b});
+	for(let i = 0; i < y_cordenada.length; i++){
+		y_value.push(l);
+		l++;
+	}
+	plano.y_cordenada = y_cordenada;
+	plano.y_value = y_value;
+}
 const uPlano_graficaCuadradoConEjes = (context, plano) => {
 	if (plano.visible) {
 		context.strokeStyle = plano.bordeColor; // bordeColor
@@ -196,95 +246,128 @@ const uPlano_graficaCuadradoConEjes = (context, plano) => {
 	}
 };
 const u_planoDraw = (context, plano) => {
-	if (plano.visible) {
-		context.strokeStyle = plano.bordeColor; // bordeColor
-		context.fillStyle = plano.fondoColor; // fondoColor
-		context.lineWidth = plano.bordeGrosor; // bordeGrosor
-		context.setLineDash([0, 0]); // lineas no segmentadas
-		// CONTORNO DEL PLANO
-		context.beginPath();
-		context.moveTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
-		context.lineTo(plano.x_fin, plano.y_ini); // (x_fin, y_ini)
-		context.lineTo(plano.x_fin, plano.y_fin); // (x_fin, y_fin)
-		context.lineTo(plano.x_ini, plano.y_fin); // (x_ini, y_fin)
-		context.lineTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
-		plano.fondoEstado ? context.fill() : ''; // fondoColor = true
-		plano.bordeEstado ? context.stroke() : ''; // bordeColor = true
-		context.closePath();
-		// CONTORNO DEL PLANO END
-		// EJE X:
-		let array_x = [];
-		let array_x_num = [];
+	context.strokeStyle = plano.bordeColor; // bordeColor
+	context.fillStyle = plano.fondoColor; // fondoColor
+	context.lineWidth = plano.bordeGrosor; // bordeGrosor
+	context.setLineDash([0, 0]); // lineas no segmentadas
+	// CONTORNO DEL PLANO
+	context.beginPath();
+	context.moveTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
+	context.lineTo(plano.x_fin, plano.y_ini); // (x_fin, y_ini)
+	context.lineTo(plano.x_fin, plano.y_fin); // (x_fin, y_fin)
+	context.lineTo(plano.x_ini, plano.y_fin); // (x_ini, y_fin)
+	context.lineTo(plano.x_ini, plano.y_ini); // (x_ini, y_ini)
+	plano.fondoEstado ? context.fill() : ''; // fondoColor = true
+	plano.bordeEstado ? context.stroke() : ''; // bordeColor = true
+	context.closePath();
+	// CONTORNO DEL PLANO END
 
-		for (let i = plano.h - plano.width_cuadricula; i > plano.x_ini; i = i - plano.width_cuadricula) {
-			array_x.push(i);
+	utilsPlano_graficaCuadricula(context, plano, plano.x_cordenada, plano.y_cordenada);
+	ejeCordenadaX(context, plano);
+	ejeCordenadaY(context, plano);
+	utilsPlano_graficaTriangulo(context, plano);
+	uPlano_graficaNumeros(context, plano, plano.x_cordenada, plano.y_cordenada, plano.x_value, plano.y_value);
+	plano.drawGA.forEach(elm => {
+		let elm1 = {}, elm2 = {}, parabola = {}, colores = {};
+		switch (elm.type) {
+			case 'punto':
+				u_puntoDraw(context, plano, elm);
+				break;
+			case 'distancia':
+				elm1 = {
+					p: elm.p1,
+					color: elm.color,
+				}
+				elm2 = {
+					p: elm.p2,
+					color: elm.color,
+				}
+				u_puntoDraw(context, plano, elm1);
+				u_puntoDraw(context, plano, elm2);
+				u_distanciaDistanciaEntreDosPuntos(context, plano, elm, 3);
+				break;
+			case 'recC1':
+				elm1 = {
+					p: elm.p1,
+					color: elm.color,
+				}
+				elm2 = {
+					p: elm.p2,
+					color: elm.color,
+				}
+				u_puntoDraw(context, plano, elm1);
+				u_puntoDraw(context, plano, elm2);
+				u_rectaDrawRectaQuePasaPorDosPuntos(context, plano, elm, 3);
+				break;
+			case 'recC2':
+				elm1 = {
+					p: {x:elm.p.a, y:0},
+					color: elm.color,
+				}
+				elm2 = {
+					p: {x:0, y:elm.p.b},
+					color: elm.color,
+				}
+				u_puntoDraw(context, plano, elm1);
+				u_puntoDraw(context, plano, elm2);
+				u_canonicaDrawEcuacionCanonica(context, plano, elm, 3);
+				break;
+			case 'recC3':
+				u_generalDrawEcuacionGeneral(context, plano, elm, 3);
+				break;
+			case 'recC4':
+				u_puntoDraw(context, plano, elm);
+				u_rectaDrawEcuacionPuntoPendiente(context, plano, elm, 3);
+				break;
+			case 'cirC1':
+				let aux = {
+					p: {
+						x: elm.cir.h,
+						y: elm.cir.k,
+					},
+					color: elm.color,
+				}
+				u_puntoDraw(context, plano, aux);
+				u_circunferenciaDraw(context, plano, elm, 3);
+				break;
+			case 'parC1':
+				// ecuacion canonica eje X:
+				colores = u_planoGetColores(elm.color);
+				u_puntoDraw(context, plano, {p:{x:elm.foco.x, y:elm.foco.y}, color:colores.color3});
+				u_puntoDraw(context, plano, {p:{x:elm.par.h, y:elm.par.k}, color:colores.color3});
+				u_rectaDrawRectaQuePasaPorDosPuntos(context, plano, {p1:{x:elm.directriz.x, y:elm.directriz.y}, p2:{x:elm.directriz.x, y:elm.directriz.y+1}, color:colores.color4}, 3, false);
+				u_parabolaDrawCanonica(context, plano, elm, 3);
+				break;
+			case 'parC2':
+				// ecuacion canonica eje Y:
+				colores = u_planoGetColores(elm.color);
+				u_puntoDraw(context, plano, {p:{x:elm.foco.x, y:elm.foco.y}, color:colores.color3});
+				u_puntoDraw(context, plano, {p:{x:elm.par.h, y:elm.par.k}, color:colores.color3});
+				u_rectaDrawRectaQuePasaPorDosPuntos(context, plano, {p1:{x:elm.directriz.x, y:elm.directriz.y}, p2:{x:elm.directriz.x+1, y:elm.directriz.y}, color:colores.color4}, 3, false);
+				u_parabolaDrawCanonica(context, plano, elm, 3);
+				break;
+			case 'parC3':
+				// ecuaion general eje X
+				colores = u_planoGetColores(elm.color);
+				parabola = u_parabolaDrawEcuacionGeneral(context, elm);
+				u_puntoDraw(context, plano, {p:{x:parabola.foco.x, y:parabola.foco.y}, color:colores.color3});
+				u_puntoDraw(context, plano, {p:{x:parabola.par.h, y:parabola.par.k}, color:colores.color3});
+				u_rectaDrawRectaQuePasaPorDosPuntos(context, plano, {p1:{x:parabola.directriz.x, y:parabola.directriz.y}, p2:{x:parabola.directriz.x, y:parabola.directriz.y+1}, color:colores.color4}, 3, false);
+				u_parabolaDrawCanonica(context, plano, parabola, 3);
+				break;
+			case 'parC4':
+				// ecuaion general eje Y
+				colores = u_planoGetColores(elm.color);
+				parabola = u_parabolaDrawEcuacionGeneral(context, elm);
+				u_puntoDraw(context, plano, {p:{x:parabola.foco.x, y:parabola.foco.y}, color:colores.color3});
+				u_puntoDraw(context, plano, {p:{x:parabola.par.h, y:parabola.par.k}, color:colores.color3});
+				u_rectaDrawRectaQuePasaPorDosPuntos(context, plano, {p1:{x:parabola.directriz.x, y:parabola.directriz.y}, p2:{x:parabola.directriz.x+1, y:parabola.directriz.y}, color:colores.color4}, 3, false);
+				u_parabolaDrawCanonica(context, plano, parabola, 3);
+				break;
+			default:
+				break;
 		}
-		let l = array_x.length * (-1);
-		for (let i = plano.h + plano.width_cuadricula; i < plano.x_fin; i = i + plano.width_cuadricula) {
-			array_x.push(i);
-		}
-		array_x.push(plano.h);
-		array_x.sort(function(a,b) {return a -b});
-		for(let i = 0; i < array_x.length; i++){
-			array_x_num.push(l);
-			l++;
-		}
-		// EJE Y:
-		let array_y = [];
-		let array_y_num = [];
-		for (let i = plano.k - plano.width_cuadricula; i > plano.y_ini; i = i - plano.width_cuadricula) {
-			array_y.push(i);
-		}
-		l = array_y.length * (-1);
-		for (let i = plano.k + plano.width_cuadricula; i < plano.y_fin; i = i + plano.width_cuadricula) {
-			array_y.push(i);
-		}
-		array_y.push(plano.k);
-		array_y.sort(function(a,b) {return a -b});
-		for(let i = 0; i < array_y.length; i++){
-			array_y_num.push(l);
-			l++;
-		}
-		utilsPlano_graficaCuadricula(context, plano, array_x, array_y);
-		ejeCordenadaX(context, plano);
-		ejeCordenadaY(context, plano);
-		utilsPlano_graficaTriangulo(context, plano);
-		uPlano_graficaNumeros(context, plano, array_x, array_y, array_x_num, array_y_num);
-	}
-};
-
-// GRAFICA PLANOS - HISORIA:
-const uPlano_graficaCuadradoHistoria = (context, array) => {
-	array.forEach((element) => uPlano_graficaCuadrado(context, element));
-};
-const uPlano_graficaCuadradoHistoriaConEjes = (context, array) => {
-	array.forEach((element) => uPlano_graficaCuadradoConEjes(context, element));
-};
-// PLANO: GET
-const u_planoGet = (array, x, y) => {
-	let resp = '';
-	array.forEach((plano) => {
-		if (plano.visible) {
-			plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
-				? (resp = plano)
-				: '';
-		}
-	});
-	return resp;
-};
-// PLANO: GET ID
-const u_planoGetId = (array, x, y) => {
-	let resp = '';
-	let id = -1;
-	array.forEach((plano) => {
-		if (plano.visible && plano.edit) {
-			plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
-				? (resp = plano)
-				: '';
-		}
-	});
-	resp !== '' ? id = resp.id:'';
-	return id;
+	})
 };
 const u_planoClickTrue = (plano, x, y) => {
 	return (plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin)
@@ -386,6 +469,8 @@ const u_planoMover = (plano, mouse) => {
 	plano.y_fin = plano.y_fin + recorrido_y;
 	plano.h = plano.h + recorrido_x;
 	plano.k = plano.k + recorrido_y;
+	plano.x_cordenada.forEach((elm, index) => plano.x_cordenada[index] += recorrido_x);
+	plano.y_cordenada.forEach((elm, index) => plano.y_cordenada[index] += recorrido_y);
 	return plano;
 };
 // PLANO: UPDATE ZISE
@@ -395,15 +480,19 @@ const u_planoUpdateZise = (plano, mouse) => {
 	switch (mouse.plano_pto) {
 		case 'top':
 			plano.y_ini = plano.y_ini + recorrido_y;
-			break;
-		case 'right':
-			plano.x_fin = plano.x_fin + recorrido_x;
+			u_planoOrdenadas(plano);
 			break;
 		case 'button':
 			plano.y_fin = plano.y_fin + recorrido_y;
+			u_planoOrdenadas(plano);
+			break;
+		case 'right':
+			plano.x_fin = plano.x_fin + recorrido_x;
+			u_planoAbscisas(plano);
 			break;
 		case 'lefth':
 			plano.x_ini = plano.x_ini + recorrido_x;
+			u_planoAbscisas(plano);
 			break;
 		default:
 			console.log('ocurrio un error: u_planoUpdateZise');
@@ -527,12 +616,58 @@ const u_planoBordeSegmentado = (context, plano) => {
 		context.closePath();
 	});
 };
+const u_planoGetColores = (color) => {
+	switch (color) {
+		case 'black':
+			return {
+				color1: 'black',
+				color2: 'red',
+				color3: 'blue',
+				color4: 'green',
+				color5: 'orange',
+			}
+			break;
+		case 'red':
+			return {
+				color1: 'red',
+				color2: 'black',
+				color3: 'blue',
+				color4: 'green',
+				color5: 'orange',
+			}
+			break;
+		case 'green':
+			return {
+				color1: 'green',
+				color2: 'red',
+				color3: 'blue',
+				color4: 'black',
+				color5: 'orange',
+			}
+			break;
+		case 'blue':
+			return {
+				color1: 'blue',
+				color2: 'red',
+				color3: 'black',
+				color4: 'green',
+				color5: 'orange',
+			}
+			break;
+		case 'yellow':
+			return {
+				color1: 'orange',
+				color2: 'red',
+				color3: 'blue',
+				color4: 'green',
+				color5: 'black',
+			}
+			break;
+	}
+}
 export {
 	uPlano_graficaCuadrado,
 	uPlano_graficaCuadradoConEjes,
-	uPlano_graficaCuadradoHistoria,
-	uPlano_graficaCuadradoHistoriaConEjes,
-	u_planoGet,
 	u_planoGraficaH,
 	u_planoDeleteById,
 	u_planoSegmentado,
@@ -541,7 +676,8 @@ export {
 	u_planoUpdateZise,
 	u_planoOpera,
 	u_planoBordeSegmentado,
-	u_planoGetId,
 	u_planoDraw,
-	u_planoClickTrue
+	u_planoClickTrue,
+	u_planoOrdenadas,
+	u_planoAbscisas
 };

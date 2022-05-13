@@ -6,8 +6,6 @@ import AppContextGeometric from "../../../context/AppContextGeometric";
 
 // components:
 import PaletaGrosor     from '../../../components/PaletaGrosor/PaletaGrosorSinTitle';
-import PaletaColorBorde                  from '../../../components/PaletaColor/PaletaColor';
-import PaletaColorFondo                  from '../../../components/PaletaColor/PaletaColor';
 
 // styles:
 import './MenuGeometric.scss';

@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import AppContextMover from "../../../context/AppContextMover";
 import AppContext from '../../../context/AppContext';
+import ModalUI from "../../../components/ModalUI/ModalUI_";
 
 import GppGoodIcon          from '@mui/icons-material/GppGood';
 import GppBadIcon                                                       from '@mui/icons-material/GppBad';
@@ -10,6 +11,7 @@ import MoveDownIcon                                                     from '@m
 import MoveUpIcon           from '@mui/icons-material/MoveUp';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import {isObjectEmpty} from "../../../utils/utils";
 import {
 	u_moveDownElement,
@@ -24,16 +26,21 @@ import {
 	u_moveDuplicateImage, u_moveDuplicatePlano
 }                        from "../UtilsMove";
 import useStylesMenuMove from "./MenuMoveStyle";
+import AddDrawGeoAna     from "../../Plano/AddDrawGeoAna/AddDrawGeoAna";
+import AppContextPlano   from "../../../context/AppContextPlano";
 
 const MenuMove = () => {
 	// CONTEXT:
 	const { state, h_updateH, h_addH, s_setActiveActivePrev } = useContext(AppContext);
-	const { stateMover } = useContext(AppContextMover);
+	const { stateMover, h_moveSetRefresh } = useContext(AppContextMover);
 
 	// STATE:
 	const [variantEditNot, setVariantEditNot] = useState('outlined');
 	const [variantEditYes, setVariantEditYes] = useState('outlined');
 	const [disabledUpDown, setDisabledUpDown] = useState(true);
+	// STATE MODAL:
+	const [open, setOpen] = useState(false);
+	const [stateSuccess, setStateSuccess] = useState(false);
 
 	// LOGICA:
 	const props = {
@@ -133,9 +140,10 @@ const MenuMove = () => {
 		}
 	}
 	const handleEditable = () => {
-		console.log(stateMover.obj);
 		stateMover.obj.select = true;
-		//s_setActiveActivePrev('textIcon', 'moverIcon');
+	}
+	const handleDraw = () => {
+		setOpen(true);
 	}
 	const updatePaletaEdit = () => {
 		if(stateMover.selectElm) {
@@ -194,6 +202,10 @@ const MenuMove = () => {
 
 		//h_textSetTypografia(event.target.value);
 	};
+	const handleSuccess = () => {
+		setOpen(false);
+		h_moveSetRefresh(!stateMover.refresh);
+	}
 
 	// EFECT:
 	useEffect(() => {
@@ -202,93 +214,112 @@ const MenuMove = () => {
 	}, [stateMover.obj]);
 
 	return (
-		<div className={classes.container}>
-			<Button
-				variant={variantEditNot}
-				onClick={() => handleEdit(false)}
-				color='error' size='small'
-				startIcon={<GppBadIcon/>}
-				style={{marginRight: '5px'}}
-				disabled={disabledUpDown}
-			>
-				Edit False
-			</Button>
-			<Button
-				variant={variantEditYes}
-				onClick={() => handleEdit(true)}
-				color='success'
-				size='small'
-				startIcon={<GppGoodIcon/>}
-				disabled={disabledUpDown}
-				style={{marginRight: '25px'}}
-			>
-				Edit True
-			</Button>
-			<Button
-				variant='outlined'
-				onClick={() => handleUpDown('down')}
-				disabled={disabledUpDown}
-				size='small'
-				startIcon={<MoveDownIcon fontSize='small'/>}
-				style={{marginRight:'5px'}}
-			>
-				Down
-			</Button>
-			<Button
-				variant='outlined'
-				onClick={() => handleUpDown('up')}
-				disabled={disabledUpDown}
-				size='small'
-				startIcon={<MoveUpIcon/>}
-				style={{marginRight:'25px'}}
-			>
-				Up
-			</Button>
-			<ButtonGroup>
+		<>
+			<div className={classes.container}>
+				<Button
+					variant={variantEditNot}
+					onClick={() => handleEdit(false)}
+					color='error' size='small'
+					startIcon={<GppBadIcon/>}
+					style={{marginRight: '5px'}}
+					disabled={disabledUpDown}
+				>
+					Edit False
+				</Button>
+				<Button
+					variant={variantEditYes}
+					onClick={() => handleEdit(true)}
+					color='success'
+					size='small'
+					startIcon={<GppGoodIcon/>}
+					disabled={disabledUpDown}
+					style={{marginRight: '25px'}}
+				>
+					Edit True
+				</Button>
 				<Button
 					variant='outlined'
-					onClick={() => handleDuplicate()}
+					onClick={() => handleUpDown('down')}
 					disabled={disabledUpDown}
 					size='small'
-					startIcon={<ContentCopyIcon/>}
+					startIcon={<MoveDownIcon fontSize='small'/>}
+					style={{marginRight:'5px'}}
+				>
+					Down
+				</Button>
+				<Button
+					variant='outlined'
+					onClick={() => handleUpDown('up')}
+					disabled={disabledUpDown}
+					size='small'
+					startIcon={<MoveUpIcon/>}
 					style={{marginRight:'25px'}}
 				>
-					Duplicate
+					Up
 				</Button>
-			</ButtonGroup>
-			<Typography color={disabledUpDown ? '#bdbdbd': 'primary'} style={{marginRight:'5px', userSelect:'none', fontSize:'0.9em'}}>
-				MOVE:
-			</Typography>
-			<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledUpDown}>
-				{
-					<Select
-						value={state.mathBoards[state.mathBoardsIndexSelec].title}
-						onChange={handleChangeMathboard}
-						displayEmpty
-						inputProps={{ 'aria-label': 'Without label' }}
+				<ButtonGroup>
+					<Button
+						variant='outlined'
+						onClick={() => handleDuplicate()}
+						disabled={disabledUpDown}
 						size='small'
-						id="demo-simple-select-error"
-						style={{ height: '1.8em', color:'#1976d2'}}
-						//color='primary'
+						startIcon={<ContentCopyIcon/>}
+						style={{marginRight:'25px'}}
 					>
-						{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title} style={{color:'#1976d2'}}>{elm.title}</MenuItem>))}
-					</Select>
+						Duplicate
+					</Button>
+				</ButtonGroup>
+				<Typography color={disabledUpDown ? '#bdbdbd': 'primary'} style={{marginRight:'5px', userSelect:'none', fontSize:'0.9em'}}>
+					MOVE:
+				</Typography>
+				<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledUpDown}>
+					{
+						<Select
+							value={state.mathBoards[state.mathBoardsIndexSelec].title}
+							onChange={handleChangeMathboard}
+							displayEmpty
+							inputProps={{ 'aria-label': 'Without label' }}
+							size='small'
+							id="demo-simple-select-error"
+							style={{ height: '1.8em', color:'#1976d2'}}
+							//color='primary'
+						>
+							{state.mathBoards.map(elm => (<MenuItem key={elm.title} value={elm.title} style={{color:'#1976d2'}}>{elm.title}</MenuItem>))}
+						</Select>
+					}
+				</FormControl>
+				{
+					(stateMover.obj.types === 'text') &&
+					<Button
+						variant='outlined'
+						onClick={() => handleEditable()}
+						disabled={disabledUpDown}
+						size='small'
+						startIcon={<BorderColorIcon/>}
+						style={{marginLeft:'25px'}}
+					>
+						edit
+					</Button>
 				}
-			</FormControl>
-			{
-				(stateMover.obj.types === 'text') &&
-				<Button
-					variant='outlined'
-					onClick={() => handleEditable()}
-					disabled={disabledUpDown}
-					size='small'
-					startIcon={<BorderColorIcon/>}
-					style={{marginLeft:'25px'}}
-				>
-					edit
-				</Button>
-			}
-		</div>
+				{
+					(stateMover.obj.types === 'plano') &&
+					<Button
+						variant='outlined'
+						onClick={() => handleDraw()}
+						disabled={disabledUpDown}
+						size='small'
+						startIcon={<TrendingUpIcon/>}
+						style={{marginLeft:'25px'}}
+					>
+						draw
+					</Button>
+				}
+			</div>
+			<ModalUI open={open} setOpen={setOpen} handleSuccess={handleSuccess} maxWidth={'md'} title={'Geometria Análitica:'} booleanFooter={true} >
+				<AddDrawGeoAna/>
+			</ModalUI>
+		</>
+
 	)
 };
 

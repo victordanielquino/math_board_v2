@@ -7,7 +7,8 @@ import AppContextPlano from '../../context/AppContextPlano';
 
 // utils:
 
-import draw from '../Draw/Draw'
+import draw                                from '../Draw/Draw'
+import {u_planoAbscisas, u_planoOrdenadas} from "./UtilsPlano";
 
 const PaintPlano = (id_canvas) => {
 	// useContext:
@@ -64,6 +65,12 @@ const PaintPlano = (id_canvas) => {
 		salto: statePlano.salto,
 		types: 'plano',
 		canvas: statePlano.canvas,
+
+		x_cordenada: [],
+		x_value: [],
+		y_cordenada: [],
+		y_value: [],
+		drawGA:[],
 	};
 	let captura_Pos_Posprev = (e) => {
 		let x = e.clientX;
@@ -85,7 +92,7 @@ const PaintPlano = (id_canvas) => {
 	// 3:
 	let mouseUpPlano = async (e) => {
 		captura_Pos_Posprev(e);
-		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
+		if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
 			let xMin = plano.x_min;
 			let yMax = plano.y_max;
 			let width = -xMin * plano.width_cuadricula + plano.width_cuadricula;
@@ -96,7 +103,9 @@ const PaintPlano = (id_canvas) => {
 			plano.y_fin = mouse.pos.y + height;
 			plano.h = mouse.pos.x;
 			plano.k = mouse.pos.y;
-			//s_planoAddHId(plano, statePlano.id + 1);
+			u_planoAbscisas(plano);
+			u_planoOrdenadas(plano);
+
 			plano.id = state.id;
 			h_addH(plano);
 			//uPlano_graficaCuadradoConEjes(context, plano);
@@ -117,7 +126,6 @@ const PaintPlano = (id_canvas) => {
 		canvasPlanoDatos.height = canvas.getBoundingClientRect().height;
 	};
 	const eventDraw = () => {
-		console.log('ue PaintPlano.jsx');
 		canvas = document.getElementById(id_canvas);
 		context = canvas.getContext('2d');
 		update_canvasPlanoDatos();

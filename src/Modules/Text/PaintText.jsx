@@ -130,7 +130,6 @@ const PaintText = (id_canvas) => {
     }
     // 1
     const mouseDownText = (e) => {
-        console.log('1', text)
         mouse.click = true;
         captura_Pos_Posprev(e);
         text.x_ini = mouse.pos.x;
@@ -139,7 +138,6 @@ const PaintText = (id_canvas) => {
     // 2
     const mouseMoveText = (e) => {
         if (mouse.click && !isObjectEmpty(stateText.textSelect) && stateText.textSelect.canvas === stateText.canvas) {
-            console.log('2')
             captura_Pos_Posprev(e);
             u_textMover(stateText.textSelect, mouse)
             paint();
@@ -147,9 +145,7 @@ const PaintText = (id_canvas) => {
     };
     // 3
     const mouseUpText = async (e) => {
-        console.log('3:', stateText.textSelect)
         if (isObjectEmpty(stateText.textSelect)){
-            console.log('prueba 1')
             captura_Pos_Posprev(e);
             if (mouse.click && mouse.pos_prev.x !== 0 && mouse.pos_prev.y !== 0) {
                 text.y_ini = text.y_ini - text.fontSize;
@@ -176,11 +172,9 @@ const PaintText = (id_canvas) => {
                 };
                 text.radioXS = text.x_ini - 5;
                 text.radioYS = text.y_ini - 5;
-                console.log('3 historia:', text);
                 h_addH(text);
             }
         } else {
-            console.log('3 false')
             // cambio de pizarra y hace click para agregar nuevo texto
             if (stateText.textSelect.canvas !== stateText.canvas) {
                 captura_Pos_Posprev(e);

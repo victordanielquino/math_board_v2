@@ -7,7 +7,7 @@ import {Switch, Typography} from "@mui/material";
 import BlockIcon     from '@mui/icons-material/Block';
 import ButtonUIColor from "../ButtonUIColor/ButtonUIColor";
 
-const PaletaColor = ({tipo, title = ''}) => {
+const PaletaColor = ({tipo, title = '', boolSwitch = true, boolWhite = true}) => {
 	// useContext:
 	const { state, updateColor, updateColorFondo, h_setColorblur, h_setColorfondoblur } = useContext(AppContext);
 
@@ -57,8 +57,24 @@ const PaletaColor = ({tipo, title = ''}) => {
 				<ButtonUIColor color={'yellow'} variant={color === "yellow" ? 'contained':'outlined'} border={'2px'} onclick={handleClickColor}/>
 				<ButtonUIColor color={'green'} variant={color === "green" ? 'contained':'outlined'} border={'2px'} onclick={handleClickColor}/>
 				<ButtonUIColor color={'blue'} variant={color === "blue" ? 'contained':'outlined'} border={'2px'} onclick={handleClickColor}/>
-				<ButtonUIColor color={'white'} variant={color === "white" ? 'contained':'outlined'} border={'2px'} onclick={handleClickColor} elm={<BlockIcon fontSize='small' color='secondary'/>}/>
-				<Switch checked={tipo === 'linea' ? state.colorBlur : state.colorFondoBlur} onChange={changeSwitch} size='small'/>
+				{
+					boolWhite &&
+					<ButtonUIColor
+						color={'white'}
+						variant={color === "white" ? 'contained' : 'outlined'}
+						border={'2px'}
+						onclick={handleClickColor}
+						elm={<BlockIcon fontSize='small' color='secondary'/>}
+					/>
+				}
+				{
+					boolSwitch &&
+					<Switch
+						checked={tipo === 'linea' ? state.colorBlur : state.colorFondoBlur}
+						onChange={changeSwitch}
+						size='small'
+					/>
+				}
 			</div>
 		</>
 	);

@@ -15,7 +15,7 @@ import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintCuadrado = (id_canvas) => {
 	// CONTEXT:
-	const { state, h_addH } = useContext(AppContext);
+	const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
 	const { stateGrid } = useContext(AppContextGrid);
 	const { stateCuadrado, h_squareSetCanvas } = useContext(AppContextCuadrado);
 
@@ -124,6 +124,25 @@ const PaintCuadrado = (id_canvas) => {
 		}
 		mouseReinicia();
 	};
+	// 4:
+	const keyDown = (e) => {
+		if (state.historia.length > 0){
+			// console.log(e);
+			// console.log(e.key);
+			// console.log(e.keyCode);
+			let key = e.key;
+			let keyV = e.which || e.keyCode;
+			let ctrl = e.ctrlKey
+				? e.ctrlKey
+				: (key === 17) ? true : false;
+			if (keyV === 90 && ctrl) {
+				//console.log("Ctrl+Z is pressed.");
+				let indexdDelete = -1;
+				state.historia.forEach((elm, index) => elm.canvas === stateCuadrado.canvas ? indexdDelete = index:'');
+				indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+			}
+		}
+	}
 
 	// useEffect:
 	useEffect(() => {
@@ -131,14 +150,16 @@ const PaintCuadrado = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			canvasCuadradoDatos = u_canvasAutoSize(canvas, canvasCuadradoDatos);
-			if (state.historia.length > 0) paint();
+			paint();
 			canvas.addEventListener('mousedown', mouseDownCuadrado);
 			canvas.addEventListener('mousemove', mouseMoveCuadrado);
 			canvas.addEventListener('mouseup', mouseUpCuadrado);
+			document.addEventListener('keydown', keyDown);
 			return () => {
 				canvas.removeEventListener('mousedown', mouseDownCuadrado);
 				canvas.removeEventListener('mousemove', mouseMoveCuadrado);
 				canvas.removeEventListener('mouseup', mouseUpCuadrado);
+				document.removeEventListener('keydown', keyDown);
 			};
 
 		}

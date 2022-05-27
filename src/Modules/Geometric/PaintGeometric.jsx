@@ -5,13 +5,14 @@ import AppContext          from "../../context/AppContext";
 import AppContextGrid from '../../context/AppContextGrid';
 import AppContextGeometric from "../../context/AppContextGeometric";
 
-import draw                                       from '../Draw/Draw';
-import { u_distanciaEntreDosPtos } from '../../utils/geometriaAnalitica';
+import draw                              from '../Draw/Draw';
+import { u_distanciaEntreDosPtos }       from '../../utils/geometriaAnalitica';
 import {u_searchVertex, u_geometricDraw} from "./UtilsGeometric";
+import {u_canvasAutoSize}                from "../../utils/utils";
 
 const PaintGeometric = (id_canvas) => {
     // CONTEXT:
-    const { state, h_addH } = useContext(AppContext);
+    const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const { stateGeometric, h_geometricSetCanvas } = useContext(AppContextGeometric);
 
@@ -86,12 +87,7 @@ const PaintGeometric = (id_canvas) => {
         arrayVertexSegment:[],
         nroVertex: stateGeometric.vertices,
     };
-    const canvasGeometricDatos = {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-    };
+    let canvasGeometricDatos = {top: 0, left: 0, width: 0, height: 0,};
     // 1
     let mouseDownGeometric = (e) => {
         mouse.click = true;
@@ -141,31 +137,43 @@ const PaintGeometric = (id_canvas) => {
         }
         mouseReinicia();
     };
-    const update_canvasGeometricDatos = () => {
-        canvasGeometricDatos.top = canvas.getBoundingClientRect().top;
-        canvasGeometricDatos.left = canvas.getBoundingClientRect().left;
-        canvasGeometricDatos.width = canvas.getBoundingClientRect().width;
-        canvasGeometricDatos.height = canvas.getBoundingClientRect().height;
-    };
-    const eventDraw = () => {
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        update_canvasGeometricDatos();
-        if (state.historia.length > 0) paint();
+    // 4:
+    const keyDown = (e) => {
+        if (state.historia.length > 0){
+            // console.log(e);
+            // console.log(e.key);
+            // console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 90 && ctrl) {
+                //console.log("Ctrl+Z is pressed.");
+                let indexdDelete = -1;
+                state.historia.forEach((elm, index) => elm.canvas === stateGeometric.canvas ? indexdDelete = index:'');
+                indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+            }
+        }
     }
 
     // EFFECT:
     useEffect(() => {
         if (stateGeometric.active) {
-            eventDraw();
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasGeometricDatos = u_canvasAutoSize(canvas, canvasGeometricDatos);
+            paint();
+
             canvas.addEventListener('mousedown', mouseDownGeometric);
             canvas.addEventListener('mousemove', mouseMoveGeometric);
             canvas.addEventListener('mouseup', mouseUpGeometric);
-
+            document.addEventListener('keydown', keyDown);
             return () => {
                 canvas.removeEventListener('mousedown', mouseDownGeometric);
                 canvas.removeEventListener('mousemove', mouseMoveGeometric);
                 canvas.removeEventListener('mouseup', mouseUpGeometric);
+                document.removeEventListener('keydown', keyDown);
             };
         }
     }, [stateGeometric, state.historia]);

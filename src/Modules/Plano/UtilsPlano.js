@@ -535,15 +535,11 @@ const u_planoBuscaPtoClickParaRedimencionar = (x, y, plano) => {
 	return resp;
 };
 // PLANO: GET
-const u_planoGetClick = (array, x, y) => {
+const u_planoGetClick = (plano, x, y) => {
 	let resp = '';
-	array.forEach((plano) => {
-		if (plano.visible) {
-			plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
-				? (resp = plano)
-				: '';
-		}
-	});
+	plano.x_ini < x && x < plano.x_fin && plano.y_ini < y && y < plano.y_fin
+		? (resp = plano)
+		: '';
 	return resp;
 };
 // PLANO: SI SE HIZO CLICK SOBRE UN PLANO, PODREMOS EDITAR ZISE U MOVER
@@ -559,12 +555,12 @@ const u_planoClickSobrePlano = (planoSelect, mouse) => {
 	}
 }
 // PLANO: BUSCA PLANO PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_planoOpera = (context, planoSelect, array, mouse) => {
+const u_planoOpera = (planoSelect, elmIn, mouse) => {
 	if (mouse.plano_seleccionar_pts){
 		mouse.plano_pto = u_planoBuscaPtoClickParaRedimencionar(
 			mouse.pos.x, mouse.pos.y, planoSelect
 		);
-		if(mouse.plano_pto != '') {
+		if(mouse.plano_pto !== '') {
 			mouse.plano_mover = false;
 			mouse.plano_mover_pts = true;
 		} else {
@@ -574,7 +570,7 @@ const u_planoOpera = (context, planoSelect, array, mouse) => {
 		}
 	}
 	if (!mouse.plano_seleccionar_pts){
-		planoSelect = u_planoGetClick(array, mouse.pos.x, mouse.pos.y);
+		planoSelect = u_planoGetClick(elmIn, mouse.pos.x, mouse.pos.y);
 		u_planoClickSobrePlano(planoSelect, mouse);
 	}
 	return planoSelect;

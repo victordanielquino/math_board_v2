@@ -10,10 +10,11 @@ import draw                        from "../Draw/Draw";
 import { u_lineDraw }              from "../Line/UtilsLinea";
 import {u_triangleDraw}            from "./UtilsTriangulo";
 import {u_squareDrawBorderSegment} from "../Square/UtilsCuadrado";
+import {u_canvasAutoSize}          from "../../utils/utils";
 
 const PaintTriangulo = (id_canvas) => {
     // useContext:
-    const { state, h_addH } = useContext(AppContext);
+    const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const { stateTriangulo, h_triangleSetCanvas } = useContext(AppContextTriangulo);
 
@@ -70,12 +71,6 @@ const PaintTriangulo = (id_canvas) => {
         mouse.pos.y = 0;
         mouse.pos_prev.y = 0;
     };
-    const update_canvasTrianguloDatos = () => {
-        canvasTrianguloDatos.top = canvas.getBoundingClientRect().top;
-        canvasTrianguloDatos.left = canvas.getBoundingClientRect().left;
-        canvasTrianguloDatos.width = canvas.getBoundingClientRect().width;
-        canvasTrianguloDatos.height = canvas.getBoundingClientRect().height;
-    };
     const captura_Pos_Posprev = (e) => {
         const x = e.clientX;
         const y = e.clientY;
@@ -86,12 +81,7 @@ const PaintTriangulo = (id_canvas) => {
         mouse.pos.x = x_real;
         mouse.pos.y = y_real;
     };
-    const canvasTrianguloDatos = {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-    };
+    let canvasTrianguloDatos = {top: 0, left: 0, width: 0, height: 0,};
     // 1
     let mouseDownTriangulo = (e) => {
         mouse.click = true;
@@ -135,14 +125,25 @@ const PaintTriangulo = (id_canvas) => {
         }
         mouseReinicia();
     };
-    const enventDraw = () => {
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        update_canvasTrianguloDatos();
-        (state.historia.length > 0)
-            ? paint():'';
+    // 4:
+    const keyDown = (e) => {
+        if (state.historia.length > 0){
+            // console.log(e);
+            // console.log(e.key);
+            // console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 90 && ctrl) {
+                //console.log("Ctrl+Z is pressed.");
+                let indexdDelete = -1;
+                state.historia.forEach((elm, index) => elm.canvas === stateTriangulo.canvas ? indexdDelete = index:'');
+                indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+            }
+        }
     }
-    // LOGICA END.
 
     // useEffect:
     useEffect(() => {
@@ -151,14 +152,20 @@ const PaintTriangulo = (id_canvas) => {
 
     useEffect(() => {
         if(stateTriangulo.active) {
-            enventDraw();
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasTrianguloDatos = u_canvasAutoSize(canvas, canvasTrianguloDatos);
+            paint();
+
             canvas.addEventListener('mousedown', mouseDownTriangulo);
             canvas.addEventListener('mousemove', mouseMoveTriangulo);
             canvas.addEventListener('mouseup', mouseUpTriangulo);
+            document.addEventListener('keydown', keyDown);
             return () => {
                 canvas.removeEventListener('mousedown', mouseDownTriangulo);
                 canvas.removeEventListener('mousemove', mouseMoveTriangulo);
                 canvas.removeEventListener('mouseup', mouseUpTriangulo);
+                document.removeEventListener('keydown', keyDown);
             };
         }
     }, [stateTriangulo, state.historia]);

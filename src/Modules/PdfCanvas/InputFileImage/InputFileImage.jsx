@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState, useRef} from 'react';
 import AppContextSesion from "../../../context/AppContextSesion";
 //import {storageAddFile, getFecha} from "../firebase/services/firebase.services";
 // UTILS:
-//import '../../Modules/Image/MenuImage/MenuImagen.scss';
 import './InputFileImage.scss';
 import fileUpload from '../../../assets/img/file-upload.jpeg';
 

@@ -1,16 +1,16 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
 
-import AddImageLocal from "../AddImageLocal/AddImageLocal";
-import AddImageServer from "../AddImageServer/AddImageServer";
-import GalleryImageServer from "../GalleryImageServer/GalleryImageServer";
-import ModalUI from "../../../components/ModalUI/ModalUI";
+import AddImageLocal          from "../AddImageLocal/AddImageLocal";
+import AddImageServer         from "../AddImageServer/AddImageServer";
+import GalleryImageServer     from "../GalleryImageServer/GalleryImageServer";
+import ModalUI                from "../../../components/ModalUI/ModalUI";
 
 // UTILS:
-import './MenuImagen.scss';
-import HomeIcon from '@mui/icons-material/Home';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import {Button} from "@mui/material";
+import HomeIcon               from '@mui/icons-material/Home';
+import FileDownloadIcon       from '@mui/icons-material/FileDownload';
+import FileUploadIcon         from '@mui/icons-material/FileUpload';
+import {Button}               from "@mui/material";
+import useStylesMenuImage from './MenuImagenStyle';
 
 const MenuImagen = () => {
     // STATE:
@@ -25,6 +25,8 @@ const MenuImagen = () => {
     // REF:
 
     // LOGICA
+    const props = {}
+    const classes = useStylesMenuImage(props);
     const handleAddImageLocal = () => {
         setMaxWidth('xs');
         setTitle('ADD IMAGE LOCAL');
@@ -56,27 +58,27 @@ const MenuImagen = () => {
 
     return (
         <>
-            <article className="article__menuImagen">
-                <div className='article__menuImagen__container'>
-                    <Button
-                        variant="outlined"
-                        size='small'
-                        startIcon={<HomeIcon/>}
-                        onClick={() => handleAddImageLocal()}
-                    >ADD IMAGE LOCAL</Button>
-                    <Button
-                        variant="outlined"
-                        size='small'
-                        startIcon={<FileUploadIcon/>}
-                        onClick={() => handleAddImageServer()}
-                    >ADD IMAGE ON THE SERVER</Button>
-                    <Button
-                        variant="outlined"
-                        size='small'
-                        startIcon={<FileDownloadIcon/>}
-                        onClick={() => handleGalleryImageServer()}
-                    >GALLERY ON THE SERVER</Button>
-                </div>
+            <article className={classes.article}>
+                <Button
+                    variant="outlined"
+                    size='small'
+                    style={{marginRight:'20px'}}
+                    startIcon={<HomeIcon/>}
+                    onClick={() => handleAddImageLocal()}
+                >ABRIR IMAGEN LOCAL</Button>
+                <Button
+                    variant="outlined"
+                    size='small'
+                    startIcon={<FileUploadIcon/>}
+                    style={{marginRight:'20px'}}
+                    onClick={() => handleAddImageServer()}
+                >SUBIR IMAGEN A LA NUbE</Button>
+                <Button
+                    variant="outlined"
+                    size='small'
+                    startIcon={<FileDownloadIcon/>}
+                    onClick={() => handleGalleryImageServer()}
+                >MY GALERIA</Button>
             </article>
             {/* MODAL: ADD IMAGE LOCAL */}
             <ModalUI open={open} setOpen={setOpen} setStateSuccess={setStateSuccess} maxWidth={maxWidth} title={title} >

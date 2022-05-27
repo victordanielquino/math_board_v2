@@ -148,7 +148,7 @@ const MenuLinea = () => {
 					<Button variant={variantCuadratic} size='small' onClick={() => handleBtnTypeLine('cuadratic')}>
 						<UTurnRightIcon fontSize='small'/>
 					</Button>
-					<Button variant={variantBeziel} size='small' onClick={() => handleBtnTypeLine('bezier')}>
+					<Button variant={variantBeziel} size='small' disabled onClick={() => handleBtnTypeLine('bezier')}>
 						<SwapCallsIcon fontSize='small'/>
 					</Button>
 					<Button variant={variantVector} size='small' onClick={() => handleBtnTypeLine('vector')}>

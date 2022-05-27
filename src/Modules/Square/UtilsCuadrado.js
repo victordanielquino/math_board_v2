@@ -90,17 +90,6 @@ const u_cuadradoMover = (cuadrado, mouse) => {
 	cuadrado.vertex[5].x += recorrido_x; cuadrado.vertex[5].y += recorrido_y;
 	cuadrado.vertex[6].x += recorrido_x; cuadrado.vertex[6].y += recorrido_y;
 	cuadrado.vertex[7].x += recorrido_x; cuadrado.vertex[7].y += recorrido_y;
-	// pts:
-	/*cuadrado.pts[0].x_ini += recorrido_x; cuadrado.pts[0].y_ini += recorrido_y;
-	cuadrado.pts[0].x_fin += recorrido_x; cuadrado.pts[0].y_fin += recorrido_y;
-	cuadrado.pts[1].x_ini += recorrido_x; cuadrado.pts[1].y_ini += recorrido_y;
-	cuadrado.pts[1].x_fin += recorrido_x; cuadrado.pts[1].y_fin += recorrido_y;
-	cuadrado.pts[2].x_ini += recorrido_x; cuadrado.pts[2].y_ini += recorrido_y;
-	cuadrado.pts[2].x_fin += recorrido_x; cuadrado.pts[2].y_fin += recorrido_y;
-	cuadrado.pts[3].x_ini += recorrido_x; cuadrado.pts[3].y_ini += recorrido_y;
-	cuadrado.pts[3].x_fin += recorrido_x; cuadrado.pts[3].y_fin += recorrido_y;
-	cuadrado.pts[4].x_ini += recorrido_x; cuadrado.pts[4].y_ini += recorrido_y;
-	cuadrado.pts[4].x_fin += recorrido_x; cuadrado.pts[4].y_fin += recorrido_y;*/
 	// h,k:
 	cuadrado.h += recorrido_x; cuadrado.k += recorrido_y;
 	// radioX, radioY:
@@ -315,7 +304,6 @@ const u_cuadradoUpdateZise = (square, mouse) => {
 			rec1 = rectaQuePasaPorDosPtos(square.vertex[0], {x:square.h, y:square.k});
 			rec2 = rectaQuePasaPorDosPtos(square.vertex[3], {x:square.h, y:square.k});
 			square.angulo = anguloEntreDosRectasCaso2(rec1, rec2);
-
 			break;
 		default:
 			console.log('ocurrio un error');
@@ -452,7 +440,7 @@ const u_cuadradoBordeSegmentado = (context, cuadrado) => {
 	}
 };
 // CUADRADO: BUSCA CUADRADO PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_cuadradoOpera = (cuadradoSelect, array, mouse) => {
+const u_cuadradoOpera = (cuadradoSelect, elmIn, mouse) => {
 	if (mouse.cuadrado_seleccionar_pts){
 		mouse.cuadrado_pto = u_squareSearcVertexSize(
 			mouse.pos.x, mouse.pos.y, cuadradoSelect
@@ -467,7 +455,7 @@ const u_cuadradoOpera = (cuadradoSelect, array, mouse) => {
 		}
 	}
 	if (!mouse.cuadrado_seleccionar_pts){
-		cuadradoSelect = u_cuadradoGetClick(array[0], mouse.pos.x, mouse.pos.y);
+		cuadradoSelect = u_cuadradoGetClick(elmIn, mouse.pos.x, mouse.pos.y);
 		u_cuadradoClickSobreCuadrado(cuadradoSelect, mouse);
 	}
 	return cuadradoSelect;

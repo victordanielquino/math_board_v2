@@ -5,12 +5,6 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import mas from "../../../assets/simbolos/mas.png";
-import menos from "../../../assets/simbolos/menos.png";
-import por from "../../../assets/simbolos/por.png";
-import division from "../../../assets/simbolos/division.png";
-import fraccion from "../../../assets/simbolos/fraccion.png";
-import igual from "../../../assets/simbolos/igual.png";
 import potencia1 from "../../../assets/simbolos/potencia1.png";
 import potencia2 from "../../../assets/simbolos/potencia2.png";
 import potencia3 from "../../../assets/simbolos/potencia3.png";
@@ -48,17 +42,17 @@ const KeyboardSymbols = ({setCharacter}) => {
         {
             id: 0,
             type: 'key',
-            array: ['+','-','*','/','÷','=']
+            array: ['+','-','×','/','÷','=','(',')','[',']','{','}']
         },
         {
             id: 1,
             type: 'key',
-            array: ['±','∣∣','∆','≡','∴','≠']
+            array: ['±','∣∣','∆','≡','∴','≠', 'π','e', '∇', '°', '|', ':' ]
         },
         {
             id: 2,
             type: 'key',
-            array: ['(',')','[',']','{','}']
+            array: ['∀','∃','∄','∈','∉','!', '∑','lim','∂','∫','∮','∏']
         },
         {
             id: 3,
@@ -70,27 +64,6 @@ const KeyboardSymbols = ({setCharacter}) => {
                 {key: '√{}', img: raiz1},
                 {key: '√[3]{}', img: raiz2},
                 {key: '√[n]{}', img: raiz3},
-            ]
-        },
-        {
-            id: 7,
-            type: 'key',
-            array: ['π','e','>','<','≥','≤']
-        },
-        {
-            id: 4,
-            type: 'key',
-            array: ['∀','∃','∄','∈','∉','!']
-        },
-        {
-            id: 6,
-            type: 'key',
-            array: ['∑','lim','∂','∫','∮','∏']
-        },
-        {
-            id: 11,
-            type: 'keyImage',
-            array: [
                 {key: '_{i}', img: indice},
                 {key: '∫_{0}^{∞}xdx', img: integral},
                 {key: 'log_{a}{b}', img: log_},
@@ -100,31 +73,24 @@ const KeyboardSymbols = ({setCharacter}) => {
             ]
         },
         {
+            id: 4,
+            type: 'key',
+            array: ['≈', '≉', '≅', '≇', '℧', 'α', 'β', '∅', 'ϕ', '℘', '∞', '↓']
+        },
+        {
             id: 5,
             type: 'key',
-            array: ['∂','%','∞','ϕ','℘','℧']
+            array: ['ℕ', 'ℤ', 'ℚ', '𝕀', 'ℝ', 'ℂ', '⇔', '⇒', '→', '←', '⇐', '⇄']
         },
         {
-            id: 8,
+            id: 6,
             type: 'key',
-            array: ['α','β','∅','ϕ','℘','→']
+            array: ['⊂', '⊆', '⊄', '⊈', '⊃', '⊇', '⊅', '⊉','∩', '∪', '∼']
         },
         {
-            id: 10,
+            id: 7,
             type: 'key',
-            array: ['ℕ','ℤ','ℚ','𝕀','ℝ','ℂ']
-        },
-        {
-            id: 9,
-            type: 'keyImage',
-            array: [
-                {key: '+', img: mas},
-                {key: '-', img: menos},
-                {key: '*', img: por},
-                {key: '÷', img: division},
-                {key: '/', img: fraccion},
-                {key: '=', img: igual},
-            ]
+            array: ['>', '<', '≥', '≤', '≯', '≮', '≰', '≱', '∨', '∧', '¬']
         },
     ]
     const nroItemsXPagina = 4;

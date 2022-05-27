@@ -33,7 +33,7 @@ import AppContextGeometric from "../../context/AppContextGeometric";
 import AppContextScissor from "../../context/AppContextScissor";
 import AppContextReadJson from "../../context/AppContextReadJson";
 
-import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
+//import Keyboard from '../../Modules/Function/Keyboard/Keyboard';
 
 import './NavIzq.scss';
 
@@ -137,7 +137,7 @@ const NavIzq = () => {
 				break;
 			case 'functionIcon':
 				s_functionSetActive(boolean);
-				setToggleKeyboard(boolean);
+				//setToggleKeyboard(boolean);
 				break;
 			case 'calculadoraIcon':
 				h_calculatorSetActive(boolean);
@@ -198,7 +198,8 @@ const NavIzq = () => {
 					</Button>
 				))}
 			</ButtonGroup>
-			{toggleKeyboard && <Keyboard />}
+			{//toggleKeyboard && <Keyboard />
+			}
 		</nav>
 	);
 };

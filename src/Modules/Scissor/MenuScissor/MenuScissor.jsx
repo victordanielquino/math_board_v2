@@ -7,6 +7,12 @@ import useStylesMenuScissor from './MenuScissorStyle';
 import AppContextScissor    from "../../../context/AppContextScissor";
 import {isObjectEmpty}      from "../../../utils/utils";
 import AppContext           from "../../../context/AppContext";
+import {
+    anguloEntreDosRectasCaso2,
+    rectaQuePasaPorDosPtos,
+    u_distanciaEntreDosPtos,
+    u_ptoMedio
+}                           from "../../../utils/geometriaAnalitica";
 
 const MenuScissor = () => {
     // CONTEXT:
@@ -47,7 +53,7 @@ const MenuScissor = () => {
             fileId: 0,
             filePropietario: 'VRQ',
             fileSrc: '',
-            fileNombre: 'duplicate',
+            fileNombre: 'duplicate.png',
             fileAutor: 'all',
             x_ini: 100,
             y_ini: 100,
@@ -57,6 +63,18 @@ const MenuScissor = () => {
             dataUse: false,
             types: 'image',
             canvas: stateScissor.canvas,
+
+            vertex: [],
+            h: 0,
+            k: 0,
+            angulo: 0,
+            radio: 0,
+            rotateDeg: 0,
+            rotateDegPrev: 0,
+            width: 0,
+            height: 0,
+            imageDraw: '',
+            description: '',
         };
         canvas = document.getElementById('canvas-1');
         context = canvas.getContext('2d');
@@ -70,6 +88,36 @@ const MenuScissor = () => {
         image.y_ini = stateScissor.scissor.y_ini + 1 + 20;
         image.x_fin = stateScissor.scissor.x_fin - 1 + 20;
         image.y_fin = stateScissor.scissor.y_fin - 1 + 20;
+
+        //
+        image.vertex[0] = {x:image.x_ini, y:image.y_ini, pto:0};
+        image.vertex[1] = {x:image.x_fin, y:image.y_ini, pto:1};
+        image.vertex[2] = {x:image.x_fin, y:image.y_fin, pto:2};
+        image.vertex[3] = {x:image.x_ini, y:image.y_fin, pto:3};
+        let resp = u_ptoMedio(image.vertex[0], image.vertex[1]);
+        image.vertex[4] = {x:resp.x, y:resp.y, pto:4};
+        resp = u_ptoMedio(image.vertex[1], image.vertex[2]);
+        image.vertex[5] = {x:resp.x, y:resp.y, pto:5};
+        resp = u_ptoMedio(image.vertex[2], image.vertex[3]);
+        image.vertex[6] = {x:resp.x, y:resp.y, pto:6};
+        resp = u_ptoMedio(image.vertex[3], image.vertex[0]);
+        image.vertex[7] = {x:resp.x, y:resp.y, pto:7};
+        resp = u_ptoMedio(image.vertex[0], image.vertex[2]);
+        image.h = resp.x;
+        image.k = resp.y;
+        // angulo:
+        let rec1 = rectaQuePasaPorDosPtos(image.vertex[0], {x:image.h, y:image.k});
+        let rec2 = rectaQuePasaPorDosPtos(image.vertex[3], {x:image.h, y:image.k});
+        image.angulo = anguloEntreDosRectasCaso2(rec1, rec2);
+        (image.angulo < 0) ? image.angulo = 90 + (90 + image.angulo):'';
+        // radio:
+        image.radio = u_distanciaEntreDosPtos(image.vertex[0], {x:image.h, y:image.k});
+        // rotateDegPrev:
+        image.rotateDegPrev = image.angulo / 2;
+        // width height:
+        image.width = u_distanciaEntreDosPtos(image.vertex[7], image.vertex[5]);
+        image.height = u_distanciaEntreDosPtos(image.vertex[4], image.vertex[6]);
+
         h_addH(image);
         h_scissorSetScissor({});
     }

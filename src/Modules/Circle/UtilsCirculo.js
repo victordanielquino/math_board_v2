@@ -158,20 +158,15 @@ const u_circuloBordeSegmentado = (context, circulo) => {
     });
 };
 // CIRCULO: GET - CLICK
-const u_circuloGetClick = (array, x, y) => {
+const u_circuloGetClick = (circulo, x, y) => {
     let resp = '';
-    array.forEach((circulo) => {
-        if (circulo.visible) {
-            let x1 = circulo.x_ini;
-            let y1 = circulo.y_ini;
-            let x2 = circulo.x_fin;
-            let y2 = circulo.y_fin;
-            if (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20) {
-                resp = circulo;
-            }
-        }
-    });
-    //resp ? u_circuloBordeSegmentado(context, resp):'';
+    let x1 = circulo.x_ini;
+    let y1 = circulo.y_ini;
+    let x2 = circulo.x_fin;
+    let y2 = circulo.y_fin;
+    if (x1 - 20 < x && x < x2 + 20 && y1 - 20 < y && y < y2 + 20) {
+        resp = circulo;
+    }
     return resp;
 };
 // CIRCULO: MOVER
@@ -234,7 +229,7 @@ const u_circuloClickSobreCirculo = (circuloSelect, mouse) => {
     }
 }
 // CIRCULO: BUSCA CIRCULO PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_circuloOpera = (circuloSelect, array, mouse) => {
+const u_circuloOpera = (circuloSelect, elmIn, mouse) => {
     if (mouse.circulo_seleccionar_pts){
         mouse.circulo_pto = u_circuloBuscaPtoClickParaRedimencionar(mouse.pos.x, mouse.pos.y, circuloSelect);
         if(mouse.circulo_pto !== '') {
@@ -247,7 +242,7 @@ const u_circuloOpera = (circuloSelect, array, mouse) => {
         }
     }
     if (!mouse.circulo_seleccionar_pts){
-        circuloSelect = u_circuloGetClick(array, mouse.pos.x, mouse.pos.y);
+        circuloSelect = u_circuloGetClick(elmIn, mouse.pos.x, mouse.pos.y);
         u_circuloClickSobreCirculo(circuloSelect, mouse);
     }
     return circuloSelect;

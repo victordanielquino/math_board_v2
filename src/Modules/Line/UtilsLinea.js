@@ -612,30 +612,23 @@ const searchCuadratic = (cuadratic, x, y) => {
 	return resp;
 }
 // LINEA: BUSCA LINEA AL HACER CLICK IN CANVAS
-const u_lineaGetClick = (array, x, y) => {
+const u_lineaGetClick = (line, x, y) => {
 	let resp = '';
-	let sw = true;
-	for(let i = 0; (i < array.length) && sw ; i++) {
-		let line = array[i];
-		if (line.visible) {
-			switch (line.type) {
-				case 'line':
-					resp = searchLine(line, x, y);
-					break;
-				case 'bezier':
-					break;
-				case 'cuadratic':
-					resp = searchCuadratic(line, x, y);
-					break;
-				case 'vector':
-					resp = searchVector(line, x, y);
-					break;
-				default:
-					console.log('error: u_lineaGetClick()');
-					break;
-			}
-		}
-		if(resp != '') sw = false;
+	switch (line.type) {
+		case 'line':
+			resp = searchLine(line, x, y);
+			break;
+		case 'bezier':
+			break;
+		case 'cuadratic':
+			resp = searchCuadratic(line, x, y);
+			break;
+		case 'vector':
+			resp = searchVector(line, x, y);
+			break;
+		default:
+			console.log('error: u_lineaGetClick()');
+			break;
 	}
 	return resp;
 };
@@ -652,7 +645,7 @@ const u_lineaClickSobreLinea = (lineaSelect, mouse) => {
 	}
 }
 // LINEA: BUSCA LINEA PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_lineaOpera = (lineaSelect, array, mouse) => {
+const u_lineaOpera = (lineaSelect, elmIn, mouse) => {
 	if (mouse.linea_seleccionar_pts){
 		mouse.linea_pto = u_lineaBuscaPtoClickParaRedimencionar(mouse.pos.x, mouse.pos.y, lineaSelect);
 		if(mouse.linea_pto !== '') {
@@ -665,7 +658,7 @@ const u_lineaOpera = (lineaSelect, array, mouse) => {
 		}
 	}
 	if (!mouse.linea_seleccionar_pts){
-		lineaSelect = u_lineaGetClick(array, mouse.pos.x, mouse.pos.y);
+		lineaSelect = u_lineaGetClick(elmIn, mouse.pos.x, mouse.pos.y);
 		u_lineaClickSobreLinea(lineaSelect, mouse);
 	}
 	return lineaSelect;

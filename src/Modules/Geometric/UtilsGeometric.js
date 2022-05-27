@@ -196,7 +196,7 @@ export const u_geometricResize = (geometricFig, mouse) => {
 }
 
 // GEOMETRIC: BUSCA GEOMETRIC PARA PODER MOVERLO O EDITAR SU TAMANO
-export const u_geometricOpera = (geometricSelect, array, mouse) => {
+export const u_geometricOpera = (geometricSelect, elmIn, mouse) => {
     if (mouse.geometric_selection_pts){
         mouse.geometric_pto = u_geometricSearchPtoResize(mouse.pos.x, mouse.pos.y, geometricSelect);
         if (mouse.geometric_pto != '') {
@@ -209,7 +209,7 @@ export const u_geometricOpera = (geometricSelect, array, mouse) => {
         }
     }
     if (!mouse.geometric_selection_pts) {
-        geometricSelect = u_geometricGetClick(array, mouse.pos.x, mouse.pos.y)
+        geometricSelect = u_geometricGetClick(elmIn, mouse.pos.x, mouse.pos.y)
         u_geometricClickSobreGeometric(geometricSelect, mouse);
     }
     return geometricSelect;
@@ -226,15 +226,11 @@ export const u_geometricClickSobreGeometric = (geometricSelect, mouse) => {
     }
 }
 // GEOMETRIC: GET
-export const u_geometricGetClick = (array, x, y) => {
+export const u_geometricGetClick = (elm, x, y) => {
     let resp = '';
-    array.forEach((elm) => {
-        if (elm.visible) {
-            let d = u_distanciaEntreDosPtos({x:elm.h, y:elm.k}, {x:x, y:y});
-            if (d < elm.radio)
-                resp = elm
-        }
-    })
+    let d = u_distanciaEntreDosPtos({x:elm.h, y:elm.k}, {x:x, y:y});
+    if (d < elm.radio)
+        resp = elm
     return resp;
 };
 

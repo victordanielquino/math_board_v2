@@ -88,6 +88,9 @@ const Key = ({
 			case 'log_{a}{b}':
 				c = 5;
 				break;
+			case 'log':
+				c = 2;
+				break;
 		}
 		let array = Array.from(stateFunction.text);
 		array.splice(stateFunction.positionCursor, 0, key);

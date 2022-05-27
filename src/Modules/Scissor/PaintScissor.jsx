@@ -9,13 +9,12 @@ import {
     u_scissorPtsResize,
     u_scissorResizePto,
     u_scissorResizePtoGet
-}                                      from "./UtilsScissor";
-import {BlobToBase64, ImageDataToBlob} from "../../utils/imageFormatsConverter";
-import {isObjectEmpty}                 from "../../utils/utils";
+}                                        from "./UtilsScissor";
+import {isObjectEmpty, u_canvasAutoSize} from "../../utils/utils";
 
 const PaintScissor = (id_canvas) => {
     // useContext:
-    const { state } = useContext(AppContext);
+    const { state, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const { stateScissor, h_scissorSetCanvas, h_scissorSetScissor } = useContext(AppContextScissor);
 
@@ -35,6 +34,7 @@ const PaintScissor = (id_canvas) => {
     }
     let canvas = '';
     let context = '';
+    let canvasScissorDatos = {top: 0, left: 0, width: 0, height: 0,};
     let mouse = {
         click: false,
         move: false,
@@ -143,13 +143,26 @@ const PaintScissor = (id_canvas) => {
         }
         mouseReinicia();
     };
-    const canvasScissorDatos = {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-    };
-    const update_canvasScissorDatos = () => {
+    // 4:
+    const keyDown = (e) => {
+        if (state.historia.length > 0){
+            // console.log(e);
+            // console.log(e.key);
+            // console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 90 && ctrl) {
+                //console.log("Ctrl+Z is pressed.");
+                let indexdDelete = -1;
+                state.historia.forEach((elm, index) => elm.canvas === stateScissor.canvas ? indexdDelete = index:'');
+                indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+            }
+        }
+    }
+    /*const update_canvasScissorDatos = () => {
         canvasScissorDatos.top = canvas.getBoundingClientRect().top;
         canvasScissorDatos.left = canvas.getBoundingClientRect().left;
         canvasScissorDatos.width = canvas.getBoundingClientRect().width;
@@ -163,19 +176,28 @@ const PaintScissor = (id_canvas) => {
         if (!isObjectEmpty(stateScissor.scissor)) {
             u_scissorDrawRectangulo(context, stateScissor.scissor);
         }
-    }
+    }*/
 
     // EFFECT:
     useEffect(() => {
         if (stateScissor.active) {
-            eventDraw();
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasScissorDatos = u_canvasAutoSize(canvas, canvasScissorDatos);
+            paint();
+            if (!isObjectEmpty(stateScissor.scissor)) {
+                u_scissorDrawRectangulo(context, stateScissor.scissor);
+            }
+
             canvas.addEventListener('mousedown', mouseDownScissor);
             canvas.addEventListener('mousemove', mouseMoveScissor);
             canvas.addEventListener('mouseup', mouseUpScissor);
+            document.addEventListener('keydown', keyDown);
             return () => {
                 canvas.removeEventListener('mousedown', mouseDownScissor);
                 canvas.removeEventListener('mousemove', mouseMoveScissor);
                 canvas.removeEventListener('mouseup', mouseUpScissor);
+                document.removeEventListener('keydown', keyDown);
             };
         }
     }, [stateScissor, state.historia, stateScissor.scissor]);

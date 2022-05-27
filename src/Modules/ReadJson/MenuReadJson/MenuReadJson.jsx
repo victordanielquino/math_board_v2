@@ -1,15 +1,18 @@
-import React, {useContext, useEffect, useRef} from 'react';
-import AppContext                             from "../../../context/AppContext";
-import {Button}        from "@mui/material";
-import useStylesMenuReadJson       from "./MenuReadJsonStyle";
-import FindInPageIcon from '@mui/icons-material/FindInPage';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import AppContext                      from "../../../context/AppContext";
+import {Button, TextField, Typography} from "@mui/material";
+import useStylesMenuReadJson           from "./MenuReadJsonStyle";
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import fileJson from '../../../Data/mathboard.json';
 import FolderZipIcon from '@mui/icons-material/FolderZip';
+import ModalUI from '../../../components/ModalUI/ModalUI_';
 
 const MenuReadJson = () => {
     // CONTEXT:
     const {state, h_setReadJsonAll} = useContext(AppContext);
+
+    // STATE:
+    const [jsonName, setJsonName] = useState('');
+    const [open, setOpen] = useState(false);
 
     // REF:
     const inputRef = useRef(null);
@@ -51,7 +54,7 @@ const MenuReadJson = () => {
     const handleLoad = () => {
         inputRef.current.click();
     }
-    const handleSave = () => {
+    const downloadJson = () => {
         let mathboards = {mathboards:state.mathBoards};
         let mathboardSelect = { mathboardSelect: {index:state.mathBoardsIndexSelec} };
         let historiaNew = [];
@@ -74,30 +77,59 @@ const MenuReadJson = () => {
         const archivo = new Blob([jsonContent], { type: 'text/plain' });
         const url = URL.createObjectURL(archivo);
         a.href = url;
-        a.download = "mathboard.json";
+        a.download = `${jsonName}.json`;
         a.click();
         URL.revokeObjectURL(url);
+    }
+    const handleOpenModalUI = () => {
+        let date = new Date();
+        setJsonName(date.toISOString().split('T')[0]);
+        setOpen(true);
+    }
+    const handleSuccess = () => {
+        downloadJson();
+        setOpen(false);
     }
 
     // EFFECT:
 
   return (
-      <article className={classes.article} style={{ color:'primary'}}>
-          <input type='file' name='file' accept='.json' ref={inputRef} onChange={onchangeFile} className={classes.inputFile}/>
-          <Button
-              variant="outlined"
-              size='small'
-              startIcon={<FolderZipIcon/>}
-              style={{ marginRight:'20px'}}
-              onClick={() => handleLoad()}
-          >OPEN FILE</Button>
-          <Button
-              variant="outlined"
-              size='small'
-              startIcon={<SaveAltIcon/>}
-              onClick={() => handleSave()}
-          >SAVE FILE</Button>
-      </article>
+      <>
+          <article className={classes.article} style={{ color:'primary'}}>
+              <input type='file' name='file' accept='.json' ref={inputRef} onChange={onchangeFile} className={classes.inputFile}/>
+              <Button
+                  variant="outlined"
+                  size='small'
+                  startIcon={<FolderZipIcon/>}
+                  style={{ marginRight:'20px'}}
+                  onClick={() => handleLoad()}
+              >ABRIR PROYECTO</Button>
+              <Button
+                  variant="outlined"
+                  size='small'
+                  startIcon={<SaveAltIcon/>}
+                  //onClick={() => handleSave()}
+                  onClick={() => handleOpenModalUI()}
+              >GUARDAR PROYECTO</Button>
+          </article>
+          <ModalUI open={open} setOpen={setOpen} handleSuccess={handleSuccess} maxWidth={'md'} title={'Guardar  Proyecto:'} booleanFooter={true} successTitle={'GUARDAR'}>
+              <TextField
+                  fullWidth={true}
+                  id="outlined-basic"
+                  label="Nombre del Archivo:"
+                  variant="outlined"
+                  color='primary'
+                  size='small'
+                  value={jsonName}
+                  InputProps={{ style: {fontSize: '1em'}}}
+                  onChange={(e) => setJsonName(e.target.value)}
+                  sx={{ minHeight: 0, minWidth: 0, padding: 0, margin: '0 0 10px 0', textTransform: 'none' }}
+              />
+              <Typography style={{fontSize:'0.8em'}}>
+                  Nota: No usar espacios en blaco !!!
+              </Typography>
+          </ModalUI>
+      </>
   )
 }
 

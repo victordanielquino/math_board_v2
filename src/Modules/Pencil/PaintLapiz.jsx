@@ -9,12 +9,13 @@ import AppContextGrid from "../../context/AppContextGrid";
 
 import { u_lapizGraficaLinea } from './UtilsLapiz';
 
-import draw               from '../Draw/Draw'
-import {u_canvasAutoSize} from "../../utils/utils";
+import draw                                    from '../Draw/Draw'
+import {u_canvasAutoSize}                      from "../../utils/utils";
+import {u_textPositionCursor, u_textValidChar} from "../Text/UtilsText";
 
 const PaintLapiz = (id_canvas) => {
 	// useContext:
-	const { state, h_addH } = useContext(AppContext);
+	const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
 	const { stateGrid } = useContext(AppContextGrid);
 	const { stateLapiz, s_lapizAddHId, h_lapizSetCanvas } = useContext(AppContextLapiz);
 
@@ -55,6 +56,7 @@ const PaintLapiz = (id_canvas) => {
 		x_fin: 0,
 		y_fin: 0,
 	};
+	let canvasLapizDatos = {top: 0, left: 0, width: 0, height: 0};
 	const mouse = {
 		click: false,
 		move: false,
@@ -106,7 +108,25 @@ const PaintLapiz = (id_canvas) => {
 		}
 		mouse.click = false;
 	};
-	let canvasLapizDatos = {top: 0, left: 0, width: 0, height: 0};
+	// 4:
+	const keyDown = (e) => {
+		if (state.historia.length > 0){
+			// console.log(e);
+			// console.log(e.key);
+			// console.log(e.keyCode);
+			let key = e.key;
+			let keyV = e.which || e.keyCode;
+			let ctrl = e.ctrlKey
+				? e.ctrlKey
+				: (key === 17) ? true : false;
+			if (keyV === 90 && ctrl) {
+				//console.log("Ctrl+Z is pressed.");
+				let indexdDelete = -1;
+				state.historia.forEach((elm, index) => elm.canvas === stateLapiz.canvas ? indexdDelete = index:'');
+				indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+			}
+		}
+	}
 
 	// EFFECT:
 	useEffect(() => {
@@ -114,22 +134,20 @@ const PaintLapiz = (id_canvas) => {
 			canvas = document.getElementById(id_canvas);
 			context = canvas.getContext('2d');
 			canvasLapizDatos = u_canvasAutoSize(canvas, canvasLapizDatos);
-			if (state.historia.length > 0) paint();
+			paint();
 
 			canvas.addEventListener('mousedown', mouseDownLapiz);
 			canvas.addEventListener('mousemove', mouseMoveLapiz);
 			canvas.addEventListener('mouseup', mouseUpLapiz);
+			document.addEventListener('keydown', keyDown);
 			return () => {
 				canvas.removeEventListener('mousedown', mouseDownLapiz);
 				canvas.removeEventListener('mousemove', mouseMoveLapiz);
 				canvas.removeEventListener('mouseup', mouseUpLapiz);
+				document.removeEventListener('keydown', keyDown);
 			};
 		}
 	}, [stateLapiz, state.historia]);
-
-	/*useEffect(() => {
-		if (stateLapiz.active) paint();
-	}, [stateLapiz.active]);*/
 
 	useEffect(() => {
 		h_lapizSetCanvas(state.canvas);
@@ -137,10 +155,6 @@ const PaintLapiz = (id_canvas) => {
 			paint();
 		}
 	}, [state.canvas]);
-
-	/*useEffect(() => {
-		console.log('historia:', state.historia);
-	}, [state.historia]);*/
 };
 
 export default PaintLapiz;

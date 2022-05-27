@@ -103,58 +103,25 @@ const u_trianguloBordeSegmentado = (context, triangulo) => {
     });
 };
 // CIRCULO: GET - CLICK
-const u_trianguloGetClick = (context, array, x, y) => {
+const u_trianguloGetClick = (triangulo, x, y) => {
     let resp = '';
-    array.forEach((triangulo) => {
-        if (triangulo.visible) {
-            let p0 = { x: x,y: y };
-            let p1 = { x: triangulo.x1, y:triangulo.y1 };
-            let p2 = { x: triangulo.x2, y:triangulo.y2 };
-            let p3 = { x: triangulo.x3, y:triangulo.y3 };
-            (
-                (
-                    u_trianguloProductoCruz_UxV(p0, p1, p2) < 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p2, p3) < 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p3, p1) < 0
-                ) ||
-                (
-                    u_trianguloProductoCruz_UxV(p0, p1, p2) > 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
-                )
-            ) ? resp = triangulo : '';
-        }
-    });
-    //resp ? u_trianguloBordeSegmentado(context, resp):'';
+    let p0 = { x: x,y: y };
+    let p1 = { x: triangulo.x1, y:triangulo.y1 };
+    let p2 = { x: triangulo.x2, y:triangulo.y2 };
+    let p3 = { x: triangulo.x3, y:triangulo.y3 };
+    (
+        (
+            u_trianguloProductoCruz_UxV(p0, p1, p2) < 0 &&
+            u_trianguloProductoCruz_UxV(p0, p2, p3) < 0 &&
+            u_trianguloProductoCruz_UxV(p0, p3, p1) < 0
+        ) ||
+        (
+            u_trianguloProductoCruz_UxV(p0, p1, p2) > 0 &&
+            u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
+            u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
+        )
+    ) ? resp = triangulo : '';
     return resp;
-};
-// TRIANGLE: GET - ID
-const u_trianguloGetId = (array, x, y) => {
-    let resp = '';
-    let id =  -1;
-    array.forEach((triangulo) => {
-        if (triangulo.visible && triangulo.edit) {
-            let p0 = { x: x,y: y };
-            let p1 = { x: triangulo.x1, y:triangulo.y1 };
-            let p2 = { x: triangulo.x2, y:triangulo.y2 };
-            let p3 = { x: triangulo.x3, y:triangulo.y3 };
-            (
-                (
-                    u_trianguloProductoCruz_UxV(p0,p1,p2) < 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p2, p3) < 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p3, p1) < 0
-                ) ||
-                (
-                    u_trianguloProductoCruz_UxV(p0,p1,p2) > 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
-                    u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
-                )
-            ) ? resp = triangulo : '';
-        }
-    });
-    //resp ? u_trianguloBordeSegmentado(context, resp):'';
-    resp !== '' ? id = resp.id:'';
-    return id;
 };
 const u_triangleClickTrue = (triangulo, x, y) => {
     let p0 = { x: x, y: y };
@@ -171,13 +138,6 @@ const u_triangleClickTrue = (triangulo, x, y) => {
             u_trianguloProductoCruz_UxV(p0, p2, p3) > 0 &&
             u_trianguloProductoCruz_UxV(p0, p3, p1) > 0
         ));
-};
-// TRIANGULO: DELETE POR ID
-const u_trianguloDeleteById = (array, id) => {
-    let newArray = [];
-    for(let elm of array)
-        elm.id !== id ? newArray.push(elm):'';
-    return newArray;
 };
 // CIRCULO: CLICK SOBRE ALGUN PUNTO PARA REDIMENCIONAR EL CIRCULO
 const u_trianguloBuscaPtoClickParaRedimencionar = (x, y, triangulo) => {
@@ -219,7 +179,7 @@ const u_trianguloClickSobreTriangulo = (trianguloSelect, mouse) => {
     }
 }
 // TRIANGULO: BUSCA TRIANGULO PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_trianguloOpera = (context, trianguloSelect, array, mouse) => {
+const u_trianguloOpera = (trianguloSelect, elmIn, mouse) => {
     if (mouse.triangulo_seleccionar_pts){
         mouse.triangulo_pto = u_trianguloBuscaPtoClickParaRedimencionar(
             mouse.pos.x, mouse.pos.y, trianguloSelect
@@ -234,7 +194,7 @@ const u_trianguloOpera = (context, trianguloSelect, array, mouse) => {
         }
     }
     if (!mouse.triangulo_seleccionar_pts){
-        trianguloSelect = u_trianguloGetClick(context, array, mouse.pos.x, mouse.pos.y);
+        trianguloSelect = u_trianguloGetClick(elmIn, mouse.pos.x, mouse.pos.y);
         u_trianguloClickSobreTriangulo(trianguloSelect, mouse);
     }
     return trianguloSelect;
@@ -281,8 +241,6 @@ export {
     u_trianguloBordeSegmentado,
     u_trianguloUpdateZise,
     u_trianguloGrafica,
-    u_trianguloGetId,
-    u_trianguloDeleteById,
     u_triangleDraw,
     u_triangleClickTrue
 }

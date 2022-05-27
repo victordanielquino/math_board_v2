@@ -230,6 +230,22 @@ const useInitialState = () => {
 			colorFondoBlur: boolean,
 		});
 	};
+	const h_deleteLatestH = () => {
+		let copyHistory = [...state.historia];
+		let deleteElm = copyHistory.pop();
+		setState({
+			...state,
+			historia: copyHistory,
+		});
+	}
+	const h_deleteIndexH = (index) => {
+		let copyHistory = [...state.historia];
+		let deleteElms = copyHistory.splice(index, 1);
+		setState({
+			...state,
+			historia: copyHistory,
+		});
+	}
 
 	return {
 		state,
@@ -250,7 +266,9 @@ const useInitialState = () => {
 		h_setReadJsonAll,
 		h_setColorblur,
 		h_setColorfondoblur,
-		h_setMathboardsJsonIndex
+		h_setMathboardsJsonIndex,
+		h_deleteLatestH,
+		h_deleteIndexH
 	};
 };
 

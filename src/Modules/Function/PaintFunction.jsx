@@ -1,22 +1,21 @@
 import React, {useContext, useEffect} from 'react';
+import AppContext                     from "../../context/AppContext";
+import AppContextGrid                 from "../../context/AppContextGrid";
+import AppContextFunction             from "../../context/AppContextFunction";
+import draw                           from "../Draw/Draw";
+import {u_canvasAutoSize}             from "../../utils/utils";
 
-// CONTEXT
-import AppContext from "../../context/AppContext";
-import AppContextGrid from '../../context/AppContextGrid';
-import AppContextCalculator from "../../context/AppContextCalculator";
-
-import draw               from '../Draw/Draw';
-import {u_canvasAutoSize} from "../../utils/utils";
-
-const PaintCalculator = (id_canvas) => {
-    // CONTEXT:
+const PaintFunction = (id_canvas) => {
+    // useContext:
     const { state, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
-    const { stateCalculator, h_calculatorSetCanvas } = useContext(AppContextCalculator);
+    const { stateFunction, h_functionSetCanvas } = useContext(AppContextFunction);
 
     // LOGICA:
+    let canvas = '';
+    let context = '';
     const paint = async () => {
-        if (stateCalculator.active){
+        if (stateFunction.active){
             canvas = document.getElementById(id_canvas);
             context = canvas.getContext('2d');
             try {
@@ -24,12 +23,9 @@ const PaintCalculator = (id_canvas) => {
             } catch (e) {
                 console.log(e.message);
             }
-        } else {
-            console.log('PaintCalculator.jsx no active');
         }
     }
-    let canvas = '';
-    let context = '';
+    let canvasFunctionDatos = {top: 0, left: 0, width: 0, height: 0,};
     // 4:
     const keyDown = (e) => {
         if (state.historia.length > 0){
@@ -44,7 +40,7 @@ const PaintCalculator = (id_canvas) => {
             if (keyV === 90 && ctrl) {
                 //console.log("Ctrl+Z is pressed.");
                 let indexdDelete = -1;
-                state.historia.forEach((elm, index) => elm.canvas === stateCalculator.canvas ? indexdDelete = index:'');
+                state.historia.forEach((elm, index) => elm.canvas === stateFunction.canvas ? indexdDelete = index:'');
                 indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
             }
         }
@@ -52,7 +48,10 @@ const PaintCalculator = (id_canvas) => {
 
     // EFFECT:
     useEffect(() => {
-        if (stateCalculator.active) {
+        if (stateFunction.active) {
+            /*canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasFunctionDatos = u_canvasAutoSize(canvas, canvasFunctionDatos);*/
             paint();
 
             document.addEventListener('keydown', keyDown);
@@ -60,14 +59,21 @@ const PaintCalculator = (id_canvas) => {
                 document.removeEventListener('keydown', keyDown);
             };
         }
-    }, [stateCalculator, state.historia]);
+    }, [stateFunction, state.historia]);
+
+    /*useEffect(() => {
+        if (stateFunction.active) {
+            paint();
+        }
+
+    }, [stateFunction.active]);*/
 
     useEffect(() => {
-        h_calculatorSetCanvas(state.canvas);
-        if (stateCalculator.active) {
+        h_functionSetCanvas(state.canvas);
+        if (stateFunction.active) {
             paint();
         }
     }, [state.canvas]);
 }
 
-export default PaintCalculator;
+export default PaintFunction;

@@ -8,11 +8,12 @@ import AppContextLinea from '../../context/AppContextLinea';
 // utils:
 import { u_lineaVector, u_lineDraw } from './UtilsLinea';
 
-import draw from '../Draw/Draw'
+import draw               from '../Draw/Draw'
+import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintLinea = (id_canvas) => {
 	// useContext:
-	const { state, h_addH } = useContext(AppContext);
+	const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
 	const { stateGrid } = useContext(AppContextGrid);
 	const { stateLinea, h_lineSetCanvas } = useContext(AppContextLinea);
 
@@ -78,6 +79,7 @@ const PaintLinea = (id_canvas) => {
 		canvas: stateLinea.canvas,
 		types: 'line',
 	};
+	let canvasLineaDatos = {top: 0, left: 0, width: 0, height: 0,};
 	const captura_Pos_Posprev = (e) => {
 		const x = e.clientX;
 		const y = e.clientY;
@@ -189,40 +191,42 @@ const PaintLinea = (id_canvas) => {
 		}
 		mouseReinicia();
 	};
-	const canvasLineaDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
-	const update_canvasLineaDatos = () => {
-		canvasLineaDatos.top = canvas.getBoundingClientRect().top;
-		canvasLineaDatos.left = canvas.getBoundingClientRect().left;
-		canvasLineaDatos.width = canvas.getBoundingClientRect().width;
-		canvasLineaDatos.height = canvas.getBoundingClientRect().height;
-	};
-	const eventDraw = () => {
-		console.log('ue PaintLinea.jsx');
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		update_canvasLineaDatos();
-		if (stateLinea.active) {
-			state.historia.length > 0 ? paint():'';
+	// 4:
+	const keyDown = (e) => {
+		if (state.historia.length > 0){
+			// console.log(e);
+			// console.log(e.key);
+			// console.log(e.keyCode);
+			let key = e.key;
+			let keyV = e.which || e.keyCode;
+			let ctrl = e.ctrlKey
+				? e.ctrlKey
+				: (key === 17) ? true : false;
+			if (keyV === 90 && ctrl) {
+				//console.log("Ctrl+Z is pressed.");
+				let indexdDelete = -1;
+				state.historia.forEach((elm, index) => elm.canvas === stateLinea.canvas ? indexdDelete = index:'');
+				indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+			}
 		}
 	}
-	// LOGICA END.
 
 	// useEffect:
 	useEffect(() => {
 		if (stateLinea.active){
-			eventDraw();
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			canvasLineaDatos = u_canvasAutoSize(canvas, canvasLineaDatos);
+			paint();
 			canvas.addEventListener('mousedown', mouseDownLinea);
 			canvas.addEventListener('mousemove', mouseMoveLinea);
 			canvas.addEventListener('mouseup', mouseUpLinea);
+			document.addEventListener('keydown', keyDown);
 			return () => {
 				canvas.removeEventListener('mousedown', mouseDownLinea);
 				canvas.removeEventListener('mousemove', mouseMoveLinea);
 				canvas.removeEventListener('mouseup', mouseUpLinea);
+				document.removeEventListener('keydown', keyDown);
 			};
 		}
 	}, [stateLinea, state.historia]);

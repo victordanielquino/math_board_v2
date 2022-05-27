@@ -383,20 +383,33 @@ export const u_moveDuplicateImage = (imageIn, recorrido_x, recorrido_y) => {
         fileSrc: imageIn.fileSrc,
         fileNombre: imageIn.fileNombre,
         fileAutor: imageIn.fileAutor,
-        x_ini: imageIn.x_ini,
-        y_ini: imageIn.y_ini,
-        x_fin: imageIn.x_fin,
-        y_fin: imageIn.y_fin,
+        x_ini: imageIn.x_ini + recorrido_x,
+        y_ini: imageIn.y_ini + recorrido_y,
+        x_fin: imageIn.x_fin + recorrido_x,
+        y_fin: imageIn.y_fin + recorrido_y,
         dataImagen:imageIn.dataImagen,
         dataUse: imageIn.dataUse,
         types: 'image',
         canvas: imageIn.canvas,
-    };
 
-    image.x_ini = image.x_ini + recorrido_x;
-    image.y_ini = image.y_ini + recorrido_y;
-    image.x_fin = image.x_fin + recorrido_x;
-    image.y_fin = image.y_fin + recorrido_y;
+        vertex: [],
+        h: imageIn.h + recorrido_x,
+        k: imageIn.k + recorrido_y,
+        angulo: imageIn.angulo,
+        radio: imageIn.radio,
+        rotateDeg: imageIn.rotateDeg,
+        rotateDegPrev: imageIn.rotateDegPrev,
+        width: imageIn.width,
+        height: imageIn.height,
+        imageDraw: imageIn.imageDraw,
+    };
+    imageIn.vertex.forEach((elm, index) => {
+        image.vertex[index] = {
+            x: elm.x + recorrido_x,
+            y: elm.y + recorrido_y,
+            pto: elm.pto,
+        }
+    })
     return image;
 }
 // MOVE: Plano duplicate

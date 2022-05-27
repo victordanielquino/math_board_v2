@@ -22,7 +22,8 @@ const initialStateFunction = {
         'qwertyuiop'.split(''),
         'asdfghjklñ'.split(''),
         'zxcvbnm'.split(''),
-    ]
+    ],
+    canvas: '',
 };
 const useFunction = () => {
     const [stateFunction, setStateFunction] = useState(initialStateFunction);
@@ -100,6 +101,19 @@ const useFunction = () => {
             background: background,
         })
     }
+    const h_functionSetColorBackground = (color, background) => {
+        setStateFunction({
+            ...stateFunction,
+            color: color,
+            background: background,
+        })
+    }
+    const h_functionSetCanvas = (canvas) => {
+        setStateFunction({
+            ...stateFunction,
+            canvas: canvas,
+        })
+    }
     return {
         stateFunction,
         s_functionToLower,
@@ -112,7 +126,9 @@ const useFunction = () => {
         h_functionSetCharPositionCursor,
         h_functionSetTextPositionCursor,
         h_functionSetColor,
-        h_functionSetBackground
+        h_functionSetBackground,
+        h_functionSetColorBackground,
+        h_functionSetCanvas
     }
 }
 export default useFunction;

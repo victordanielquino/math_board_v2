@@ -23,6 +23,12 @@ import AppContextImagen from "../../../context/AppContextImagen";
 
 import { firestoreGetDocs } from '../../../firebase/services/firestore.services';
 import {makeStyles} from "@mui/styles";
+import {
+    anguloEntreDosRectasCaso2,
+    rectaQuePasaPorDosPtos,
+    u_distanciaEntreDosPtos,
+    u_ptoMedio
+}                           from "../../../utils/geometriaAnalitica";
 
 const useStyles  = makeStyles({
     container: {
@@ -83,7 +89,7 @@ const useStyles  = makeStyles({
 const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
     // CONTEXT:
     const { state, h_addH } = useContext(AppContext);
-    const { s_imagenAddHId, stateImagen } = useContext(AppContextImagen);
+    const { stateImagen } = useContext(AppContextImagen);
 
     // USESTATE:
     const [errorImage, setErrorImage] = useState(false);
@@ -128,8 +134,20 @@ const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
         y_fin: 400,
         dataImagen:[],
         dataUse: false,
-        canvas: stateImagen.canvas,
         types: 'image',
+        canvas: stateImagen.canvas,
+
+        vertex: [],
+        h: 0,
+        k: 0,
+        angulo: 0,
+        radio: 0,
+        rotateDeg: 0,
+        rotateDegPrev: 0,
+        width: 0,
+        height: 0,
+        imageDraw: '',
+        description: '',
     };
     const downloadDocs = () => {
         setLoadingDocs(true);
@@ -230,9 +248,35 @@ const GalleryImageServer = ({ setOpen, stateSuccess, setStateSuccess }) => {
             imageNew.fileAutor = file.autorFile;
             imageNew.x_fin = imageNew.x_ini + elm.clientWidth;
             imageNew.y_fin = imageNew.y_ini + elm.clientHeight;
-            //s_imagenAddHId(imageNew, stateImagen.id + 1);
             imageNew.id = state.id;
-            console.log('imageNew:', imageNew);
+            imageNew.vertex[0] = {x:imageNew.x_ini, y:imageNew.y_ini, pto:0};
+            imageNew.vertex[1] = {x:imageNew.x_fin, y:imageNew.y_ini, pto:1};
+            imageNew.vertex[2] = {x:imageNew.x_fin, y:imageNew.y_fin, pto:2};
+            imageNew.vertex[3] = {x:imageNew.x_ini, y:imageNew.y_fin, pto:3};
+            let resp = u_ptoMedio(imageNew.vertex[0], imageNew.vertex[1]);
+            imageNew.vertex[4] = {x:resp.x, y:resp.y, pto:4};
+            resp = u_ptoMedio(imageNew.vertex[1], imageNew.vertex[2]);
+            imageNew.vertex[5] = {x:resp.x, y:resp.y, pto:5};
+            resp = u_ptoMedio(imageNew.vertex[2], imageNew.vertex[3]);
+            imageNew.vertex[6] = {x:resp.x, y:resp.y, pto:6};
+            resp = u_ptoMedio(imageNew.vertex[3], imageNew.vertex[0]);
+            imageNew.vertex[7] = {x:resp.x, y:resp.y, pto:7};
+            resp = u_ptoMedio(imageNew.vertex[0], imageNew.vertex[2]);
+            imageNew.h = resp.x;
+            imageNew.k = resp.y;
+            // angulo:
+            let rec1 = rectaQuePasaPorDosPtos(imageNew.vertex[0], {x:imageNew.h, y:imageNew.k});
+            let rec2 = rectaQuePasaPorDosPtos(imageNew.vertex[3], {x:imageNew.h, y:imageNew.k});
+            imageNew.angulo = anguloEntreDosRectasCaso2(rec1, rec2);
+            (imageNew.angulo < 0) ? imageNew.angulo = 90 + (90 + imageNew.angulo):'';
+            // radio:
+            imageNew.radio = u_distanciaEntreDosPtos(imageNew.vertex[0], {x:imageNew.h, y:imageNew.k});
+            // rotateDegPrev:
+            imageNew.rotateDegPrev = imageNew.angulo / 2;
+            // width height:
+            imageNew.width = u_distanciaEntreDosPtos(imageNew.vertex[7], imageNew.vertex[5]);
+            imageNew.height = u_distanciaEntreDosPtos(imageNew.vertex[4], imageNew.vertex[6]);
+
             h_addH(imageNew);
             setLoadingDownload(false);
             setOpen(false);

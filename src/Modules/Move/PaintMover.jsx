@@ -61,13 +61,11 @@ import {
 	u_lapizOpera
 } from '../Pencil/UtilsLapiz';
 import {
-	u_textGraficaH,
 	u_textMover,
 	u_textOpera,
 	u_textBordeSegmentado, u_textRotate,
 } from '../Text/UtilsText';
 import {
-	u_imagenGraficaH,
 	u_imagenOpera,
 	u_imagenBordeSegmentado,
 	u_imagenMover,
@@ -185,10 +183,9 @@ const PaintMover = (id_canvas) => {
 		for (let i = state.historia.length -1; i >= 0 && !sw; i--) {
 			let elm = state.historia[i];
 			if (elm.canvas === state.canvas && elm.visible){
-				let array = [elm];
 				switch (elm.types) {
 					case 'square':
-						cuadradoSelect = u_cuadradoOpera(cuadradoSelect, array, mouse);
+						cuadradoSelect = u_cuadradoOpera(cuadradoSelect, elm, mouse);
 						if (cuadradoSelect){
 							sw = true;
 							await paint();
@@ -198,7 +195,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'circle':
-						circuloSelect = u_circuloOpera(circuloSelect, array, mouse);
+						circuloSelect = u_circuloOpera(circuloSelect, elm, mouse);
 						if (circuloSelect){
 							sw = true;
 							await paint();
@@ -208,7 +205,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'triangle':
-						trianguloSelect = u_trianguloOpera(context, trianguloSelect, array, mouse);
+						trianguloSelect = u_trianguloOpera(trianguloSelect, elm, mouse);
 						if (trianguloSelect){
 							sw = true;
 							await paint();
@@ -218,7 +215,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'image':
-						imagenSelect = u_imagenOpera(imagenSelect, array, mouse);
+						imagenSelect = u_imagenOpera(imagenSelect, elm, mouse);
 						if (imagenSelect){
 							sw = true;
 							await paint();
@@ -228,7 +225,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'plano':
-						planoSelect = u_planoOpera(context, planoSelect, array, mouse);
+						planoSelect = u_planoOpera(planoSelect, elm, mouse);
 						if (planoSelect){
 							sw = true;
 							await paint();
@@ -238,7 +235,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'pencil':
-						lapizSelect = u_lapizOpera(lapizSelect, array, mouse);
+						lapizSelect = u_lapizOpera(lapizSelect, elm, mouse);
 						if (lapizSelect){
 							sw = true;
 							await paint();
@@ -248,7 +245,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'line':
-						lineaSelect = u_lineaOpera(lineaSelect, array, mouse);
+						lineaSelect = u_lineaOpera(lineaSelect, elm, mouse);
 						if (lineaSelect){
 							sw = true;
 							await paint();
@@ -258,7 +255,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'text':
-						textSelect = u_textOpera(textSelect, array, mouse);
+						textSelect = u_textOpera(textSelect, elm, mouse);
 						if (textSelect){
 							sw = true;
 							await paint();
@@ -268,7 +265,7 @@ const PaintMover = (id_canvas) => {
 						}
 						break;
 					case 'geometric':
-						geometricSelect = u_geometricOpera(geometricSelect, array, mouse);
+						geometricSelect = u_geometricOpera(geometricSelect, elm, mouse);
 						if (geometricSelect){
 							sw = true;
 							await paint();
@@ -419,11 +416,6 @@ const PaintMover = (id_canvas) => {
 		mouse.triangulo_pto = '';
 		// IMAGEN:
 		mouse.imagen_mover = false;
-		if (mouse.imagen_mover_pts && imagenSelect.edit){
-			imagenSelect.dataUse = false;
-			await paint();
-			u_imagenBordeSegmentado(context, imagenSelect);
-		}
 		mouse.imagen_mover_pts = false;
 		mouse.imagen_pto = '';
 		// GEOMETRIC:

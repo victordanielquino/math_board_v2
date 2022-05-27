@@ -7,11 +7,12 @@ import AppContextCirculo from "../../context/AppContextCirculo";
 
 import draw                                from '../Draw/Draw';
 import {distanciaEntredosPtos, u_lineDraw} from "../Line/UtilsLinea";
-import { u_circleDraw }           from './UtilsCirculo';
+import { u_circleDraw }                    from './UtilsCirculo';
+import {u_canvasAutoSize}                  from "../../utils/utils";
 
 const PaintCirculo = (id_canvas) => {
     // useContext:
-    const { state, h_addH } = useContext(AppContext);
+    const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const { stateCirculo, h_circleSetCanvas } = useContext(AppContextCirculo);
 
@@ -86,12 +87,7 @@ const PaintCirculo = (id_canvas) => {
         mouse.pos.x = x_real;
         mouse.pos.y = y_real;
     };
-    const canvasCirculoDatos = {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-    };
+    let canvasCirculoDatos = {top: 0, left: 0, width: 0, height: 0,};
     // 1
     let mouseDownCirculo = (e) => {
         mouse.click = true;
@@ -130,32 +126,44 @@ const PaintCirculo = (id_canvas) => {
         }
         mouseReinicia();
     };
-    const update_canvasCirculoDatos = () => {
-        canvasCirculoDatos.top = canvas.getBoundingClientRect().top;
-        canvasCirculoDatos.left = canvas.getBoundingClientRect().left;
-        canvasCirculoDatos.width = canvas.getBoundingClientRect().width;
-        canvasCirculoDatos.height = canvas.getBoundingClientRect().height;
-    };
-    const eventDraw = () => {
-        console.log('ue PaintTCirculo.jsx');
-        canvas = document.getElementById(id_canvas);
-        context = canvas.getContext('2d');
-        update_canvasCirculoDatos();
-        if (state.historia.length > 0) paint();
+    // 4:
+    const keyDown = (e) => {
+        if (state.historia.length > 0){
+            // console.log(e);
+            // console.log(e.key);
+            // console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 90 && ctrl) {
+                //console.log("Ctrl+Z is pressed.");
+                let indexdDelete = -1;
+                state.historia.forEach((elm, index) => elm.canvas === stateCirculo.canvas ? indexdDelete = index:'');
+                indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+            }
+        }
     }
 
     // EFFECT:
     useEffect(() => {
         if (stateCirculo.active) {
-            eventDraw();
+            canvas = document.getElementById(id_canvas);
+            context = canvas.getContext('2d');
+            canvasCirculoDatos = u_canvasAutoSize(canvas, canvasCirculoDatos);
+            paint();
+
             canvas.addEventListener('mousedown', mouseDownCirculo);
             canvas.addEventListener('mousemove', mouseMoveCirculo);
             canvas.addEventListener('mouseup', mouseUpCirculo);
+            document.addEventListener('keydown', keyDown);
 
             return () => {
                 canvas.removeEventListener('mousedown', mouseDownCirculo);
                 canvas.removeEventListener('mousemove', mouseMoveCirculo);
                 canvas.removeEventListener('mouseup', mouseUpCirculo);
+                document.removeEventListener('keydown', keyDown);
             };
         }
     }, [stateCirculo, state.historia]);

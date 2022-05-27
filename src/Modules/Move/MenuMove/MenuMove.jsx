@@ -24,23 +24,29 @@ import {
 	u_moveDuplicateTriangle,
 	u_moveDuplicateGeometric,
 	u_moveDuplicateImage, u_moveDuplicatePlano
-}                        from "../UtilsMove";
-import useStylesMenuMove from "./MenuMoveStyle";
-import AddDrawGeoAna     from "../../Plano/AddDrawGeoAna/AddDrawGeoAna";
-import AppContextPlano   from "../../../context/AppContextPlano";
+}                         from "../UtilsMove";
+import useStylesMenuMove  from "./MenuMoveStyle";
+import AddDrawGeoAna      from "../../Plano/AddDrawGeoAna/AddDrawGeoAna";
+import AppContextPlano    from "../../../context/AppContextPlano";
+import Keyboard           from "../../Function/Keyboard/Keyboard";
+import AppContextFunction from "../../../context/AppContextFunction";
 
 const MenuMove = () => {
 	// CONTEXT:
 	const { state, h_updateH, h_addH, s_setActiveActivePrev } = useContext(AppContext);
 	const { stateMover, h_moveSetRefresh } = useContext(AppContextMover);
+	const { h_functionSetTextPositionCursor } = useContext(AppContextFunction);
 
 	// STATE:
 	const [variantEditNot, setVariantEditNot] = useState('outlined');
 	const [variantEditYes, setVariantEditYes] = useState('outlined');
-	const [disabledUpDown, setDisabledUpDown] = useState(true);
+	const [disabledAll, setDisabledAll] = useState(true);
+	const [disabledEdit, setDisabledEdit] = useState(true);
 	// STATE MODAL:
 	const [open, setOpen] = useState(false);
-	const [stateSuccess, setStateSuccess] = useState(false);
+	// STATE KEYBOARD:
+	const [openKeyboard, setOpenKeyboard] = useState(false);
+	const [successClick, setSuccessClick] = useState(0);
 
 	// LOGICA:
 	const props = {
@@ -56,11 +62,13 @@ const MenuMove = () => {
 					setVariantEditNot('contained');
 					setVariantEditYes('outlined');
 					stateMover.obj.edit = false;
+					setDisabledAll(true);
 					break;
 				case true:
 					setVariantEditNot('outlined');
 					setVariantEditYes('contained');
 					stateMover.obj.edit = true;
+					setDisabledAll(false);
 					break;
 				default:
 					setVariantEditNot('outlined');
@@ -168,8 +176,12 @@ const MenuMove = () => {
 			setVariantEditYes('outlined');
 		}
 	}
-	const updatePaletaPosition = () => {
-		(!isObjectEmpty(stateMover.obj)) ? setDisabledUpDown(false) : setDisabledUpDown(true);
+	const updateDisabledEdit = () => {
+		if (!isObjectEmpty(stateMover.obj)) {
+			setDisabledEdit(false);
+		} else {
+			setDisabledEdit(true);
+		}
 	}
 
 	const handleChangeMathboard = (event) => {
@@ -206,12 +218,34 @@ const MenuMove = () => {
 		setOpen(false);
 		h_moveSetRefresh(!stateMover.refresh);
 	}
+	const handleImageFunctionEdit = () => {
+		h_functionSetTextPositionCursor(stateMover.obj.description, stateMover.obj.description.length);
+		setOpenKeyboard(true);
+	}
+
+	const handleSuccessKeyboard = () => {
+		setSuccessClick(successClick + 1);
+		setOpenKeyboard(false);
+	}
 
 	// EFECT:
 	useEffect(() => {
 		updatePaletaEdit();
-		updatePaletaPosition();
+		updateDisabledEdit();
+		if (!isObjectEmpty(stateMover.obj) && stateMover.obj.edit) {
+			setDisabledAll(false);
+		} else {
+			setDisabledAll(true);
+		}
 	}, [stateMover.obj]);
+
+	/*useEffect(() => {
+		if (!isObjectEmpty(stateMover.obj) && stateMover.obj.edit) {
+			setDisabledAll(false);
+		} else {
+			setDisabledAll(true);
+		}
+	}, [disabledEdit]);*/
 
 	return (
 		<>
@@ -222,9 +256,9 @@ const MenuMove = () => {
 					color='error' size='small'
 					startIcon={<GppBadIcon/>}
 					style={{marginRight: '5px'}}
-					disabled={disabledUpDown}
+					disabled={disabledEdit}
 				>
-					Edit False
+					EDITAR
 				</Button>
 				<Button
 					variant={variantEditYes}
@@ -232,47 +266,47 @@ const MenuMove = () => {
 					color='success'
 					size='small'
 					startIcon={<GppGoodIcon/>}
-					disabled={disabledUpDown}
+					disabled={disabledEdit}
 					style={{marginRight: '25px'}}
 				>
-					Edit True
+					EDITAR
 				</Button>
 				<Button
 					variant='outlined'
 					onClick={() => handleUpDown('down')}
-					disabled={disabledUpDown}
+					disabled={disabledAll}
 					size='small'
 					startIcon={<MoveDownIcon fontSize='small'/>}
 					style={{marginRight:'5px'}}
 				>
-					Down
+					BAJAR
 				</Button>
 				<Button
 					variant='outlined'
 					onClick={() => handleUpDown('up')}
-					disabled={disabledUpDown}
+					disabled={disabledAll}
 					size='small'
 					startIcon={<MoveUpIcon/>}
 					style={{marginRight:'25px'}}
 				>
-					Up
+					SUBIR
 				</Button>
 				<ButtonGroup>
 					<Button
 						variant='outlined'
 						onClick={() => handleDuplicate()}
-						disabled={disabledUpDown}
+						disabled={disabledAll}
 						size='small'
 						startIcon={<ContentCopyIcon/>}
 						style={{marginRight:'25px'}}
 					>
-						Duplicate
+						DUPLICAR
 					</Button>
 				</ButtonGroup>
-				<Typography color={disabledUpDown ? '#bdbdbd': 'primary'} style={{marginRight:'5px', userSelect:'none', fontSize:'0.9em'}}>
-					MOVE:
+				<Typography color={disabledAll ? '#bdbdbd': 'primary'} style={{marginRight:'5px', userSelect:'none', fontSize:'0.9em'}}>
+					MOVER:
 				</Typography>
-				<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledUpDown}>
+				<FormControl sx={{ m: 0, minWidth: 150 }} size='small' color='primary' disabled={disabledAll}>
 					{
 						<Select
 							value={state.mathBoards[state.mathBoardsIndexSelec].title}
@@ -293,12 +327,12 @@ const MenuMove = () => {
 					<Button
 						variant='outlined'
 						onClick={() => handleEditable()}
-						disabled={disabledUpDown}
+						disabled={disabledAll}
 						size='small'
 						startIcon={<BorderColorIcon/>}
 						style={{marginLeft:'25px'}}
 					>
-						edit
+						EDITAR TEXTO
 					</Button>
 				}
 				{
@@ -306,17 +340,34 @@ const MenuMove = () => {
 					<Button
 						variant='outlined'
 						onClick={() => handleDraw()}
-						disabled={disabledUpDown}
+						disabled={disabledAll}
 						size='small'
 						startIcon={<TrendingUpIcon/>}
 						style={{marginLeft:'25px'}}
 					>
-						draw
+						GEO-ANALITICA
+					</Button>
+				}
+				{
+					(stateMover.obj.types === 'image' && stateMover.obj.description.length > 0) &&
+					<Button
+						variant='outlined'
+						onClick={() => handleImageFunctionEdit()}
+						disabled={disabledAll}
+						size='small'
+						startIcon={<TrendingUpIcon/>}
+						style={{marginLeft:'25px'}}
+					>
+						EDITAR FUNCION
 					</Button>
 				}
 			</div>
 			<ModalUI open={open} setOpen={setOpen} handleSuccess={handleSuccess} maxWidth={'md'} title={'Geometria Análitica:'} booleanFooter={true} >
 				<AddDrawGeoAna/>
+			</ModalUI>
+
+			<ModalUI open={openKeyboard} setOpen={setOpenKeyboard} handleSuccess={handleSuccessKeyboard} maxWidth={'md'} title={'Editar Funcion:'} booleanFooter={true} >
+				<Keyboard successClick={successClick} objFunction={stateMover.obj}/>
 			</ModalUI>
 		</>
 

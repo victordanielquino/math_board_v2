@@ -9,12 +9,13 @@ import AppContextPlano from '../../context/AppContextPlano';
 
 import draw                                from '../Draw/Draw'
 import {u_planoAbscisas, u_planoOrdenadas} from "./UtilsPlano";
+import {u_canvasAutoSize}                  from "../../utils/utils";
 
 const PaintPlano = (id_canvas) => {
 	// useContext:
-	const { state, h_addH } = useContext(AppContext);
+	const { state, h_addH, h_deleteIndexH } = useContext(AppContext);
 	const { stateGrid } = useContext(AppContextGrid);
-	const { statePlano, s_planoAddHId, h_planoSetCanvas } = useContext(AppContextPlano);
+	const { statePlano, h_planoSetCanvas } = useContext(AppContextPlano);
 
 	// LOGICA:
 	const paint = async () => {
@@ -72,6 +73,7 @@ const PaintPlano = (id_canvas) => {
 		y_value: [],
 		drawGA:[],
 	};
+	let canvasPlanoDatos = {top: 0, left: 0, width: 0, height: 0,};
 	let captura_Pos_Posprev = (e) => {
 		let x = e.clientX;
 		let y = e.clientY;
@@ -113,36 +115,43 @@ const PaintPlano = (id_canvas) => {
 		}
 		mouseReinicia();
 	};
-	const canvasPlanoDatos = {
-		top: 0,
-		left: 0,
-		width: 0,
-		height: 0,
-	};
-	const update_canvasPlanoDatos = () => {
-		canvasPlanoDatos.top = canvas.getBoundingClientRect().top;
-		canvasPlanoDatos.left = canvas.getBoundingClientRect().left;
-		canvasPlanoDatos.width = canvas.getBoundingClientRect().width;
-		canvasPlanoDatos.height = canvas.getBoundingClientRect().height;
-	};
-	const eventDraw = () => {
-		canvas = document.getElementById(id_canvas);
-		context = canvas.getContext('2d');
-		update_canvasPlanoDatos();
-		if (state.historia.length > 0) paint();
+	// 4:
+	const keyDown = (e) => {
+		if (state.historia.length > 0){
+			// console.log(e);
+			// console.log(e.key);
+			// console.log(e.keyCode);
+			let key = e.key;
+			let keyV = e.which || e.keyCode;
+			let ctrl = e.ctrlKey
+				? e.ctrlKey
+				: (key === 17) ? true : false;
+			if (keyV === 90 && ctrl) {
+				//console.log("Ctrl+Z is pressed.");
+				let indexdDelete = -1;
+				state.historia.forEach((elm, index) => elm.canvas === statePlano.canvas ? indexdDelete = index:'');
+				indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+			}
+		}
 	}
 
 	// EFFECT:
 	useEffect(() => {
 		if (statePlano.active) {
-			eventDraw();
+			canvas = document.getElementById(id_canvas);
+			context = canvas.getContext('2d');
+			canvasPlanoDatos = u_canvasAutoSize(canvas, canvasPlanoDatos);
+			paint();
+
 			canvas.addEventListener('mousedown', mouseDownPlano);
 			canvas.addEventListener('mousemove', mouseMovePlano);
 			canvas.addEventListener('mouseup', mouseUpPlano);
+			document.addEventListener('keydown', keyDown);
 			return () => {
 				canvas.removeEventListener('mousedown', mouseDownPlano);
 				canvas.removeEventListener('mousemove', mouseMovePlano);
 				canvas.removeEventListener('mouseup', mouseUpPlano);
+				document.removeEventListener('keydown', keyDown);
 			};
 		}
 	}, [statePlano, state.historia]);

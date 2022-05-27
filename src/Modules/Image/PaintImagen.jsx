@@ -8,11 +8,12 @@ import AppContextFunction from "../../context/AppContextFunction";
 
 // utils:
 
-import draw from '../Draw/Draw';
+import draw               from '../Draw/Draw';
+import {u_canvasAutoSize} from "../../utils/utils";
 
 const PaintImagen = (id_canvas) => {
     // useContext:
-    const { state } = useContext(AppContext);
+    const { state, h_deleteIndexH } = useContext(AppContext);
     const { stateGrid } = useContext(AppContextGrid);
     const { stateImagen, h_imageSetCanvas } = useContext(AppContextImagen);
     const { stateFunction } = useContext(AppContextFunction);
@@ -31,6 +32,25 @@ const PaintImagen = (id_canvas) => {
             }
         }
     }
+    // 4:
+    const keyDown = (e) => {
+        if (state.historia.length > 0){
+            // console.log(e);
+            // console.log(e.key);
+            // console.log(e.keyCode);
+            let key = e.key;
+            let keyV = e.which || e.keyCode;
+            let ctrl = e.ctrlKey
+                ? e.ctrlKey
+                : (key === 17) ? true : false;
+            if (keyV === 90 && ctrl) {
+                //console.log("Ctrl+Z is pressed.");
+                let indexdDelete = -1;
+                state.historia.forEach((elm, index) => elm.canvas === stateImagen.canvas ? indexdDelete = index:'');
+                indexdDelete > -1 ? h_deleteIndexH(indexdDelete) :'';
+            }
+        }
+    }
 
     // useEffect:
     useEffect(() => {
@@ -38,7 +58,14 @@ const PaintImagen = (id_canvas) => {
     }, [stateImagen.active]);
 
     useEffect(async () => {
-        state.historia.length > 0 ? await paint():'';
+        //state.historia.length > 0 ? await paint():'';
+        if (stateImagen.active){
+            paint();
+            document.addEventListener('keydown', keyDown);
+            return () => {
+                document.removeEventListener('keydown', keyDown);
+            };
+        }
     }, [state.historia]);
 
     useEffect(() => {

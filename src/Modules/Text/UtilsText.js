@@ -141,14 +141,6 @@ const u_textGrafica = (context, text) => {
 		}
 	}
 };
-// TEXTO: GRAFICA HISORIA
-const u_textGraficaH = (context, array) => {
-	array.forEach((element) => {
-		if (element.visible) {
-			u_textGrafica(context, element);
-		}
-	});
-};
 const u_textClickTrue = (text, x, y) => {
 	return (text.x_ini < x && x < text.x_fin && text.y_ini < y && y < text.y_fin);
 };
@@ -177,73 +169,25 @@ const u_textMover = (text, mouse) => {
 
 	return text;
 };
-
-const u_textMover_ = (text, mouse) => {
-	const recorrido_x = mouse.pos.x - mouse.pos_prev.x;
-	const recorrido_y = mouse.pos.y - mouse.pos_prev.y;
-	text.x_ini = text.x_ini + recorrido_x;
-	text.x_fin = text.x_fin + recorrido_x;
-	text.y_ini = text.y_ini + recorrido_y;
-	text.y_fin = text.y_fin + recorrido_y;
-	text.line.x_ini += recorrido_x;
-	text.line.x_fin += recorrido_x;
-	text.line.y_ini += recorrido_y;
-	text.line.y_fin += recorrido_y;
-
-	// CUADRADITO:
-	text.pto.x_ini += recorrido_x;
-	text.pto.x_fin += recorrido_x;
-	text.pto.y_ini += recorrido_y;
-	text.pto.y_fin += recorrido_y;
-	text.ptoS.x_ini += recorrido_x;
-	text.ptoS.x_fin += recorrido_x;
-	text.ptoS.y_ini += recorrido_y;
-	text.ptoS.y_fin += recorrido_y;
-
-	// VERTICES:
-	text.vertex[0] = { x : text.vertex[0].x + recorrido_x, y : text.vertex[0].y + recorrido_y};
-	text.vertex[1] = { x : text.vertex[1].x + recorrido_x, y : text.vertex[1].y + recorrido_y};
-	text.vertex[2] = { x : text.vertex[2].x + recorrido_x, y : text.vertex[2].y + recorrido_y};
-	text.vertex[3] = { x : text.vertex[3].x + recorrido_x, y : text.vertex[3].y + recorrido_y};
-	// VERTEX SEGMENT:
-	text.vertexS[0] = { x : text.vertexS[0].x + recorrido_x, y : text.vertexS[0].y + recorrido_y};
-	text.vertexS[1] = { x : text.vertexS[1].x + recorrido_x, y : text.vertexS[1].y + recorrido_y};
-	text.vertexS[2] = { x : text.vertexS[2].x + recorrido_x, y : text.vertexS[2].y + recorrido_y};
-	text.vertexS[3] = { x : text.vertexS[3].x + recorrido_x, y : text.vertexS[3].y + recorrido_y};
-
-	// RADIO X Y
-	text.radioX += recorrido_x;
-	text.radioY += recorrido_y;
-	text.radioXS += recorrido_x;
-	text.radioYS += recorrido_y;
-
-	// CENTRO:
-	text.h += recorrido_x;
-	text.k += recorrido_y;
-
-	return text;
-};
 // TEXT: GET
-const u_textGetClick = (array, x, y) => {
+const u_textGetClick = (text, x, y) => {
 	let resp = '';
 	let resp1 = false;
 	let resp2 = false;
-	array.forEach((text) => {
-		let p = {x: x, y: y};
-		let tri1 = {
-			x1:text.vertex[0].x, y1:text.vertex[0].y,
-			x2:text.vertex[1].x, y2:text.vertex[1].y,
-			x3:text.vertex[2].x, y3:text.vertex[2].y,
-		};
-		let tri2 = {
-			x1:text.vertex[0].x, y1:text.vertex[0].y,
-			x2:text.vertex[2].x, y2:text.vertex[2].y,
-			x3:text.vertex[3].x, y3:text.vertex[3].y,
-		};
-		resp1 = u_estaPtoInTriangle(p, tri1);
-		resp2 = u_estaPtoInTriangle(p, tri2);
-		(resp1 || resp2) ? resp = text:'';
-	});
+	let p = {x: x, y: y};
+	let tri1 = {
+		x1:text.vertex[0].x, y1:text.vertex[0].y,
+		x2:text.vertex[1].x, y2:text.vertex[1].y,
+		x3:text.vertex[2].x, y3:text.vertex[2].y,
+	};
+	let tri2 = {
+		x1:text.vertex[0].x, y1:text.vertex[0].y,
+		x2:text.vertex[2].x, y2:text.vertex[2].y,
+		x3:text.vertex[3].x, y3:text.vertex[3].y,
+	};
+	resp1 = u_estaPtoInTriangle(p, tri1);
+	resp2 = u_estaPtoInTriangle(p, tri2);
+	(resp1 || resp2) ? resp = text:'';
 	return resp;
 };
 // TEXT: SI SE HIZO CLICK SOBRE UN LAPIZ, PODREMOS MOVER
@@ -260,7 +204,7 @@ const u_textClickSobreText = (textSelect, mouse) => {
 }
 
 // TEXT: BUSCA TEXT PARA PODER MOVERLO O EDITAR SU TAMANO
-const u_textOpera = (textSelect, array, mouse) => {
+const u_textOpera = (textSelect, elmIn, mouse) => {
 	if (mouse.text_seleccionar_pts) {
 		mouse.text_pto = u_textSearchPtoClickResize(mouse.pos.x, mouse.pos.y, textSelect);
 		if (mouse.text_pto !== -1) {
@@ -273,7 +217,7 @@ const u_textOpera = (textSelect, array, mouse) => {
 		}
 	}
 	if (!mouse.text_seleccionar_pts) {
-		textSelect = u_textGetClick(array, mouse.pos.x, mouse.pos.y);
+		textSelect = u_textGetClick(elmIn, mouse.pos.x, mouse.pos.y);
 		u_textClickSobreText(textSelect, mouse);
 	}
 	return textSelect;
@@ -407,7 +351,6 @@ export const u_textSearchAngulo = (text) => {
 	text.angulo = anguloEntreDosRectasCaso2(r1, r2);
 }
 export {
-	u_textGraficaH,
 	u_textGrafica,
 	u_textMover,
 	u_textOpera,

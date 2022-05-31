@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import AppContext from '../../../context/AppContext';
-import { Button, TextField, Typography } from '@mui/material';
-import useStylesMenuReadJson from './MenuReadJsonStyle';
-import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import FolderZipIcon from '@mui/icons-material/FolderZip';
-import ModalUI from '../../../components/ModalUI/ModalUI_';
-import { u_getFecha } from '../../../utils/utils';
+import AppContext                                         from '../../../context/AppContext';
+import { Button, TextField, Typography }                  from '@mui/material';
+import useStylesMenuReadJson                              from './MenuReadJsonStyle';
+import SaveAltIcon                                        from '@mui/icons-material/SaveAlt';
+import FolderZipIcon                                      from '@mui/icons-material/FolderZip';
+import ModalUI                                            from '../../../components/ModalUI/ModalUI_';
+import { u_getFecha }                                     from '../../../utils/utils';
+import {PhotoCamera}                                      from "@mui/icons-material";
+import PictureAsPdfIcon                                   from "@mui/icons-material/PictureAsPdf";
+import PdfCanvas                                          from "../../PdfCanvas/PdfCanvas";
 
 const MenuReadJson = () => {
 	// CONTEXT:
@@ -14,6 +17,7 @@ const MenuReadJson = () => {
 	// STATE:
 	const [jsonName, setJsonName] = useState('');
 	const [open, setOpen] = useState(false);
+	const [toggleModalPdf, setToggleModalPdf] = useState(false);
 
 	// REF:
 	const inputRef = useRef(null);
@@ -97,6 +101,14 @@ const MenuReadJson = () => {
 		downloadJson();
 		setOpen(false);
 	};
+	const handlePhotoCamera = () => {
+		let canvas = document.getElementById('canvas-1');
+		let canvasImagen = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+		window.location.href = canvasImagen;
+	}
+	const handlePdf = () => {
+		setToggleModalPdf(true);
+	}
 
 	// EFFECT:
 
@@ -118,16 +130,45 @@ const MenuReadJson = () => {
 					style={{ marginRight: '20px' }}
 					onClick={() => handleLoad()}
 				>
-					ABRIR PROYECTO
+					ABRIR
 				</Button>
 				<Button
 					variant="outlined"
 					size="small"
 					startIcon={<SaveAltIcon />}
-					//onClick={() => handleSave()}
 					onClick={() => handleOpenModalUI()}
+					style={{ marginRight: '20px' }}
 				>
-					GUARDAR PROYECTO
+					GUARDAR
+				</Button>
+				<Button
+					variant="outlined"
+					color='primary'
+					size='small'
+					onClick={() => handlePdf()}
+					startIcon={<PictureAsPdfIcon />}
+					style={{ marginRight: '20px' }}
+				>
+					GUARDAR EN PDF
+				</Button>
+				<Button
+					variant="outlined"
+					color="primary"
+					size="small"
+					onClick={() => handlePhotoCamera()}
+					startIcon={<PhotoCamera />}
+					style={{ marginRight: '20px' }}
+				>
+					Foto
+				</Button>
+				<Button
+					variant="outlined"
+					color="primary"
+					size="small"
+					onClick={() => handlePhotoCamera()}
+					startIcon={<PhotoCamera />}
+				>
+					VER PDF
 				</Button>
 			</article>
 			<ModalUI
@@ -161,6 +202,7 @@ const MenuReadJson = () => {
 					Nota: No usar espacios en blaco !!!
 				</Typography>
 			</ModalUI>
+			<PdfCanvas toggleModal={toggleModalPdf} setToggleModal={setToggleModalPdf}/>
 		</>
 	);
 };

@@ -72,7 +72,7 @@ const MenuImagen = () => {
                     startIcon={<FileUploadIcon/>}
                     style={{marginRight:'20px'}}
                     onClick={() => handleAddImageServer()}
-                >SUBIR IMAGEN A LA NUbE</Button>
+                >SUBIR IMAGEN A LA NUBE</Button>
                 <Button
                     variant="outlined"
                     size='small'

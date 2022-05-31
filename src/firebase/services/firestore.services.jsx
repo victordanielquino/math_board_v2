@@ -14,6 +14,17 @@ const firestoreAddDoc = async (collectionFile, autorFile, nameFile, srcFile) => 
         return null;
     }
 }
+// FIRESTORE: ADD galeria
+const firestoreAdd = async (collectionName, fk_user='0', url_pdf= '0', timeStamp, date) => {
+    try {
+        const docRef = await addDoc(collection(fbFirestore, collectionName), {fk_user, url_pdf, timeStamp, date});
+        //console.log('collectionRef:', docRef.id)
+        return docRef.id;
+    } catch (err){
+        console.log('error al subir imagen a collection:',err);
+        return null;
+    }
+}
 const firestoreConverArray = (array) => {
     let newArray = [];
     array.forEach(doc => {
@@ -57,5 +68,6 @@ const firestoreMostrarDocs = (array) => {
 export {
     firestoreAddDoc,
     firestoreGetDocs,
-    firestoreMostrarDocs
+    firestoreMostrarDocs,
+    firestoreAdd
 }

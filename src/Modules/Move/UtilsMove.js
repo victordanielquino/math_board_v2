@@ -402,6 +402,7 @@ export const u_moveDuplicateImage = (imageIn, recorrido_x, recorrido_y) => {
         width: imageIn.width,
         height: imageIn.height,
         imageDraw: imageIn.imageDraw,
+        description: imageIn.description,
     };
     imageIn.vertex.forEach((elm, index) => {
         image.vertex[index] = {

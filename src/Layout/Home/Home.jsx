@@ -5,7 +5,6 @@ import './Home.scss';
 import {Button, ButtonGroup, IconButton} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import Paper from "@mui/material/Paper";
 import json from '../../Data/mathboard.json';
 
@@ -14,10 +13,6 @@ import AppContext from "../../context/AppContext";
 
 import {makeStyles} from "@mui/styles";
 import NavIzq from "../NavIzq/NavIzq";
-import {PhotoCamera} from "@mui/icons-material";
-
-import ReactToPrint    from "react-to-print";
-import PdfCanvas       from "../../Modules/PdfCanvas/PdfCanvas";
 import {isObjectEmpty} from "../../utils/utils";
 
 const useStyles  = makeStyles( theme => ({
@@ -43,7 +38,6 @@ const Home = () => {
 	// STATE:
 	const [mathBoardSelect, setMathBoardSelect] = useState({});
 	const [contador, setContador] = useState(1);
-	const [toggleModalPdf, setToggleModalPdf] = useState(false);
 
 	// REF:
 	const canvasRef = useRef(null);
@@ -112,16 +106,6 @@ const Home = () => {
 			h_setMathboardsIndexSelect(index);
 		}
 	}
-	const handlePhotoCamera = () => {
-		console.log('camara', canvasRef.current);
-		let context = canvasRef.current.getContext('2d');
-		let canvasImagen = canvasRef.current.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
-		window.location.href = canvasImagen;
-	}
-
-	const handlePdf = () => {
-		setToggleModalPdf(true);
-	}
 	const readJson = (jsonIn) => {
 		let arrayMathBoardsBtns = jsonIn[0].mathboards;	// mathboards = [{},{},{}...]
 		let indexSelect = jsonIn[1].mathboardSelect.index;
@@ -171,24 +155,10 @@ const Home = () => {
 							<AddIcon fontSize="small" />
 						</IconButton>
 					</ButtonGroup>
-					{/* BUTTONS CAMERA AND PDF */}
-					<ButtonGroup size="small" aria-label="small button group">
-						<Button variant="outlined" color='primary' size='small' onClick={() => handlePdf()}>
-							<PictureAsPdfIcon />
-						</Button>
-						<Button variant="outlined" color='primary' size='small' onClick={() => handlePhotoCamera()}>
-							<PhotoCamera />
-						</Button>
-						{/*<ReactToPrint
-							trigger={() => <button>Print this out!</button>}
-							content={() => canvasRef.current}
-						/>*/}
-					</ButtonGroup>
 				</div>
 				<div className='home__canvas'>
 					<Canvas canvasRef={canvasRef} />
 				</div>
-				<PdfCanvas toggleModal={toggleModalPdf} setToggleModal={setToggleModalPdf} canvasRef={canvasRef}/>
 			</div>
 			<NavIzq />
 		</>

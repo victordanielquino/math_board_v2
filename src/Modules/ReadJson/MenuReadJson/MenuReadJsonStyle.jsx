@@ -11,7 +11,7 @@ const useStylesMenuReadJson  = makeStyles({
         padding: '5px 25px',
     },
     button: {
-        marginRight: '10px',
+        marginRight: '20px',
     },
     a: {
         display: 'none',

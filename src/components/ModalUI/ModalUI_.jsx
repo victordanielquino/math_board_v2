@@ -26,7 +26,11 @@ export default function MaxWidthDialog({
                                            handleSuccess,
                                            successDisabled = false,
                                            booleanFooter = true,
-                                           successTitle = 'ACEPTAR'
+                                           successTitle = 'ACEPTAR',
+                                           btnAux1Boolean = false,
+                                           btnAux1Success = () => {console.log('prueba btn1')},
+                                           btnAux1Title = 'btn1',
+                                           btnAux1Disabled = false
 }) {
     //const [fullWidth, setFullWidth] = React.useState(true); // true, false
     //const [maxWidth, setMaxWidth] = React.useState('sm');// xs, sm, md, lg, xl
@@ -60,6 +64,10 @@ export default function MaxWidthDialog({
                 {
                     booleanFooter &&
                     <DialogActions>
+                        {
+                            btnAux1Boolean &&
+                            <Button style={{}} onClick={() => btnAux1Success()} disabled={btnAux1Disabled}>{btnAux1Title}</Button>
+                        }
                         <Button onClick={() => handleSuccess()} disabled={successDisabled}>{successTitle}</Button>
                         <Button onClick={handleClose} color='secondary'>CANCELAR</Button>
                     </DialogActions>

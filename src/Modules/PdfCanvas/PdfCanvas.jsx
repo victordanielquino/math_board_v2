@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 
-import ModalUI from '../../components/ModalUI/ModalUI';
+import ModalUI from '../../components/ModalUI/ModalUI_';
 import InputFileImage from './InputFileImage/InputFileImage';
 import { AccountCircle } from '@mui/icons-material';
 import { Box, TextField } from '@mui/material';
@@ -14,12 +14,14 @@ import AppContextGrid from '../../context/AppContextGrid';
 import draw from '../Draw/Draw';
 import { u_getFecha } from '../../utils/utils';
 
-import Loading from '../../components/Loading/Loading';
+import Loading           from '../../components/Loading/Loading';
+import { storageAddFile }  from "../../firebase/services/storage.services";
+import { firestoreAdd } from '../../firebase/services/firestore.services';
 
 const PdfCanvas = ({
 	toggleModal = false,
 	setToggleModal = false,
-	canvasRef,
+	id_canvas = 'canvas-1'
 }) => {
 	// CONTEXT:
 	const { state } = useContext(AppContext);
@@ -34,7 +36,6 @@ const PdfCanvas = ({
 	} = useContext(AppContextSesion);
 
 	// STATE:
-	const [stateSuccess, setStateSuccess] = useState(false);
 	const [loader, setLoader] = useState(false);
 
 	const [file, setFile] = useState(null);
@@ -43,7 +44,7 @@ const PdfCanvas = ({
 	const [heightImage, setHeightImage] = useState(0);
 
 	// LOGICA:
-	const handleSave = () => {
+	const handleSave = (saveFirebase = false) => {
 		setLoader(true);
 		const fecha = u_getFecha();
 		const doc = new jsPDF('p', 'pt', 'letter'); // p:vertical, l:horizontal
@@ -82,15 +83,19 @@ const PdfCanvas = ({
 		};
 		const generateNewCanvas = (canvasId) => {
 			let canvas = document.createElement('canvas');
-			canvas.width = canvasRef.current.width;
-			canvas.height = canvasRef.current.height;
+			let canvasIn = document.getElementById(id_canvas);
+			//canvas.width = canvasRef.current.width;
+			canvas.width = canvasIn.width;
+			//canvas.height = canvasRef.current.height;
+			canvas.height = canvasIn.height;
 			let context = canvas.getContext('2d');
 			// await draw(context, state.historia, state.canvas, stateGrid);
 			paintNewCanvas(context, state.historia, canvasId);
 			return canvas.toDataURL('image/PNG');
 		};
 		// IMAGE:
-		const DATA = canvasRef.current; // canvas
+		//const DATA = canvasRef.current; // canvas
+		const DATA = document.getElementById(id_canvas); // canvas
 		const options = {
 			background: 'white',
 			scale: 3,
@@ -170,27 +175,37 @@ const PdfCanvas = ({
 			})
 			.then((docResult) => {
 				docResult.save(`${new Date().toISOString()}_mathboard.pdf`);
+				saveFirebase
+					? storageAddFile('pdf_'+Date.now(), docResult.output('blob'), 'pdf')
+						.then((url) => {
+							firestoreAdd('pdf', '0', url,  Number(new Date()), new Date().toLocaleString())
+								.then( resp => {
+									console.log('resp:', resp)} );
+						})
+						.catch(error => {console.log('error:', error)})
+					: '';
 				setToggleModal(false);
 				setLoader(false);
 			});
 	};
+	const handleUploadFirebase = (bool) => {
+		handleSave(true);
+	}
 
 	// EFFECT:
-	useEffect(() => {
-		if (stateSuccess) {
-			handleSave();
-			setStateSuccess(false);
-		}
-	}, [stateSuccess]);
 
 	return (
 		<>
 			<ModalUI
 				open={toggleModal}
 				setOpen={setToggleModal}
-				setStateSuccess={setStateSuccess}
+				handleSuccess={handleSave}
 				maxWidth={'md'}
-				title={'GUARDAR PROYECTO EN PDF:'}
+				title={'GUARDAR PDF:'}
+				successTitle='DESCARGAR PDF'
+				btnAux1Boolean={true}
+				btnAux1Success={handleUploadFirebase}
+				btnAux1Title={'DESCARGAR Y SUBIR PDF A LA NUBE'}
 			>
 				{!loader && (
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>

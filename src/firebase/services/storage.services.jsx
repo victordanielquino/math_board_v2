@@ -1,9 +1,17 @@
 import { fbStorageRef} from "../firebase.config2";
 
 // STORAGE: ADD galeria:
-const storageAddFile = async (nombre, imgBase64) => {
+const storageAddFile = async (nombre, imgBase64, type = 'image') => {
+    let respuesta = '';
     try {
-        let respuesta = await fbStorageRef.child('imagenes/'+nombre).putString(imgBase64, 'data_url');
+        switch (type) {
+            case 'image':
+                respuesta = await fbStorageRef.child('imagenes/'+nombre).putString(imgBase64, 'data_url');
+                break;
+            case 'pdf':
+                respuesta = await fbStorageRef.child('pdf/'+nombre).put(imgBase64, null);
+                break;
+        }
         return await respuesta.ref.getDownloadURL();
     } catch (e) {
         console.log(e);
